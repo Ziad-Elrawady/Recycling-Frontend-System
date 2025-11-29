@@ -1,0 +1,45 @@
+.navbar-container {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.brand-btn {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #009975;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-action {
+  margin-left: 10px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-login {
+  background: #009975;
+  color: #fff;
+}
+
+.nav-register {
+  background: #ffb300;
+  color: #fff;
+}
+
+.nav-logout {
+  background: #d32f2f;
+  color: white;
+}
+
+.nav-action:hover {
+  opacity: .85;
+}

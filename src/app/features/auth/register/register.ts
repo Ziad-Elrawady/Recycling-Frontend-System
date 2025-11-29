@@ -1,11 +1,33 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-register',
-  imports: [],
   templateUrl: './register.html',
-  styleUrl: './register.css',
+  styleUrls: ['./register.css'],
+  imports: [CommonModule, FormsModule]
 })
-export class Register {
+export class RegisterComponent {
+  error: string | null = null;
+
+  constructor(private auth: AuthService, private router: Router) {}
+
+  async onRegister(f: NgForm) {
+    if (!f.valid) return;
+
+    try {
+      await this.auth.register(f.value);
+      this.router.navigate(['/materials']);
+    } catch {
+      this.error = 'هذا البريد مستخدم من قبل';
+    }
+  }
+  goToLogin() {
+  this.router.navigate(['/login']);
+}
 
 }

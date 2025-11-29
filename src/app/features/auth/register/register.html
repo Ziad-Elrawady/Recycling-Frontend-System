@@ -1,1 +1,89 @@
-<p>register works!</p>
+<div class="auth-container">
+  <div class="auth-card">
+
+    <h2 class="title mb-4 text-center">إنشاء حساب</h2>
+
+    @if (error) {
+      <div class="alert alert-danger text-center">{{ error }}</div>
+    }
+
+    <form #f="ngForm" (ngSubmit)="onRegister(f)">
+
+      <!-- FULL NAME -->
+      <div class="mb-3">
+        <input
+          type="text"
+          name="name"
+          class="form-control input-glass"
+          placeholder="الاسم الكامل"
+          required
+          minlength="3"
+          ngModel
+          #name="ngModel"
+        />
+
+        @if (name.invalid && (name.dirty || name.touched || f.submitted)) {
+          <div class="text-danger mt-1 small">
+            ✦ الاسم يجب أن يكون 3 أحرف على الأقل
+          </div>
+        }
+      </div>
+
+      
+
+      <!-- EMAIL -->
+      <div class="mb-3">
+        <input
+          type="email"
+          name="email"
+          class="form-control input-glass"
+          placeholder="البريد الإلكتروني"
+          required
+          email
+          ngModel
+          #email="ngModel"
+        />
+
+        @if (email.invalid && (email.dirty || email.touched || f.submitted)) {
+          <div class="text-danger mt-1 small">
+            ✦ الرجاء إدخال بريد إلكتروني صالح
+          </div>
+        }
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="mb-3">
+        <input
+          type="password"
+          name="password"
+          class="form-control input-glass"
+          placeholder="كلمة المرور"
+          required
+          minlength="6"
+          ngModel
+          #password="ngModel"
+        />
+
+        @if (password.invalid && (password.dirty || password.touched || f.submitted)) {
+          <div class="text-danger mt-1 small">
+            ✦ كلمة المرور يجب أن تكون 6 أحرف على الأقل
+          </div>
+        }
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit" class="btn btn-success w-100 py-2 rounded-3 fw-bold shadow-sm">
+        إنشاء حساب
+      </button>
+
+      <!-- SWITCH TO LOGIN -->
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-outline-warning px-4" (click)="goToLogin()">
+          لدي حساب — تسجيل الدخول
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

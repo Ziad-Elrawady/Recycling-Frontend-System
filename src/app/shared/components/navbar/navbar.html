@@ -1,1 +1,33 @@
-<p>navbar works!</p>
+<nav class="navbar-container">
+  <div class="container d-flex justify-content-between align-items-center">
+
+    <button class="brand-btn" (click)="goTo('')">
+      ♻️ Recycling
+    </button>
+
+    <div class="d-flex align-items-center">
+
+      @if (!auth.isLogged()) {
+
+        <button class="nav-action nav-login" (click)="goTo('login')">
+          دخول
+        </button>
+
+        <button class="nav-action nav-register" (click)="goTo('register')">
+          تسجيل
+        </button>
+
+      }
+
+      @if (auth.isLogged()) {
+
+        <button class="nav-action nav-logout" (click)="logout()">
+          خروج
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+</nav>

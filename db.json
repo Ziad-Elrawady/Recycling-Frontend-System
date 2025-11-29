@@ -1,0 +1,115 @@
+{
+  "material": [
+    {
+      "id": "1",
+      "typeName": "Plastic Bottle",
+      "size": "500ml",
+      "price": 0.12,
+      "factoryId": 1
+    },
+    {
+      "id": "3",
+      "typeName": "Glass Bottle",
+      "size": "1L",
+      "price": 0.25,
+      "factoryId": 2
+    }
+  ],
+  "factory": [
+    {
+      "id": "1",
+      "name": "Green Recycling Factory",
+      "location": "Cairo"
+    },
+    {
+      "id": "2",
+      "name": "Eco Recycling Plant",
+      "location": "Alexandria"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": 2,
+      "name": "ziad",
+      "email": "zezoelrawady@gmail.com",
+      "password": "123456789-Ziad"
+    }
+  ],
+  "order": [
+    {
+      "id": "1",
+      "orderDate": "2025-11-10",
+      "status": "Pending",
+      "userId": "u1",
+      "collectorId": "c1",
+      "factoryId": 1
+    },
+    {
+      "id": "2",
+      "orderDate": "2025-11-12",
+      "status": "Completed",
+      "userId": "u2",
+      "collectorId": "c1",
+      "factoryId": 2
+    }
+  ],
+  "order-material": [
+    {
+      "id": "1",
+      "orderId": 1,
+      "materialId": 1
+    },
+    {
+      "id": "2",
+      "orderId": 1,
+      "materialId": 2
+    },
+    {
+      "id": "3",
+      "orderId": 2,
+      "materialId": 3
+    }
+  ],
+  "reward": [
+    {
+      "id": "1",
+      "title": "Vodafone 10 EGP Recharge",
+      "description": "Recharge voucher",
+      "requiredPoints": 50
+    },
+    {
+      "id": "2",
+      "title": "Orange 20 EGP Recharge",
+      "description": "Recharge voucher",
+      "requiredPoints": 90
+    },
+    {
+      "id": "3",
+      "title": "Free Coffee",
+      "description": "Redeem a free cup",
+      "requiredPoints": 30
+    }
+  ],
+  "history-reward": [
+    {
+      "id": "1",
+      "userId": "u1",
+      "rewardId": 1,
+      "claimedAt": "2025-11-01T10:00:00Z",
+      "pointsUsed": 50
+    },
+    {
+      "id": "2",
+      "userId": "u2",
+      "rewardId": 3,
+      "claimedAt": "2025-11-02T12:00:00Z",
+      "pointsUsed": 30
+    }
+  ]
+}
