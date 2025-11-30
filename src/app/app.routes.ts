@@ -8,22 +8,28 @@ import { ManageFactoriesComponent } from './features/admin/manage-factories/mana
 import { ManageUsersComponent } from './features/admin/manage-users/manage-users';
 import { OrdersApprovalComponent } from './features/admin/orders-approval/orders-approval';
 import { RewardsComponent } from './features/admin/rewards/rewards';
+import { CollectorDashboard } from './features/collector/collector-dashboard/collector-dashboard';
 
 export const routes: Routes = [
-{ path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
+{ path: '', redirectTo: '/collector-dashboard', pathMatch: 'full' },
 
 {
     path: 'admin',
     component: AdminLayoutComponent,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'materials', component: ManageMaterialsComponent },
       { path: 'factories', component: ManageFactoriesComponent },
       { path: 'users', component: ManageUsersComponent },
       { path: 'orders', component: OrdersApprovalComponent },
-      { path: 'rewards', component: RewardsComponent }
+      { path: 'rewards', component: RewardsComponent },
     ]
+  },
+
+  {
+    path: 'collector-dashboard',
+    component: CollectorDashboard
   },
 
   // صفحة اللوجين والريفجيستر العاديين
