@@ -25,7 +25,7 @@ export class LoginComponent {
 
   onLogin(form: NgForm) {
     if (form.invalid) {
-      this.error = "الرجاء إدخال بيانات صحيحة";
+      this.error = "Please enter correct information.";
       form.form.markAllAsTouched();
       return;
     }
@@ -33,15 +33,13 @@ export class LoginComponent {
     this.auth.login(form.value).subscribe({
       next: (token) => {
 
-        // 👈 خزن التوكن
         this.auth.saveToken(token);
-
-        this.flash.showSuccess("تم تسجيل الدخول بنجاح 🎉");
+        this.flash.showSuccess("Successful login 🎉");
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         this.error = extractAuthError(err);
-        this.flash.showError("خطأ في تسجيل الدخول");
+        this.flash.showError("Login error");
       }
     });
 

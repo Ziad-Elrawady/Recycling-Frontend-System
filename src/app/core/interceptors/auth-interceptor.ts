@@ -11,11 +11,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private router = inject(Router);
   private flash = inject(FlashMessageService);
-  private auth = inject(AuthService);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const token = this.auth.getToken();
+    const token = localStorage.getItem('token');  
 
     if (token) {
       req = req.clone({

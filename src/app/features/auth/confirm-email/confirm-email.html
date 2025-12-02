@@ -1,0 +1,24 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="eco-logo-big">
+      <div class="leaf one"></div>
+      <div class="leaf two"></div>
+    </div>
+
+    @if (status === 'loading') {
+      <p class="auth-subtitle">جارٍ تأكيد البريد...</p>
+    }
+
+    @if (status === 'success') {
+      <div class="alert alert-success">تم تأكيد البريد بنجاح ✔</div>
+      <p class="auth-subtitle">سيتم تحويلك إلى صفحة تسجيل الدخول</p>
+    }
+
+    @if (status === 'error') {
+      <div class="alert alert-danger">رابط غير صالح ❌</div>
+      <p class="auth-subtitle">تأكد من صحة الرابط المرسل لبريدك</p>
+    }
+
+  </div>
+</div>

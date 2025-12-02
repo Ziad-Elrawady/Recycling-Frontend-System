@@ -10,6 +10,7 @@ import { OrdersApprovalComponent } from './features/admin/orders-approval/orders
 import { RewardsComponent } from './features/admin/rewards/rewards';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password';
 import { AuthGuard } from './core/guards/auth/auth-guard';
+import { ResetPasswordComponent } from './features/auth/reset-password/reset-password';
 
 export const routes: Routes = [
 
@@ -20,6 +21,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  {path:'reset-password', component: ResetPasswordComponent},
+  {path:'confirm-email', component: ResetPasswordComponent},
 
   // 🔵 صفحات الأدمن
   {

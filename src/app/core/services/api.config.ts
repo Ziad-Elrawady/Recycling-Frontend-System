@@ -1,3 +1,3 @@
 export const API_CONFIG = {
-  baseUrl: 'https://localhost:7165'
+  baseUrl: 'https://localhost:4375'
 };

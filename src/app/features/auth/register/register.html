@@ -14,49 +14,28 @@
 
     <!-- ERROR MESSAGE -->
     @if (error) {
-      <div class="alert alert-danger">{{ error }}</div>
+    <div class="alert alert-danger">{{ error }}</div>
     }
 
     <form #f="ngForm" (ngSubmit)="onRegister(f)">
 
-      <!-- FULL NAME -->
-      <input class="auth-input"
-             name="fullName"
-             ngModel
-             required
-             placeholder="Full Name">
+      <input class="auth-input" name="fullName" ngModel required (input)="clearError()" placeholder="Full Name">
 
-      <!-- EMAIL -->
-      <input class="auth-input"
-             type="email"
-             name="email"
-             ngModel
-             required
-             placeholder="you@example.com">
+      <input class="auth-input" type="email" name="email" ngModel required (input)="clearError()"
+        placeholder="you@example.com">
 
-      <!-- PASSWORD -->
-      <input class="auth-input"
-             type="password"
-             name="password"
-             ngModel
-             required
-             minlength="6"
-             placeholder="Create a secure password">
+      <input class="auth-input" type="password" name="password" ngModel required minlength="6" (input)="clearError()"
+        placeholder="Create a secure password">
 
-      <!-- CONFIRM PASSWORD -->
-      <input class="auth-input"
-             type="password"
-             name="confirmPassword"
-             ngModel
-             required
-             minlength="6"
-             placeholder="Confirm password">
+      <input class="auth-input" type="password" name="confirmPassword" ngModel required minlength="6"
+        (input)="clearError()" placeholder="Confirm password">
+
 
       <!-- PASSWORD MATCH ERROR -->
       @if (f.submitted && f.value.password !== f.value.confirmPassword) {
-        <div class="text-danger small mb-2">
-          Passwords do not match ❌
-        </div>
+      <div class="text-danger small mb-2">
+        Passwords do not match ❌
+      </div>
       }
 
       <!-- SUBMIT BUTTON -->

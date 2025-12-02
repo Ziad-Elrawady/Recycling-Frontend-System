@@ -10,50 +10,55 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'https://localhost:7165/api/Auth';
+  private apiUrl = 'https://localhost:4375/api/Auth';
 
-  // -------------------------
   // Register
-  // -------------------------
   register(data: any) {
     return this.http.post(`${this.apiUrl}/register`, data, {
       responseType: 'text'
     });
   }
 
-  // -------------------------
   // Login
-  // -------------------------
   login(data: any) {
     return this.http.post(`${this.apiUrl}/login`, data, {
-      responseType: 'text'  // السيرفر بيرجع token كسلسلة نصية
+      responseType: 'text'
     });
   }
 
-  // -------------------------
-  // Save Token
-  // -------------------------
+  // Forgot Password
+  forgotPassword(email: string) {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email }, {
+      responseType: 'text'
+    });
+  }
+
+  // Reset Password
+  resetPassword(data: any) {
+    return this.http.post(`${this.apiUrl}/reset-password`, data, {
+      responseType: 'text'
+    });
+  }
+  //confirmEmail
+  confirmEmail(email: string, token: string) {
+    return this.http.get(`${this.apiUrl}/confirm-email?email=${email}&token=${token}`, {
+      responseType: 'text'
+    });
+  }
+
+  // Token Handling
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
 
-  // -------------------------
-  // Get Token
-  // -------------------------
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  // -------------------------
-  // Check If Logged
-  // -------------------------
   isLogged(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // -------------------------
-  // Logout
-  // -------------------------
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

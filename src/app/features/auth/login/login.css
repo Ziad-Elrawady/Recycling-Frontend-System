@@ -111,3 +111,19 @@
   cursor: pointer;
   font-weight: 600;
 }
+/* ---------- Forgot Password Link ---------- */
+.auth-forgot {
+  width: 100%;
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.auth-forgot span {
+  color: #0bb56b;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
