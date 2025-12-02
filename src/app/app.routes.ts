@@ -13,9 +13,7 @@ import { AuthGuard } from './core/guards/auth/auth-guard';
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password';
 
 export const routes: Routes = [
-
-  // 🔵 تسجيل الدخول أول صفحة (ده الطبيعي)
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+{ path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
 
   // 🔵 صفحات المستخدم العادي
   { path: 'login', component: LoginComponent },
@@ -39,6 +37,10 @@ export const routes: Routes = [
       { path: 'rewards', component: RewardsComponent },
     ]
   },
+
+  // صفحة اللوجين والريفجيستر العاديين
+  { path: 'login', component:LoginComponent },
+  { path: 'register', component: RegisterComponent },
 
   { path: '**', redirectTo: 'login' }
 ];
