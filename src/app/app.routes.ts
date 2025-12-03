@@ -12,9 +12,10 @@ import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-
 import { AuthGuard } from './core/guards/auth/auth-guard';
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password';
 import { Citizen } from './features/citizen/citizen';
+import { CollectorDashboard } from './features/collector/collector-dashboard/collector-dashboard';
 
 export const routes: Routes = [
-{ path: '', redirectTo: '/citizen', pathMatch: 'full' },
+{ path: '', redirectTo: '/collector', pathMatch: 'full' },
 
   // 🔵 صفحات المستخدم العادي
   { path: 'login', component: LoginComponent },
@@ -39,9 +40,14 @@ export const routes: Routes = [
     ]
   },
 
-  //صفحة المواطن العادي
+  //صفحة المواطن
   {
     path: 'citizen', component: Citizen,
+  },
+
+// صفحة الجامع
+  {
+    path: 'collector', component : CollectorDashboard
   },
 
 
