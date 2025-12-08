@@ -1,25 +1,26 @@
 <h1 class="page-title">Materials</h1>
 <p class="page-sub">Manage recyclable materials and pricing</p>
 
-<!-- Header Row -->
 <div class="header-row">
+
   @if (isAdmin()) {
-  <button class="btn-primary" (click)="startAdd()">+ Add Material</button>
+  <button class="btn-add" (click)="startAdd()">Add Material</button>
   }
 
   <div class="search-box">
-    <input type="text" placeholder="Search..." [(ngModel)]="searchText"(keyup)="onSearchChange()"/>
-    <button class="btn-secondary" (click)="search()">Search</button>
+    <input type="text" placeholder="Search materials..." [(ngModel)]="searchText" (keyup)="onSearchChange()" />
+    <button class="btn-search" (click)="search()">
+      Search
+    </button>
   </div>
 </div>
 
-<!-- Table -->
 <div class="table-card">
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Type</th>
+        <th>#</th>
+        <th>Material</th>
         <th>Size</th>
         <th>Price</th>
         @if (isAdmin()) { <th>Actions</th> }
@@ -36,8 +37,8 @@
 
         @if (isAdmin()) {
         <td class="actions">
-          <button class="btn-edit" (click)="startEdit(m)">Edit</button>
-          <button class="btn-delete" (click)="delete(m.id)">Delete</button>
+          <button class="btn-icon edit" (click)="startEdit(m)">Edite</button>
+          <button class="btn-icon delete" (click)="delete(m.id)">Delete</button>
         </td>
         }
       </tr>
@@ -46,19 +47,26 @@
   </table>
 </div>
 
-<!-- Form -->
 @if (showForm && isAdmin()) {
-<div class="form-card">
-  <h3>{{ editing ? "Edit Material" : "Add Material" }}</h3>
+<div class="modal-backdrop">
+  <div class="modal-card animate-popup">
 
-  <input type="text" placeholder="Type Name" [(ngModel)]="form.typeName">
-  <input type="text" placeholder="Size" [(ngModel)]="form.size">
-  <input type="number" placeholder="Price" [(ngModel)]="form.price">
+    <h3 class="modal-title">
+      {{ editing ? "Edit Material" : "Add Material" }}
+    </h3>
 
-  <button class="btn-save" (click)="save()">
-    {{ editing ? "Save Changes" : "Add Material" }}
-  </button>
-  <button class="close-btn" (click)="cancel()">Cancel</button>
+    <input type="text" placeholder="Material Type" [(ngModel)]="form.typeName">
+    <input type="text" placeholder="Size (KG/L)" [(ngModel)]="form.size">
+    <input type="number" placeholder="Price in LE" [(ngModel)]="form.price">
 
+    <div class="modal-actions">
+      <button class="btn-save" (click)="save()">
+        {{ editing ? "Save Changes" : "Add Material" }}
+      </button>
+
+      <button class="btn-cancel" (click)="cancel()">Cancel</button>
+    </div>
+
+  </div>
 </div>
 }

@@ -1,14 +1,12 @@
-import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { inject } from '@angular/core';
 
-export const adminGuard: CanActivateFn = () => {
+export const citizenGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  const role = auth.getRole()?.toLowerCase();
-
-  if (role === 'admin') return true;
+  if (auth.getRole()?.toLowerCase() === 'citizen') return true;
 
   router.navigate(['/']);
   return false;

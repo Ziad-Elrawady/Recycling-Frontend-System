@@ -13,6 +13,9 @@ import { Order } from '../../../core/models/order.model';
   imports: [CommonModule, FormsModule]
 })
 export class ManageOrdersComponent {
+clearFilters() {
+throw new Error('Method not implemented.');
+}
 
   private service = inject(OrderService);
   public auth = inject(AuthService);
@@ -23,12 +26,7 @@ export class ManageOrdersComponent {
   statusFilter = '';
   collectorFilter = '';
   factoryFilter = '';
-
-  // For Creating Order
-  newOrder: Partial<Order> = {
-    orderDate: new Date().toISOString(),
-    status: 'Pending'
-  };
+  userFilter: any;
 
   ngOnInit() {
     this.load();
@@ -38,13 +36,39 @@ export class ManageOrdersComponent {
     this.service.getAll().subscribe(res => this.orders = res);
   }
 
-  filter() {
-    if (this.statusFilter) return this.service.getByStatus(this.statusFilter).subscribe(res => this.orders = res);
-    if (this.factoryFilter) return this.service.getByFactory(+this.factoryFilter).subscribe(res => this.orders = res);
-    if (this.collectorFilter) return this.service.getByCollector(this.collectorFilter).subscribe(res => this.orders = res);
+filter() {
+  let filtered = this.orders;
 
-    return this.load();
+  if (this.statusFilter.trim()) {
+    filtered = filtered.filter(o => 
+      o.status.toLowerCase().includes(this.statusFilter.toLowerCase())
+    );
   }
+
+  if (this.collectorFilter.trim()) {
+    filtered = filtered.filter(o => 
+      o.collectorName && 
+      o.collectorName.toLowerCase().includes(this.collectorFilter.toLowerCase())
+    );
+  }
+
+  if (this.factoryFilter.trim()) {
+    filtered = filtered.filter(o => 
+      o.factoryName && 
+      o.factoryName.toLowerCase().includes(this.factoryFilter.toLowerCase())
+    );
+  }
+
+  if (this.userFilter.trim()) {
+    filtered = filtered.filter(o =>
+      o.userName && 
+      o.userName.toLowerCase().includes(this.userFilter.toLowerCase())
+    );
+  }
+
+  this.orders = filtered;
+}
+
 
   showDetails(id: number) {
     this.service.getById(id).subscribe(res => this.selectedOrder = res);
@@ -56,19 +80,6 @@ export class ManageOrdersComponent {
 
   isAdmin() {
     return this.auth.getRole() === 'Admin';
-  }
-
-  createOrder() {
-    // if admin => choose user & collector
-    if (!this.newOrder.userId || !this.newOrder.collectorId || !this.newOrder.factoryId) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    this.service.create(this.newOrder).subscribe(() => {
-      this.load();
-      this.newOrder = { orderDate: new Date().toISOString(), status: 'Pending' };
-    });
   }
 
   updateStatus(newStatus: string) {

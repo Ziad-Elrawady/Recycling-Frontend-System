@@ -75,16 +75,23 @@
 
 <!-- Form -->
 @if (showForm && isAdmin()) {
-<div class="form-card">
-  <h3>{{ editing ? "Edit Factory" : "Add Factory" }}</h3>
+<div class="modal-backdrop">
+  <div class="modal-card animate-popup">
 
-  <input type="text" placeholder="Name" [(ngModel)]="form.name">
-  <input type="text" placeholder="Location" [(ngModel)]="form.location">
+    <h3 class="modal-title">
+      {{ editing ? "Edit Factory" : "Add Factory" }}
+    </h3>
 
-  <button class="btn-save" (click)="save()">
-    {{ editing ? "Save Changes" : "Add Factory" }}
-  </button>
+    <input type="text" placeholder="Name" [(ngModel)]="form.name">
+    <input type="text" placeholder="Location" [(ngModel)]="form.location">
 
-  <button class="close-btn" (click)="cancel()">Cancel</button>
+    <div class="modal-actions">
+      <button class="btn-save" (click)="save()">
+        {{ editing ? "Save Changes" : "Add Factory" }}
+      </button>
+
+      <button class="btn-cancel" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
 </div>
 }

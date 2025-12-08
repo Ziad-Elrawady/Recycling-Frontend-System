@@ -1,95 +1,85 @@
-/* ===========================
-    PAGE HEADER
-=========================== */
+/* -------------------
+   PAGE HEADERS
+------------------- */
 .page-title {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
+  color: #1e293b;
   margin-bottom: 2px;
-  color: #343a40;
 }
 
 .page-sub {
   color: #6c757d;
-  margin-bottom: 26px;
-  font-size: 15px;
+  margin-bottom: 22px;
+  font-size: 14px;
 }
 
-/* ===========================
-    HEADER ROW
-=========================== */
+/* -------------------
+   HEADER ACTIONS
+------------------- */
 .header-row {
   display: flex;
-  justify-content: space-between; /* أهم سطر */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 18px;
 }
 
-
 /* Add Button */
 .btn-primary {
-  background: linear-gradient(135deg, #0d6efd, #0b58d0);
-  padding: 9px 16px;
+  background: #10b981;
+  padding: 10px 18px;
   color: white;
+  font-weight: 600;
   border-radius: 8px;
   border: none;
-  font-size: 14px;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: .3s;
 }
-
 .btn-primary:hover {
-  background: linear-gradient(135deg, #0b5ed7, #0949a7);
+  background: #0e9168;
   transform: translateY(-2px);
 }
 
-/* ===========================
-    SEARCH BOX
-=========================== */
+/* Search Box */
 .search-box {
   display: flex;
   align-items: center;
-  gap: 10px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
 }
-
 .search-box input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 260px;
+  border: none;
+  padding: 9px 12px;
+  width: 210px;
+  font-size: 14px;
 }
-
 .search-box input:focus {
   outline: none;
-  border-color: #0d6efd;
-  box-shadow: 0 0 3px rgba(13,110,253,0.4);
 }
-
 .btn-secondary {
-  background: linear-gradient(135deg, #0d6efd, #0b58d0);
-  color: white;
-  padding: 9px 16px;
-  border-radius: 8px;
+  padding: 9px 14px;
   border: none;
-  font-size: 14px;
+  background: #0ea5e9;
+  color: white;
   cursor: pointer;
-  transition: 0.25s;
+  font-weight: 600;
+  transition: .3s;
 }
-
 .btn-secondary:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
+  background: #0284c7;
 }
 
-/* ===========================
-    TABLE
-=========================== */
+/* -------------------
+       TABLE
+------------------- */
 .table-card {
   background: white;
   padding: 18px;
   border-radius: 14px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  margin-bottom: 24px;
-  overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,.05);
+  margin-top: 14px;
 }
 
 table {
@@ -97,115 +87,173 @@ table {
   border-collapse: collapse;
 }
 
-th {
-  text-align: left;
-  padding: 13px;
-  color: #6c757d;
-  font-weight: 600;
+thead tr {
+  background: #f1f5f9;
+}
+
+th, td {
+  padding: 12px 10px;
   font-size: 14px;
 }
 
 td {
-  padding: 12px;
-  border-top: 1px solid #e9ecef;
-  font-size: 15px;
-  color: #343a40;
+  border-bottom: 1px solid #eef2f4;
 }
 
-/* ===========================
-    ACTION BUTTONS
-=========================== */
+/* Hover Row */
+tbody tr:hover {
+  background: #e7f9f1;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+/* -------------------
+   ACTION BUTTONS
+------------------- */
 .actions button {
   margin-right: 6px;
 }
 
-.btn-edit {
-  background: #ffc107;
-  color: black;
-  padding: 6px 14px;
-  border-radius: 6px;
+.btn-edit,
+.btn-delete {
+  padding: 7px 14px;
   border: none;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 13px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: .25s;
 }
 
+.btn-edit {
+  background: #fde047;
+  color: #3d3d3d;
+}
 .btn-edit:hover {
-  background: #d39e00;
-  transform: scale(1.05);
+  background: #e3c007;
 }
 
 .btn-delete {
-  background: #dc3545;
+  background: #ef4444;
   color: white;
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
 }
-
 .btn-delete:hover {
-  background: #b02a37;
-  transform: scale(1.05);
+  background: #c81e1e;
 }
 
-/* ===========================
-   FORM CARD
-=========================== */
-.form-card {
-  background: white;
+/* -------------------
+   DETAILS CARD
+------------------- */
+.details-card {
+  margin-top: 22px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 18px rgba(0,0,0,.06);
+  animation: slideAppear .35s ease;
+}
+
+.details-card h3 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* ---------------------
+     MODAL POPUP FORM
+--------------------- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 370px;
   padding: 22px;
   border-radius: 14px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  margin-bottom: 25px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.2);
 }
 
-.form-card input {
-  width: 100%;
-  padding: 12px;
+.modal-title {
+  font-size: 19px;
+  font-weight: 700;
   margin-bottom: 14px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 15px;
-  transition: 0.2s;
+  color: #1e293b;
 }
 
-.form-card input:focus {
+.modal-card input {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #dadee2;
+  font-size: 14px;
+  transition: .25s;
+}
+
+.modal-card input:focus {
   outline: none;
-  border-color: #198754;
-  box-shadow: 0 0 3px rgba(25,135,84,0.4);
+  border-color: #10b981;
+  box-shadow: 0 0 3px rgba(16,185,129,.35);
+}
+
+/* Modal Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .btn-save {
-  width: 100%;
-  padding: 12px;
-  background: #198754;
+  flex: 1;
+  background: #0d6efd;
+  padding: 10px;
   color: white;
   border-radius: 8px;
   border: none;
-  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: .3s;
 }
 
 .btn-save:hover {
-  background: #157347;
-  transform: translateY(-2px);
+  background: #0a58ca;
 }
 
-.close-btn {
-  width: 100%;
-  padding: 10px;
+.btn-cancel {
+  flex: 1;
   background: #6c757d;
+  padding: 10px;
   color: white;
   border-radius: 8px;
   border: none;
-  margin-top: 10px;
   cursor: pointer;
-  transition: 0.25s;
+  transition: .3s;
 }
 
-.close-btn:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
+.btn-cancel:hover {
+  background: #575f65;
+}
+
+/* ---------------------
+    ANIMATION
+--------------------- */
+@keyframes slideAppear {
+  from { opacity: 0; transform: translateY(8px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes animatePopup {
+  from { opacity: 0; transform: scale(.94);}
+  to { opacity: 1; transform: scale(1);}
+}
+.animate-popup {
+  animation: animatePopup .35s ease;
 }

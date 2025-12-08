@@ -72,7 +72,7 @@ export class ManageMaterialsComponent {
   startAdd() {
     this.editing = false;
     this.showForm = true;
-    this.form = { id: 0, typeName: '', size: '', price: 0 };
+    this.form = { id: 0, typeName: '', size: '', price:0};
   }
 
   startEdit(m: Material) {

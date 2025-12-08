@@ -1,4 +1,5 @@
-<div *ngIf="open" class="modal fade show d-block" style="background: rgba(0,0,0,.5)">
+@if(open) {
+<div class="modal fade show d-block" style="background: rgba(0,0,0,.5)">
   <div class="modal-dialog modal-lg">
     <div class="modal-content shadow-lg">
 
@@ -18,3 +19,4 @@
     </div>
   </div>
 </div>
+}

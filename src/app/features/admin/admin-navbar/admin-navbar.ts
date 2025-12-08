@@ -15,7 +15,7 @@ export class AdminNavbarComponent {
   constructor(
     private router: Router,
     private auth: AuthService
-  ) {}
+  ) { }
 
   go(path: string) {
     this.router.navigate(['admin', path]);
@@ -35,5 +35,9 @@ export class AdminNavbarComponent {
 
   logoutAdmin() {
     this.auth.logout();  // ← شغالة 100%
+  }
+  goToHome() {
+    this.auth.logout();   
+    this.router.navigate(['/']);
   }
 }

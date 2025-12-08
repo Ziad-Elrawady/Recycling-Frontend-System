@@ -1,47 +1,26 @@
 <h1 class="page-title">Orders Management</h1>
-<p class="page-sub">Create, filter and manage recycling orders.</p>
-
-<!-- CREATE ORDER -->
-<div class="section-card">
-  <h3>Create New Order</h3>
-
-  <div class="form-row">
-    <div>
-      <label>User ID</label>
-      <input type="text" placeholder="Enter user ID..." [(ngModel)]="newOrder.userId">
-    </div>
-
-    <div>
-      <label>Collector ID</label>
-      <input type="text" placeholder="Enter collector ID..." [(ngModel)]="newOrder.collectorId">
-    </div>
-
-    <div>
-      <label>Factory ID</label>
-      <input type="number" placeholder="Enter factory ID..." [(ngModel)]="newOrder.factoryId">
-    </div>
-
-    <button class="btn-create" (click)="createOrder()">+ Create Order</button>
-  </div>
-</div>
+<p class="page-sub">View orders, users, collectors and status updates.</p>
 
 <!-- FILTERS -->
 <div class="section-card filter-section">
   <h3>Filter Orders</h3>
-  <div class="form-row">
-    <select [(ngModel)]="statusFilter" (change)="filter()">
-      <option value="">Filter by Status</option>
-      <option>Pending</option>
-      <option>Accepted</option>
-      <option>Completed</option>
-      <option>Cancelled</option>
-    </select>
 
-    <input type="text" placeholder="Collector ID" [(ngModel)]="collectorFilter">
-    <input type="number" placeholder="Factory ID" [(ngModel)]="factoryFilter">
-    <button class="btn-secondary" (click)="filter()">Search</button>
-    <button class="btn-clear" (click)="statusFilter='';collectorFilter='';factoryFilter='';load();">Clear</button>
-  </div>
+<div class="form-row">
+  <select [(ngModel)]="statusFilter" (change)="filter()">
+    <option value="">Filter by Status</option>
+    <option>Pending</option>
+    <option>Accepted</option>
+    <option>Completed</option>
+    <option>Cancelled</option>
+  </select>
+
+  <input type="text" placeholder="Search by User Name" [(ngModel)]="userFilter" (input)="filter()">
+  <input type="text" placeholder="Search by Collector Name" [(ngModel)]="collectorFilter" (input)="filter()">
+  <input type="text" placeholder="Search by Factory Name" [(ngModel)]="factoryFilter" (input)="filter()">
+
+  <button class="btn-clear" (click)="clearFilters()">Clear</button>
+</div>
+
 </div>
 
 <!-- ORDERS TABLE -->
@@ -75,7 +54,7 @@
   </table>
 </div>
 
-<!-- DETAILS -->
+<!-- DETAILS MODAL -->
 @if (selectedOrder) {
 <div class="details-modal">
   <div class="details-content">

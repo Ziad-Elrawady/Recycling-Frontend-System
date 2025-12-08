@@ -152,3 +152,24 @@ main {
   overflow-y: auto;
   height: calc(100vh - 65px);
 }
+.Home {
+  background: linear-gradient(135deg, #ffffffcc, #f1fff8cc);
+  color: #046b4c;
+  padding: 6px 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.Home:hover {
+  background: #e6fff3;
+  transform: translateY(-2px);
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, .1);
+}
+
+.Home:active {
+  transform: scale(0.96);
+}

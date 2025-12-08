@@ -4,34 +4,39 @@
 
   <div class="cards-row">
     @for (c of cards; track c.title) {
-      <div class="stat-card">
-        <div class="stat-info">
-          
-          <div class="stat-title">{{ c.title }}</div>
-          <div class="stat-value">{{ c.count }}</div>
-          <div class="stat-sub">{{ c.subtitle }}</div>
+    <div class="stat-card">
+      <div class="stat-info">
 
-          @if (c.changePercent !== null) {
-          <div class="stat-change">
-            <span [class.up]="c.changePercent>=0" [class.down]="c.changePercent<0">
-              {{ c.changePercent>=0 ? '+' : ''}}{{ c.changePercent }}%
-            </span>
-            from last month
-          </div>
-          }
+        <div class="stat-title">{{ c.title }}</div>
+        <div class="stat-value">{{ c.count }}</div>
+        <div class="stat-sub">{{ c.subtitle }}</div>
 
+        @if (c.changePercent !== null) {
+        <div class="stat-change">
+          <span [class.up]="c.changePercent>=0" [class.down]="c.changePercent<0">
+            {{ c.changePercent>=0 ? '+' : ''}}{{ c.changePercent }}%
+          </span>
+          from last month
         </div>
+        }
 
-        <div class="stat-icon">{{ c.icon }}</div>
       </div>
+
+      <div class="stat-icon">{{ c.icon }}</div>
+    </div>
     }
   </div>
 
   <div class="analytics-card">
     <h3>Platform Analytics</h3>
     <p class="muted">Collection trends and user activity over time</p>
-    <div class="chart-area">
-      <div class="chart-placeholder">Analytics Chart Area</div>
-    </div>
+<div class="chart-area">
+  <canvas
+    baseChart
+    [data]="lineChartData"
+    [options]="lineChartOptions"
+    chartType="line">
+  </canvas>
+</div>
   </div>
 </div>
