@@ -5,12 +5,12 @@
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #0bb56b, #0aa45f, #06723b);
-  padding: 40px 20px;
+  padding:25px;
 }
 
 /* ---------- Card ---------- */
 .auth-card {
-  width: 420px;
+  width: 370px;
   background: white;
   padding: 38px 30px;
   border-radius: 18px;
@@ -76,7 +76,7 @@
 }
 
 .auth-forgot span {
-  color: #0bb56b;
+  color:#0a8f4c;
   cursor: pointer;
   font-weight: 600;
 }
@@ -103,14 +103,56 @@
 
 /* ---------- Footer ---------- */
 .auth-footer {
-  margin-top: 18px;
-  font-size: 14px;
+  margin-top: 12px;        
+  font-size: 15px;         
   color: #1b2e23;         
+  display: block;
 }
 
 .auth-footer span {
-  color: #0bb56b;
+  color: #0a8f4c;          
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  transition: 0.2s;
 }
 
+.auth-footer span:hover {
+  letter-spacing: 0.3px;
+  color: #06723b;
+}
+
+/* ===== ERROR TEXT ===== */
+.alert-danger, .text-danger {
+  color: #d62828;
+  font-size: 14px;
+  font-weight: 600;
+  background: #ffdada;
+  border: 1px solid #ffb9b9;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;   /* خلي في مساحة بعد الرسالة */
+}
+
+/* ===== LOGO SIMPLE ECO ICON ===== */
+.eco-logo-big {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 15px;
+}
+
+.leaf {
+  width: 34px;
+  height: 34px;
+  border-radius: 50% 0 50% 50%;
+}
+
+.leaf.one {
+  background: #0bb56b;
+  transform: rotate(-35deg);
+}
+
+.leaf.two {
+  background: #089a5a;
+  transform: rotate(-20deg);
+}

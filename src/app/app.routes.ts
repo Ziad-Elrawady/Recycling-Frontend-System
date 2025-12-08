@@ -9,9 +9,10 @@ import { ManageUsersComponent } from './features/admin/manage-users/manage-users
 import { ManageOrdersComponent } from './features/admin/manage-orders/manage-orders';
 import { RewardsComponent } from './features/admin/rewards/rewards';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password';
-import { AuthGuard } from './core/guards/auth/auth-guard';
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password';
 import { adminGuard } from './core/guards/admin/admin-guard';
+import { ConfirmEmailComponent } from './features/auth/confirm-email/confirm-email';
+import { RegisterSuccessComponent } from './features/auth/register-success/register-success';
 
 export const routes: Routes = [
 { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
@@ -21,7 +22,8 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   {path:'reset-password', component: ResetPasswordComponent},
-  {path:'confirm-email', component: ResetPasswordComponent},
+  {path:'confirm-email', component: ConfirmEmailComponent},
+  { path: "register-success", component: RegisterSuccessComponent },
 
   // 🔵 صفحات الأدمن
   {

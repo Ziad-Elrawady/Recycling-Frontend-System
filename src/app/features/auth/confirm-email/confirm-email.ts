@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
+import { NgZone, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-email',
@@ -15,27 +16,40 @@ export class ConfirmEmailComponent {
   private auth = inject(AuthService);
   private flash = inject(FlashMessageService);
   private router = inject(Router);
+  private zone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
 
-  status: 'loading' | 'success' | 'error' = 'loading';
+  status: 'success' | 'error' | null = null;
 
-  ngOnInit() {
-    const email = this.route.snapshot.queryParamMap.get('email');
-    const token = this.route.snapshot.queryParamMap.get('token');
+ngOnInit() {
+  const email = this.route.snapshot.queryParamMap.get('email');
+  const rawToken = this.route.snapshot.queryParamMap.get('token');
 
-    if (!email || !token) {
+  if (!email || !rawToken) {
+    this.status = 'error';
+    this.cdr.detectChanges();
+    return;
+  }
+
+  const encodedToken = encodeURIComponent(rawToken);
+
+  this.auth.confirmEmail(email, encodedToken).subscribe({
+    next: () => {
+      this.status = 'success';
+      this.flash.showSuccess("Email confirmed successfully ✔");
+      this.cdr.detectChanges();
+    },
+    error: () => {
       this.status = 'error';
-      return;
+      this.cdr.detectChanges();
     }
+  });
+}
 
-    this.auth.confirmEmail(email, token).subscribe({
-      next: () => {
-        this.status = 'success';
-        this.flash.showSuccess("Email confirmed ✔");
-        setTimeout(() => this.router.navigate(['/login']), 2000);
-      },
-      error: () => {
-        this.status = 'error';
-      }
+
+  goToLogin() {
+    this.zone.run(() => {
+      this.router.navigate(['/login']);
     });
   }
 }

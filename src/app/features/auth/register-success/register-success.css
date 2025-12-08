@@ -1,12 +1,11 @@
 .auth-wrapper {
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #0bb56b 0%, #15a65d 40%, #06723b 100%);
   padding: 40px 20px;
 }
-
 
 .auth-card {
   background: white;
@@ -23,66 +22,19 @@
   margin-bottom: 15px;
 }
 
-.logo-img {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
-}
 
 .auth-title {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #0b6a42;
   font-weight: 700;
 }
 
-.auth-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-}
-
-.auth-input:focus {
-  border-color: #0bb56b;
-  box-shadow: 0 0 5px rgba(11, 181, 107, .3);
-}
-
-.auth-btn {
-  width: 100%;
-  padding: 12px;
-  background: #0bb56b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.auth-btn:hover {
-  background: #099d59;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.subtitle {
-  margin-top: -5px;
-  margin-bottom: 20px;
-  color: #555;
+.auth-subtitle {
+  color: #444;
   font-size: 14px;
+  margin-bottom: 20px;
 }
-
+/* ===== LOGO SIMPLE ECO ICON ===== */
 .eco-logo-big {
   display: flex;
   justify-content: center;
@@ -104,4 +56,22 @@
 .leaf.two {
   background: #089a5a;
   transform: rotate(-20deg);
+}
+
+.go-login-btn {
+  background: transparent;
+  border: 2px solid #0bb56b;
+  color: #0bb56b;
+  font-weight: 600;
+  margin-top: 12px;
+  padding: 10px 0;
+  border-radius: 5px;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.go-login-btn:hover {
+  background: #0bb56b;
+  color: white;
 }

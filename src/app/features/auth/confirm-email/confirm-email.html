@@ -1,23 +1,20 @@
 <div class="auth-wrapper">
-  <div class="auth-card">
+  <div class="auth-card animate">
 
     <div class="eco-logo-big">
       <div class="leaf one"></div>
       <div class="leaf two"></div>
     </div>
-
-    @if (status === 'loading') {
-      <p class="auth-subtitle">Email confirmation is pending....</p>
-    }
+    <h2 class="auth-title">Email Confirmation</h2>
 
     @if (status === 'success') {
-      <div class="alert alert-success">Email confirmed successfully ✔</div>
-      <p class="auth-subtitle">You will be redirected to the login page.</p>
+      <div class="alert success">Your email has been confirmed ✔</div>
+      <button class="auth-btn full mt-3" (click)="goToLogin()">Go to Login</button>
     }
 
     @if (status === 'error') {
-      <div class="alert alert-danger">Invalid link ❌</div>
-      <p class="auth-subtitle">Make sure the link sent to your email is correct.</p>
+      <div class="alert error">Invalid or expired confirmation link ❌</div>
+      <button class="auth-btn full mt-3" (click)="goToLogin()">Back to Login</button>
     }
 
   </div>

@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: flex-start;
   background: linear-gradient(145deg, #0bb56b, #0a9a5c, #06723b);
-  padding-top: 25px; /* 🔥 بدل 30 */
+  padding-top: 5px; /* 🔥 بدل 30 */
 }
 
 /* ===== AUTH CARD (Glass + Shadow) ===== */
@@ -136,3 +136,14 @@
   color: #06723b;
 }
 
+/* ===== ERROR TEXT ===== */
+.alert-danger, .text-danger {
+  color: #d62828;
+  font-size: 14px;
+  font-weight: 600;
+  background: #ffdada;
+  border: 1px solid #ffb9b9;
+  padding: 5px;
+  border-radius: 8px;
+  margin-bottom: 12px;   /* خلي في مساحة بعد الرسالة */
+}
