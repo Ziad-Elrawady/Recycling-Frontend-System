@@ -45,6 +45,7 @@ export class ManageMaterialsComponent {
       });
     });
   }
+
   isAdmin() {
     return this.auth.getRole() === 'Admin';
   }
@@ -64,21 +65,27 @@ export class ManageMaterialsComponent {
   }
 
   onSearchChange() {
-  if (!this.searchText.trim()) {
-    this.load();
-  }
+    if (!this.searchText.trim()) {
+      this.load();
+    }
   }
 
   startAdd() {
-    this.editing = false;
-    this.showForm = true;
-    this.form = { id: 0, typeName: '', size: '', price:0};
+    this.zone.run(() => {
+      this.editing = false;
+      this.showForm = true;
+      this.form = { id: 0, typeName: '', size: '', price: 0 };
+      this.cdr.detectChanges();
+    });
   }
 
   startEdit(m: Material) {
-    this.editing = true;
-    this.showForm = true;
-    this.form = { ...m };
+    this.zone.run(() => {
+      this.editing = true;
+      this.showForm = true;
+      this.form = { ...m };
+      this.cdr.detectChanges();
+    });
   }
 
   save() {
@@ -86,26 +93,41 @@ export class ManageMaterialsComponent {
 
     if (this.editing) {
       this.service.update(this.form.id, this.form).subscribe(() => {
-        this.load();
-        this.showForm = false;
-        this.startAdd();
+        this.zone.run(() => {
+          this.load();
+          this.showForm = false;
+          this.startAdd();
+          this.cdr.detectChanges();
+        });
       });
     } else {
       this.service.create(this.form).subscribe(() => {
-        this.load();
-        this.showForm = false;
-        this.startAdd();
+        this.zone.run(() => {
+          this.load();
+          this.showForm = false;
+          this.startAdd();
+          this.cdr.detectChanges();
+        });
       });
     }
   }
 
-
   delete(id: number) {
     if (!this.isAdmin()) return;
-    this.service.delete(id).subscribe(() => this.load());
+
+    this.service.delete(id).subscribe(() => {
+      this.zone.run(() => {
+        this.load();
+        this.cdr.detectChanges();
+      });
+    });
   }
+
   cancel() {
-    this.showForm = false;
-    this.editing = false;
+    this.zone.run(() => {
+      this.showForm = false;
+      this.editing = false;
+      this.cdr.detectChanges();
+    });
   }
 }

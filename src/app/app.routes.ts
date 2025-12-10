@@ -7,7 +7,6 @@ import { RegisterComponent } from './features/auth/register/register';
 import { ManageFactoriesComponent } from './features/admin/manage-factories/manage-factories';
 import { ManageUsersComponent } from './features/admin/manage-users/manage-users';
 import { ManageOrdersComponent } from './features/admin/manage-orders/manage-orders';
-import { RewardsComponent } from './features/admin/rewards/rewards';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password';
 import { ResetPasswordComponent } from './features/auth/reset-password/reset-password';
 import { Citizen } from './features/citizen/citizen';
@@ -18,6 +17,7 @@ import { RegisterSuccessComponent } from './features/auth/register-success/regis
 import { HomeComponent } from './features/home/home';
 import { citizenGuard } from './core/guards/citizin/citizen-guard';
 import { collectorGuard } from './core/guards/collector/collector-guard';
+import { RewardManagementComponent } from './features/admin/reward-management/reward-management';
 
 export const routes: Routes = [
 
@@ -44,7 +44,8 @@ export const routes: Routes = [
       { path: 'factories', component: ManageFactoriesComponent },
       { path: 'users', component: ManageUsersComponent },
       { path: 'orders', component: ManageOrdersComponent },
-      { path: 'rewards', component: RewardsComponent }
+    // Rewards
+    { path: 'rewards', component: RewardManagementComponent },
     ]
   },
 

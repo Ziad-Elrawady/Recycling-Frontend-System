@@ -29,10 +29,6 @@ export class AdminNavbarComponent {
     return this.auth.getRole() === 'Admin';
   }
 
-  goToAccount() {
-    this.router.navigate(['user', 'account']);
-  }
-
   logoutAdmin() {
     this.auth.logout();  // ← شغالة 100%
   }

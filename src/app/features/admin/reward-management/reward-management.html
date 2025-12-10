@@ -1,0 +1,153 @@
+<div class="tabs-container">
+
+  <div class="tabs-menu">
+    <button [class.active]="activeTab === 'list'" (click)="setTab('list')">List</button>
+    <button [class.active]="activeTab === 'create'" (click)="setTab('create')">Create</button>
+    <button [class.active]="activeTab === 'low'" (click)="setTab('low')">Low Stock</button>
+    <button [class.active]="activeTab === 'stats'" (click)="setTab('stats')">Stats</button>
+  </div>
+
+  @if(activeTab === 'list') {
+    <h3 class="mb-3">Rewards List</h3>
+<div class="d-flex gap-2 mb-3 w-50">
+  <input type="text" [(ngModel)]="searchTerm" class="form-control" placeholder="Search reward name...">
+
+  <button class="btn btn-primary" (click)="search()">Search</button>
+
+  <button class="btn btn-secondary" (click)="resetSearch()">Reset</button>
+</div>
+
+    <div class="reward-grid">
+      @for(r of applySearch(); track r.id) {
+        <div class="reward-card">
+          <img [src]="r.imageUrl || 'https://via.placeholder.com/200'">
+          <h4>{{ r.name }}</h4>
+          <p>{{ r.requiredPoints }} points</p>
+          <span [class.red]="r.stockQuantity <= 5">{{ r.stockQuantity }} in Stock</span>
+        </div>
+      }
+    </div>
+  }
+
+@if(activeTab === 'create') {
+  <h3 class="mb-3">Create Reward</h3>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <label>Name</label>
+    <input class="form-control" formControlName="name" placeholder="Reward Name">
+    @if(form.get('name')?.invalid && form.get('name')?.touched) {
+      <small class="text-danger">Name is required and must be at least 3 characters.</small>
+    }
+
+    <label>Description</label>
+    <textarea class="form-control" formControlName="description" placeholder="Description"></textarea>
+    @if(form.get('description')?.errors?.['maxlength']) {
+      <small class="text-danger">Max description length is 200 characters.</small>
+    }
+
+    <label>Category</label>
+    <input class="form-control" formControlName="category" placeholder="Category">
+    @if(form.get('category')?.invalid && form.get('category')?.touched) {
+      <small class="text-danger">Category is required.</small>
+    }
+
+    <label class="mt-2">Required Points</label>
+    <input class="form-control" type="number" formControlName="requiredPoints">
+    @if(form.get('requiredPoints')?.invalid && form.get('requiredPoints')?.touched) {
+      <small class="text-danger">Points must be at least 10.</small>
+    }
+
+    <label>Stock Quantity</label>
+    <input class="form-control" type="number" formControlName="stockQuantity">
+    @if(form.get('stockQuantity')?.invalid && form.get('stockQuantity')?.touched) {
+      <small class="text-danger">Stock must be more than 0.</small>
+    }
+
+    <label class="mt-2">Image URL</label>
+    <input class="form-control" formControlName="imageUrl" placeholder="https://example.com/pic.jpg">
+    @if(form.get('imageUrl')?.invalid && form.get('imageUrl')?.touched) {
+      <small class="text-danger">Image URL is required.</small>
+    }
+
+    @if(form.value.imageUrl) {
+      <img [src]="form.value.imageUrl" style="width:200px;border-radius:8px;margin-top:10px">
+    }
+
+    <button class="btn btn-success w-100 mt-3"
+            [disabled]="form.invalid">
+      Create Reward
+    </button>
+
+  </form>
+}
+
+
+  @if(activeTab === 'low') {
+    <h3 class="mb-3">Low Stock Rewards</h3>
+
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Points</th>
+          <th>Stock</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for(item of lowStockRewards; track item.id) {
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.requiredPoints }}</td>
+            <td style="color:red; font-weight:bold;">{{ item.stockQuantity }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="selectedRewardId = item.id ?? null">
+                Restock
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if(selectedRewardId) {
+      <div class="restock-box mt-3">
+        <label>Add Stock:</label>
+        <input type="number" class="form-control w-25 d-inline" [(ngModel)]="restockAmount">
+        <button class="btn btn-success ms-2" (click)="updateStock()">Update</button>
+      </div>
+    }
+  }
+
+  @if(activeTab === 'stats') {
+    <h3 class="mb-3">Reward Stats</h3>
+
+    <div class="reward-grid mt-3">
+      @for(r of rewards; track r.id) {
+        <div class="reward-card">
+          <img [src]="r.imageUrl || 'https://via.placeholder.com/200'">
+          <h4>{{ r.name }}</h4>
+          <button class="btn btn-sm btn-outline-info mt-2" (click)="loadStats(r.id!)">
+            View Stats
+          </button>
+        </div>
+      }
+    </div>
+
+    @if(stats) {
+      <div class="stats-box mt-4">
+        <h4>📊 Stats for Reward #{{ selectedRewardId }}</h4>
+        <ul>
+          <li><b>Total Redeemed:</b> {{ stats.totalRedeemed }}</li>
+          <li><b>Remaining Stock:</b> {{ stats.remaining }}</li>
+          <li><b>Last Month Redeems:</b> {{ stats.lastMonthRedeems }}</li>
+        </ul>
+      </div>
+    }
+  }
+
+</div>

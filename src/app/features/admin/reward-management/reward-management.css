@@ -1,0 +1,158 @@
+/* ===== MAIN CONTAINER ===== */
+.tabs-container {
+  background: linear-gradient(to bottom right, #ffffff, #f8fafc);
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+  margin-top: 25px;
+  border: 1px solid #e6e9ef;
+}
+
+/* ===== TABS STYLE ===== */
+.tabs-menu {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.tabs-menu button {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  background: #e9eef5;
+  color: #444;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.tabs-menu button:hover {
+  background: #d2e3ff;
+}
+
+.tabs-menu button.active {
+  background: #0066ff;
+  color: #fff;
+  box-shadow: 0 3px 7px rgba(0,102,255,.4);
+}
+
+/* ===== GRID (LIST, STATS DISPLAY) ===== */
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.reward-card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  transition: .3s ease;
+  text-align: center;
+  border: 1px solid #e7ecf3;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+
+.reward-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 7px 22px rgba(0,0,0,.12);
+}
+
+.reward-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.reward-card h4 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+}
+
+.reward-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.reward-card span.red {
+  color: #d90429;
+  font-weight: bold;
+}
+
+/* ===== FORM SECTION ===== */
+form input,
+form textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cfd7e3;
+  margin-bottom: 7px;
+  transition: .2s;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 4px rgba(0,102,255,.4);
+}
+
+button.btn-success {
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* ==== Validation Colors ==== */
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 1px solid #ff3b30 !important;
+  background: #ffecec;
+}
+
+input.ng-valid.ng-touched,
+textarea.ng-valid.ng-touched {
+  border: 1px solid #22bb33 !important;
+  background: #eaffea;
+}
+
+/* ===== LOW STOCK TABLE ===== */
+table.table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table.table thead tr {
+  background: #0066ff;
+  color: white;
+}
+
+table.table tbody tr {
+  background: #ffffff;
+  transition: .2s;
+}
+
+table.table tbody tr:hover {
+  background: #eef6ff;
+}
+
+/* ===== STOCK RESTOCK BOX ===== */
+.restock-box {
+  background: #eef7ff;
+  padding: 15px;
+  border-radius: 10px;
+  width: 350px;
+  border: 1px solid #c9dfff;
+}
+
+/* ===== STATS INFO BOX ===== */
+.stats-box {
+  background: #f7ffef;
+  padding: 15px;
+  border-radius: 12px;
+  width: 320px;
+  border: 1px solid #d1f2b4;
+}

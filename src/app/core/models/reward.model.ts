@@ -1,6 +1,9 @@
 export interface Reward {
-  id: number;
-  title: string;
-  description: string;
-  requiredPoints: number;
+  id?: number;
+  name: string;
+  description?: string;
+  category?: string;
+  requiredPoints: number;     // بدل pointsCost
+  stockQuantity: number;      // بدل stock
+  imageUrl?: string;
 }
