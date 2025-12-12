@@ -1,38 +1,98 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { Component, inject, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ThemeService } from '../../../core/services/theme.service';
+import { LanguageService } from '../../../core/services/language.service';
+import { UserService } from '../../../core/services/user.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { DataService } from '../../../core/services/data.service';
+import { UserDataService } from '../../../core/services/user-data.service';
 
 @Component({
-  standalone: true,
   selector: 'app-navbar',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css'],
-  imports: [CommonModule]
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
+  router = inject(Router);
+  themeService = inject(ThemeService);
+  languageService = inject(LanguageService);
+  userService = inject(UserService);
+  notificationService = inject(NotificationService);
+  authService = inject(AuthService);
+  dataService = inject(DataService);
+  userDataService = inject(UserDataService);
 
-  constructor(
-    public auth: AuthService, 
-    private router: Router
-  ) {}
+  // UI State
+  showUserMenu = signal(false);
+  showNotificationsDropdown = signal(false);
 
-  goTo(path: string) {
+  // Computed
+  isLoggedIn = this.authService.isLogged;
+  userPoints = computed(() => this.dataService.currentUser().points);
+  unreadNotifications = this.notificationService.unreadCount;
 
-    // 🔥 لو ما بعتش Path → روح للهوم
-    if (!path) {
-      this.router.navigate(['/login']);
-      return;
-    }
+  // User data from registration/profile
+  userData = this.userDataService.userData;
+  displayName = computed(() => this.userData()?.fullName || this.dataService.currentUser().name || 'User');
 
-    this.router.navigate([`/${path}`]);
+  isAuthRoute = computed(() => {
+    const url = this.router.url;
+    return url.includes('/login') ||
+           url.includes('/register') ||
+           url.includes('/forgot-password') ||
+           url.includes('/reset-password') ||
+           url.includes('/confirm-email') ||
+           url.includes('/register-success');
+  });
+
+  isLandingRoute = computed(() => {
+    return this.router.url === '/' || this.router.url === '';
+  });
+
+  // Methods
+  getDashboardRoute(): string {
+    const role = this.userService.currentRole();
+    if (role === 'collector') return '/collector-dashboard';
+    if (role === 'admin') return '/admin/dashboard';
+    return '/citizen-dashboard';
   }
 
-  isAuthPage() {
-  return this.router.url.includes('login') || this.router.url.includes('register');
-}
+  toggleUserMenu() {
+    this.showUserMenu.update(v => !v);
+    this.showNotificationsDropdown.set(false);
+  }
+
+  toggleNotifications() {
+    this.showNotificationsDropdown.update(v => !v);
+    this.showUserMenu.set(false);
+  }
+
+  closeDropdowns() {
+    this.showUserMenu.set(false);
+    this.showNotificationsDropdown.set(false);
+  }
+
+  switchRole(role: string) {
+    this.userService.setCurrentRole(role as 'citizen' | 'collector' | 'admin');
+    this.closeDropdowns();
+    this.router.navigate([this.getDashboardRoute()]);
+  }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout();
+    this.closeDropdowns();
+  }
+
+  isActiveRoute(route: string): boolean {
+    if (route === '/') {
+      return this.router.url === '/' || this.router.url === '';
+    }
+    return this.router.url.startsWith(route);
   }
 }
+
