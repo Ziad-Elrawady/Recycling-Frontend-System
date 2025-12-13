@@ -21,6 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { AuthValidators } from '../../../core/utils/validators.util';
 import { UserDataService } from '../../../core/services/user-data.service';
+import { UserService } from '../../../core/services/user.service';
 
 /**
  * Register Component
@@ -44,6 +45,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly userDataService = inject(UserDataService);
+  private readonly userService = inject(UserService);
 
   // Form and state
   registerForm!: FormGroup;
@@ -298,6 +300,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
           city: '',
           country: ''
         });
+
+        // Set default role as 'citizen' for new registrations
+        this.userService.setCurrentRole('citizen');
+        this.userService.addRole('citizen');
 
         this.flash.showSuccess('Account created successfully! ✔');
 
