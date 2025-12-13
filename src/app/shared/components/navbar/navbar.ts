@@ -47,11 +47,19 @@ export class NavbarComponent {
            url.includes('/forgot-password') ||
            url.includes('/reset-password') ||
            url.includes('/confirm-email') ||
-           url.includes('/register-success');
+           url.includes('/register-success') ||
+           url.includes('/role-selection');
   });
 
   isLandingRoute = computed(() => {
     return this.router.url === '/' || this.router.url === '';
+  });
+
+  /**
+   * Should hide navbar completely (on landing, auth pages, role selection)
+   */
+  shouldHideNavbar = computed(() => {
+    return this.isLandingRoute() || this.isAuthRoute();
   });
 
   // Methods
