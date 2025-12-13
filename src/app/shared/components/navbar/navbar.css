@@ -1,16 +1,16 @@
 /* =========================================================
-   NAVBAR — Compact Version
+   NAVBAR — Clean Professional Green
 =========================================================*/
 .eco-navbar {
   width: 100%;
-  background: #ffffff;
-  padding: 6px 16px;       /* أصغر */
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  padding: 10px 22px;
+
+  background: #f0fdf4; /* أخضر فاتح جدًا */
+  border-bottom: 1px solid #d1fae5;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
 
   position: sticky;
   top: 0;
-  min-height: 50px;        /* أصغر */
   z-index: 999;
 
   display: flex;
@@ -19,7 +19,7 @@
 
 .nav-container {
   width: 100%;
-  max-width: 1200px;       /* أصغر */
+  max-width: 1280px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,80 +27,76 @@
 
 
 /* =========================================================
-   LOGO AREA — Smaller + Clean
+   LOGO AREA
 =========================================================*/
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 }
 
 .eco-logo-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* ✔️ اللوجو مصغّر */
 .eco-logo-img {
-  width: 90px;          /* كان 125 */
+  width: 90px;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
 }
 
 .eco-text {
-  font-size: 20px;      /* كان 28 */
+  font-size: 21px;
   font-weight: 800;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #0bb56b, #0aa764);
-  color: transparent;
+  color: #065f46; /* أخضر غامق */
 }
 
 
 /* =========================================================
-   BUTTONS — Smaller
+   BUTTONS
 =========================================================*/
 .nav-right {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-btn {
-  padding: 6px 14px;      /* أصغر */
-  border-radius: 8px;
-  border: 1.5px solid #0bb56b;
-  background: white;
-  font-size: 13px;         /* أصغر */
+  padding: 7px 16px;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.25s ease-in-out;
+  transition: 0.2s ease;
 }
 
 /* Login */
 .nav-login {
-  color: #0bb56b;
+  background: #10b981;
+  color: #ffffff;
+  border: 1.5px solid #10b981;
 }
 .nav-login:hover {
-  background: #0bb56b;
-  color: white;
+  background: #059669;
 }
 
 /* Register */
 .nav-register {
-  background: #0bb56b;
-  color: white;
+  background: #10b981;
+  color: #ffffff;
+  border: 1.5px solid #10b981;
 }
 .nav-register:hover {
-  background: #089a5a;
+  background: #059669;
 }
 
 /* Logout */
 .nav-logout {
   background: #ef4444;
-  color: white;
-  border-color: #ef4444;
+  color: #ffffff;
 }
 .nav-logout:hover {
   background: #dc2626;
@@ -108,18 +104,21 @@
 
 
 /* =========================================================
-   SMALL LOGO — For Login/Register Pages
+   SMALL LOGO — Auth Pages
 =========================================================*/
 .auth-small-logo {
-  padding: 4px 0;
+  padding: 6px 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .auth-small-logo .eco-logo-img {
-  width: 60px;        /* أصغر */
+  width: 60px;
 }
 
 .auth-small-logo .eco-text {
   font-size: 16px;
+  color: #065f46;
 }
