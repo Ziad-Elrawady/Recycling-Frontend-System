@@ -23,6 +23,7 @@
   "private": true,
   "packageManager": "npm@10.9.3",
   "dependencies": {
+    "@angular/animations": "^20.3.15",
     "@angular/common": "^20.3.15",
     "@angular/compiler": "^20.3.15",
     "@angular/core": "^20.3.15",
@@ -49,7 +50,7 @@
     "jsdom": "^27.1.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
-    "typescript": "~5.9.2",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.8"
   }
 }
