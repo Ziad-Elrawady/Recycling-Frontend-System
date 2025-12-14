@@ -5,16 +5,16 @@
     <div class="navbar-left">
       <a [routerLink]="['/']" class="logo-link">
         <div class="logo-icon">
-          <span class="text-2xl">🌿</span>
+          <img src="assets/icon-greenzone.ico" alt="Green Zone Icon" class="h-8 w-8 object-contain">
         </div>
-        <span class="logo-text">EcoCollect</span>
+        <span class="logo-text">Green Zone</span>
       </a>
 
       <!-- Navigation Links (للمستخدمين المسجلين فقط) -->
       @if (isLoggedIn() && !isAuthRoute()) {
         <div class="nav-links">
-          <a 
-            [routerLink]="[getDashboardRoute()]" 
+          <a
+            [routerLink]="[getDashboardRoute()]"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: false}"
             class="nav-link"
@@ -22,9 +22,9 @@
             <span class="nav-icon">📊</span>
             <span>Dashboard</span>
           </a>
-          
-          <a 
-            [routerLink]="['/my-requests']" 
+
+          <a
+            [routerLink]="['/my-requests']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}"
             class="nav-link"
@@ -32,9 +32,9 @@
             <span class="nav-icon">📋</span>
             <span>My Requests</span>
           </a>
-          
-          <a 
-            [routerLink]="['/rewards']" 
+
+          <a
+            [routerLink]="['/rewards']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}"
             class="nav-link"
@@ -54,7 +54,7 @@
       <!-- Notifications Bell (للمستخدمين المسجلين فقط) -->
       @if (isLoggedIn() && !isAuthRoute()) {
         <div class="relative">
-          <button 
+          <button
             class="action-btn"
             (click)="toggleNotifications()"
             [attr.aria-label]="'Notifications'"
@@ -92,7 +92,7 @@
       }
 
       <!-- Language Toggle -->
-      <button 
+      <button
         class="action-btn"
         (click)="languageService.toggleLanguage()"
         [attr.aria-label]="'Toggle Language'"
@@ -102,7 +102,7 @@
       </button>
 
       <!-- Theme Toggle -->
-      <button 
+      <button
         class="action-btn theme-toggle"
         (click)="themeService.toggleTheme()"
         [attr.aria-label]="'Toggle Theme'"
@@ -115,7 +115,7 @@
       <!-- User Dropdown Menu (للمستخدمين المسجلين فقط) -->
       @if (isLoggedIn() && !isAuthRoute()) {
         <div class="relative">
-          <button 
+          <button
             class="user-menu-btn"
             (click)="toggleUserMenu()"
             [attr.aria-label]="'User Menu'"
@@ -149,7 +149,7 @@
                 <div class="dropdown-label">Switch Role</div>
                 @for (role of userService.roles(); track role) {
                   @if (role !== userService.currentRole()) {
-                    <button 
+                    <button
                       class="dropdown-item"
                       (click)="switchRole(role)"
                     >
@@ -206,22 +206,22 @@
     <!-- Logo -->
     <a [routerLink]="['/']" class="mobile-logo">
       <div class="mobile-logo-icon">
-        <span>🌿</span>
+          <img src="assets/icon-greenzone.ico" alt="Green Zone Icon" class="h-8 w-8 object-contain">
       </div>
       <span class="mobile-logo-text">EcoCollect</span>
     </a>
 
     <!-- Actions -->
     <div class="mobile-actions">
-      <button 
+      <button
         class="mobile-action-btn"
         (click)="languageService.toggleLanguage()"
         [attr.aria-label]="'Toggle Language'"
       >
         <span>🌐</span>
       </button>
-      
-      <button 
+
+      <button
         class="mobile-action-btn"
         (click)="themeService.toggleTheme()"
         [attr.aria-label]="'Toggle Theme'"
@@ -235,32 +235,32 @@
 <!-- 📱 Mobile Bottom Navigation (للمستخدمين المسجلين فقط) -->
 @if (isLoggedIn() && !isAuthRoute()) {
   <nav class="navbar-mobile-bottom">
-    <a 
-      [routerLink]="[getDashboardRoute()]" 
+    <a
+      [routerLink]="[getDashboardRoute()]"
       [class.active]="isActiveRoute(getDashboardRoute())"
       class="mobile-nav-item"
     >
       <span class="mobile-nav-icon">🏠</span>
     </a>
 
-    <a 
-      [routerLink]="['/my-requests']" 
+    <a
+      [routerLink]="['/my-requests']"
       [class.active]="isActiveRoute('/my-requests')"
       class="mobile-nav-item"
     >
       <span class="mobile-nav-icon">📋</span>
     </a>
 
-    <a 
-      [routerLink]="['/rewards']" 
+    <a
+      [routerLink]="['/rewards']"
       [class.active]="isActiveRoute('/rewards')"
       class="mobile-nav-item"
     >
       <span class="mobile-nav-icon">🎁</span>
     </a>
 
-    <a 
-      [routerLink]="['/notifications']" 
+    <a
+      [routerLink]="['/notifications']"
       [class.active]="isActiveRoute('/notifications')"
       class="mobile-nav-item relative"
     >
@@ -272,8 +272,8 @@
       }
     </a>
 
-    <a 
-      [routerLink]="['/profile']" 
+    <a
+      [routerLink]="['/profile']"
       [class.active]="isActiveRoute('/profile')"
       class="mobile-nav-item"
     >

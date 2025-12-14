@@ -1,8 +1,7 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../../core/services/language.service';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
 import { LandingFeaturesComponent } from './components/features/features.component';
 
 interface Feature {
@@ -15,15 +14,24 @@ interface Feature {
   selector: 'app-landing',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterLink, ButtonComponent, LandingFeaturesComponent],
+  imports: [CommonModule, RouterLink, LandingFeaturesComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
   languageService = inject(LanguageService);
-  
+  router = inject(Router);
+
   direction = this.languageService.direction;
   t = (key: string) => this.languageService.t(key);
+
+  scrollToFeatures() {
+    this.router.navigate([], { fragment: 'features' });
+    setTimeout(() => {
+      const element = document.getElementById('features');
+      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
 
   features: Feature[] = [
     { icon: 'Recycle', title: 'Easy Collection Requests', description: 'Schedule pickups for your recyclable materials with just a few clicks.' },
