@@ -1,9 +1,11 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
 import { UserService } from '../../../core/services/user.service';
-import { OrderDto, RequestStatus } from '@core/models/order.model';
+import { OrderService } from '../../../core/services/order.service';
+import { OrderDto } from '@core/models/order.model';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { RequestCardComponent } from '../../../shared/ui/request-card/request-card.component';
 import { CardComponent, CardContentComponent } from '../../../shared/ui/card/card.component';
@@ -33,7 +35,7 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
             <h1 class="text-3xl md:text-4xl font-bold text-foreground">{{ t('myRequests') }}</h1>
             <p class="text-muted-foreground mt-2">Manage your collection requests</p>
           </div>
-          <app-button (onClick)="modalOpen.set(true)" class="gap-2 w-full sm:w-auto">
+          <app-button (onClick)="modalOpen.set(true)"  size="lg" class="gap-2 shadow-md">
             <span>➕</span>
             {{ t('createRequest') }}
           </app-button>
@@ -42,7 +44,7 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
         <app-create-collection-modal
           [open]="modalOpen()"
           (openChange)="modalOpen.set($event)"
-          (requestCreated)="onRequestCreated($event)"
+          (requestCreated)="onRequestCreated()"
         ></app-create-collection-modal>
 
         <!-- Stats -->
@@ -75,110 +77,57 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
 
         <!-- Tabs -->
         <div class="w-full">
-          <app-tabs-list class="grid w-full grid-cols-5 mb-6">
-            <app-tabs-trigger [value]="'all'" [isActive]="selectedTab() === 'all'" (onSelect)="selectedTab.set('all')">All</app-tabs-trigger>
-            <app-tabs-trigger [value]="'pending'" [isActive]="selectedTab() === 'pending'" (onSelect)="selectedTab.set('pending')">{{ t('pending') }}</app-tabs-trigger>
-            <app-tabs-trigger [value]="'in-progress'" [isActive]="selectedTab() === 'in-progress'" (onSelect)="selectedTab.set('in-progress')">{{ t('inProgress') }}</app-tabs-trigger>
-            <app-tabs-trigger [value]="'completed'" [isActive]="selectedTab() === 'completed'" (onSelect)="selectedTab.set('completed')">{{ t('completed') }}</app-tabs-trigger>
-            <app-tabs-trigger [value]="'cancelled'" [isActive]="selectedTab() === 'cancelled'" (onSelect)="selectedTab.set('cancelled')">{{ t('cancelled') }}</app-tabs-trigger>
+          <app-tabs-list class="grid w-full mb-6">
+            <app-tabs-trigger
+              *ngFor="let tab of tabs"
+              [value]="tab.value"
+              [isActive]="selectedTab() === tab.value"
+              (onClick)="selectedTab.set($event)"
+            >
+              {{ tab.label }}
+            </app-tabs-trigger>
           </app-tabs-list>
 
-          <app-tabs-content [value]="'all'" [isActive]="selectedTab() === 'all'" class="space-y-4">
-            @for (request of filteredRequests(); track request.id) {
-            <app-request-card
-              [request]="request"
-    
-              [clickable]="false"
-              [showActions]="false"
-            ></app-request-card>
+          <div class="space-y-4">
+            @switch (selectedTab()) {
+              @case ('all') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: userRequests(), emptyIcon: '📦', emptyText: 'No requests found' }"></ng-container>
+              }
+              @case ('pending') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('pending'), emptyIcon: '⏳', emptyText: 'No pending requests' }"></ng-container>
+              }
+              @case ('in-progress') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('in-progress'), emptyIcon: '🔄', emptyText: 'No in-progress requests' }"></ng-container>
+              }
+              @case ('completed') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('completed'), emptyIcon: '✅', emptyText: 'No completed requests' }"></ng-container>
+              }
+              @case ('cancelled') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('cancelled'), emptyIcon: '❌', emptyText: 'No cancelled requests' }"></ng-container>
+              }
             }
-            @if (filteredRequests().length === 0) {
-              <app-card>
-                <app-card-content class="p-8 text-center">
-                  <span class="text-4xl mb-4 block">📦</span>
-                  <p class="text-muted-foreground">No requests found</p>
-                </app-card-content>
-              </app-card>
-            }
-          </app-tabs-content>
-
-          <app-tabs-content [value]="'pending'" [isActive]="selectedTab() === 'pending'" class="space-y-4">
-            @for (request of getRequestsByStatus('pending'); track request.id) {
-            <app-request-card
-              [request]="request"
-    
-              [clickable]="false"
-              [showActions]="false"
-            ></app-request-card>
-            }
-            @if (getRequestsByStatus('pending').length === 0) {
-              <app-card>
-                <app-card-content class="p-8 text-center">
-                  <span class="text-4xl mb-4 block">⏳</span>
-                  <p class="text-muted-foreground">No pending requests</p>
-                </app-card-content>
-              </app-card>
-            }
-          </app-tabs-content>
-
-          <app-tabs-content [value]="'in-progress'" [isActive]="selectedTab() === 'in-progress'" class="space-y-4">
-            @for (request of getRequestsByStatus('in-progress'); track request.id) {
-            <app-request-card
-              [request]="request"
-              [clickable]="false"
-              [showActions]="false"
-            ></app-request-card>
-            }
-            @if (getRequestsByStatus('in-progress').length === 0) {
-              <app-card>
-                <app-card-content class="p-8 text-center">
-                  <span class="text-4xl mb-4 block">🔄</span>
-                  <p class="text-muted-foreground">No in-progress requests</p>
-                </app-card-content>
-              </app-card>
-            }
-          </app-tabs-content>
-
-          <app-tabs-content [value]="'completed'" [isActive]="selectedTab() === 'completed'" class="space-y-4">
-            @for (request of getRequestsByStatus('completed'); track request.id) {
-            <app-request-card
-              [request]="request"
-              [clickable]="false"
-    
-              [showActions]="false"
-            ></app-request-card>
-            }
-            @if (getRequestsByStatus('completed').length === 0) {
-              <app-card>
-                <app-card-content class="p-8 text-center">
-                  <span class="text-4xl mb-4 block">✅</span>
-                  <p class="text-muted-foreground">No completed requests</p>
-                </app-card-content>
-              </app-card>
-            }
-          </app-tabs-content>
-
-          <app-tabs-content [value]="'cancelled'" [isActive]="selectedTab() === 'cancelled'" class="space-y-4">
-            @for (request of getRequestsByStatus('cancelled'); track request.id) {
-            <app-request-card
-              [request]="request"
-              [clickable]="false"
-              [showActions]="false"
-    
-            ></app-request-card>
-            }
-            @if (getRequestsByStatus('cancelled').length === 0) {
-              <app-card>
-                <app-card-content class="p-8 text-center">
-                  <span class="text-4xl mb-4 block">❌</span>
-                  <p class="text-muted-foreground">No cancelled requests</p>
-                </app-card-content>
-              </app-card>
-            }
-          </app-tabs-content>
+          </div>
         </div>
       </div>
     </div>
+
+    <ng-template #requestsTemplate let-requests="requests" let-emptyIcon="emptyIcon" let-emptyText="emptyText">
+      @for (request of requests; track request.id) {
+        <app-request-card
+          [request]="request"
+          [clickable]="false"
+          [showActions]="false"
+        ></app-request-card>
+      }
+      @if (requests.length === 0) {
+        <app-card>
+          <app-card-content class="p-8 text-center">
+            <span class="text-4xl mb-4 block">{{ emptyIcon }}</span>
+            <p class="text-muted-foreground">{{ emptyText }}</p>
+          </app-card-content>
+        </app-card>
+      }
+    </ng-template>
   `,
   styles: []
 })
@@ -186,47 +135,71 @@ export class MyRequestsComponent {
   languageService = inject(LanguageService);
   dataService = inject(DataService);
   userService = inject(UserService);
+  orderService = inject(OrderService);
+  destroyRef = inject(DestroyRef);
 
   selectedTab = signal<string>('all');
   modalOpen = signal(false);
+  userRequests = signal<OrderDto[]>([]);
+
+  tabs = [
+    { value: 'all', label: 'All' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'in-progress', label: 'In Progress' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'cancelled', label: 'Cancelled' }
+  ];
 
   t = (key: string) => this.languageService.t(key);
 
-  // Get user's requests
-  userRequests = computed(() => {
-    const userId = this.dataService.currentUser().id;
-    return this.dataService.getRequestsByCitizenId(userId);
-  });
+  constructor() {
+    this.loadUserOrders();
+  }
 
-  filteredRequests = computed(() => {
-    const tab = this.selectedTab();
-    if (tab === 'all') {
-      return this.userRequests();
+  /**
+   * Load user's orders from API and update local state
+   */
+  private loadUserOrders(): void {
+    const user = this.dataService.currentUser();
+    const userId = user?.id;
+
+    if (!userId) {
+      this.userRequests.set([]);
+      return;
     }
-    return this.getRequestsByStatus(tab as RequestStatus);
-  });
+
+    this.orderService.getUserOrders(String(userId))
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (orders) => {
+          this.userRequests.set(orders || []);
+        },
+        error: () => {
+          this.userRequests.set([]);
+        }
+      });
+  }
 
   completedCount = computed(() =>
-    this.userRequests().filter(r => r.status === 'completed').length
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'completed').length
   );
 
   inProgressCount = computed(() =>
-    this.userRequests().filter(r => r.status === 'in-progress').length
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'in-progress').length
   );
 
   pendingCount = computed(() =>
-    this.userRequests().filter(r => r.status === 'pending').length
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'pending').length
   );
 
   getRequestsByStatus(status: string): OrderDto[] {
-    return this.userRequests().filter(r => r.status === status);
+    return this.userRequests().filter(r => r.status.toLocaleLowerCase() === status.toLocaleLowerCase());
   }
 
-  onRequestCreated(request: OrderDto): void {
-    // Request is already added to DataService, just refresh the view
-    console.log('New request created:', request);
-    // The computed signals will automatically update
-    // Optionally switch to the pending tab to show the new request
+  onRequestCreated(): void {
+    // Refresh the requests list from the API
+    this.loadUserOrders();
+    // Switch to the pending tab to show the new request
     this.selectedTab.set('pending');
   }
 }

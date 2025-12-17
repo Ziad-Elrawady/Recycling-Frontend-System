@@ -28,6 +28,10 @@ export interface OrderDto {
   apartment?: string;
   estimatedArrivalTime?: string;
   routeOrder?: number;
+  userApartment?: string;
+  userBuildingNo?: string;
+  userCity?: string;
+  userStreet?: string
 }
 
 export type RequestStatus = 'pending' | 'in-progress' | 'completed' | 'cancelled';

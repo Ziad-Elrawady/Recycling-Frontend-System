@@ -44,7 +44,9 @@ import { LanguageService } from '@core/services/language.service';
         <div class="flex items-center gap-2">
           <span>📍</span>
           <span>
-            {{ request.buildingNo }} {{ request.street }}, {{ request.apartment ? 'Apt. ' + request.apartment + ',' : '' }} {{ request.city }}
+            {{ request.userBuildingNo }} {{ request.userApartment ?  request.userApartment + ', ' : '' }}
+
+            {{ request.userStreet + ' st ,' }}{{ request.userCity }}
           </span>
         </div>
 
@@ -121,14 +123,14 @@ export class RequestCardComponent {
   //   }
   // }
 
-  getBadgeVariant(status?: string): 'default' | 'secondary' | 'destructive' {
+  getBadgeVariant(status?: string): 'default' | 'secondary' | 'destructive' | 'warning' {
     switch (status?.toLowerCase()) {
       case 'completed':
         return 'default';
       case 'in-progress':
         return 'secondary';
       case 'pending':
-        return 'destructive';
+        return 'warning';
       default:
         return 'secondary';
     }

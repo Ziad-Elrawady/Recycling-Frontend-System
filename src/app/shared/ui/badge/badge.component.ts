@@ -7,12 +7,12 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   template: `
-    <span [class]="getClasses()">
+    <span [class]="getClasses()" class="badge">
       <ng-content></ng-content>
     </span>
   `,
   styles: [`
-    :host {
+    .badge {
       display: inline-flex;
       align-items: center;
       border-radius: 9999px;
@@ -33,10 +33,14 @@ import { CommonModule } from '@angular/common';
       background-color: hsl(var(--destructive));
       color: hsl(var(--destructive-foreground));
     }
+    :host .warning {
+      background-color: hsl(45, 93%, 47%);
+      color: hsl(0, 0%, 100%);
+    }
   `]
 })
 export class BadgeComponent {
-  @Input() variant: 'default' | 'secondary' | 'destructive' = 'default';
+  @Input() variant: 'default' | 'secondary' | 'destructive' | 'warning' = 'default';
   @Input() className = '';
 
   getClasses(): string {

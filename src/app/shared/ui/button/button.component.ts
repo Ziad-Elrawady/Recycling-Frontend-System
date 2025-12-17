@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
       display: inline-block;
     }
     button {
-      @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+      @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
     }
     button.default {
       @apply bg-primary text-primary-foreground hover:opacity-90;
