@@ -1,0 +1,87 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Users</h1>
+    <p class="page-sub">Manage platform users</p>
+  </div>
+
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="🔍 Search by name or email"
+      [(ngModel)]="search"
+      (input)="filter()"
+    />
+  </div>
+</div>
+<div class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Points</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (u of filteredUsers; track u.id) {
+        <tr>
+          <td class="user-cell">
+            <div class="avatar">{{ u.fullName[0] }}</div>
+            <span>{{ u.fullName }}</span>
+          </td>
+
+          <td>{{ u.email }}</td>
+          <td>{{ u.phoneNumber }}</td>
+
+          <td>
+            <span class="points-badge">{{ u.points }}</span>
+          </td>
+
+          <td>
+            <button class="btn-view" (click)="viewDetails(u)">
+              View
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+@if (selectedUser) {
+<div class="details-modal">
+  <div class="details-content">
+
+    <div class="modal-header">
+      <h3>{{ selectedUser.fullName }}</h3>
+      <button class="close-x" (click)="close()">✕</button>
+    </div>
+
+    <div class="user-info">
+      <div><b>Email:</b> {{ selectedUser.email }}</div>
+      <div><b>Phone:</b> {{ selectedUser.phoneNumber }}</div>
+      <div><b>Points:</b> {{ selectedUser.points }}</div>
+    </div>
+
+    <h4>User Orders</h4>
+
+    @if (userOrders.length === 0) {
+      <p class="empty">No orders found</p>
+    } @else {
+      <ul class="orders-list">
+        @for (o of userOrders; track o.id) {
+          <li>
+            <span>Order #{{ o.id }}</span>
+            <span class="badge {{ o.status.toLowerCase() }}">
+              {{ o.status }}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+
+  </div>
+</div>
+}

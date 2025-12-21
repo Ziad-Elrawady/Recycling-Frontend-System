@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { LanguageService } from '../../core/services/language.service';
 import { AuthService } from '../../core/services/auth.service';
 import { LandingFeaturesComponent } from './components/features/features.component';
+import { FlashMessageService } from '../../core/services/flash-message.service';
+import { Role } from '../../core/models/role.enum';
 
 interface Feature {
   icon: string;
@@ -20,12 +22,24 @@ interface Feature {
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
+
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private flash = inject(FlashMessageService);
+
+  Role = Role;
   languageService = inject(LanguageService);
-  authService = inject(AuthService);
-  router = inject(Router);
+
+    get isLogged() {
+    return this.authService.isLogged();
+  }
+
+  get role() {
+    return this.authService.getRole();
+  }
+
 
   direction = this.languageService.direction;
-  isLogged = this.authService.isLogged;
   t = (key: string) => this.languageService.t(key);
 
   scrollToFeatures() {
@@ -34,6 +48,16 @@ export class LandingComponent {
       const element = document.getElementById('features');
       element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
+  }
+
+    goProtected(path: string) {
+    if (!this.authService.isLogged()) {
+      this.flash.showError('You must login first 🔒');
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
+    this.router.navigateByUrl('/' + path);
   }
 
   features: Feature[] = [
@@ -45,4 +69,3 @@ export class LandingComponent {
     { icon: 'Leaf', title: 'Sustainable Future', description: 'Be part of the solution for a greener tomorrow.' }
   ];
 }
-

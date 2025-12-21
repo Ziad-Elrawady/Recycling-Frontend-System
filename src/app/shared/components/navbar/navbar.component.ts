@@ -32,18 +32,18 @@ export class NavbarComponent {
   showNotificationsDropdown = signal(false);
 
   // Computed
-  isLoggedIn = this.authService.isLogged;
+  isLoggedIn = () => this.authService.isLogged();
   userPoints = computed(() => this.dataService.currentUser().points);
   unreadNotifications = this.notificationService.unreadCount;
-  
+
   // User data from registration/profile
   userData = this.userDataService.userData;
   displayName = computed(() => this.userData()?.fullName || this.dataService.currentUser().name || 'User');
 
   isAuthRoute = computed(() => {
     const url = this.router.url;
-    return url.includes('/login') || 
-           url.includes('/register') || 
+    return url.includes('/login') ||
+           url.includes('/register') ||
            url.includes('/forgot-password') ||
            url.includes('/reset-password') ||
            url.includes('/confirm-email') ||

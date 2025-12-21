@@ -1,36 +1,37 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
-import { CommonModule } from '@angular/common';
+import { NgZone, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-email',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './confirm-email.html',
   styleUrls: ['./confirm-email.css']
 })
 export class ConfirmEmailComponent {
+
   private route = inject(ActivatedRoute);
   private auth = inject(AuthService);
   private flash = inject(FlashMessageService);
   private router = inject(Router);
+  private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
 
-  status: 'success' | 'error' | 'loading' = 'loading';
+  status: 'success' | 'error' | null = null;
 
   ngOnInit() {
     const email = this.route.snapshot.queryParamMap.get('email');
-    const rawToken = this.route.snapshot.queryParamMap.get('token');
+    const token = this.route.snapshot.queryParamMap.get('token');
 
-    if (!email || !rawToken) {
+    if (!email || !token) {
       this.status = 'error';
       this.cdr.detectChanges();
       return;
     }
 
-    this.auth.confirmEmail(email, rawToken).subscribe({
+    this.auth.confirmEmail(email, token).subscribe({
       next: () => {
         this.status = 'success';
         this.flash.showSuccess("Email confirmed successfully ✔");
@@ -44,6 +45,8 @@ export class ConfirmEmailComponent {
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.zone.run(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }

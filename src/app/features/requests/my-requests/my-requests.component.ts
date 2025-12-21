@@ -1,6 +1,5 @@
 import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
 import { UserService } from '../../../core/services/user.service';
@@ -10,7 +9,7 @@ import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { RequestCardComponent } from '../../../shared/ui/request-card/request-card.component';
 import { CardComponent, CardContentComponent } from '../../../shared/ui/card/card.component';
 import { CreateCollectionModalComponent } from '../../../shared/components/create-collection-modal/create-collection-modal.component';
-import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '../../../shared/ui/tabs/tabs.component';
+import { TabsListComponent, TabsTriggerComponent } from '../../../shared/ui/tabs/tabs.component';
 
 @Component({
   selector: 'app-my-requests',
@@ -23,8 +22,7 @@ import { TabsListComponent, TabsTriggerComponent, TabsContentComponent } from '.
     CardContentComponent,
     CreateCollectionModalComponent,
     TabsListComponent,
-    TabsTriggerComponent,
-    TabsContentComponent
+    TabsTriggerComponent
   ],
   template: `
     <div class="min-h-screen py-8 px-4 md:px-6 lg:px-8 pb-24 md:pb-8">
@@ -168,16 +166,16 @@ export class MyRequestsComponent {
       return;
     }
 
-    this.orderService.getUserOrders(String(userId))
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (orders) => {
-          this.userRequests.set(orders || []);
-        },
-        error: () => {
-          this.userRequests.set([]);
-        }
-      });
+    // this.orderService.getUserOrders(String(userId))
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe({
+    //     next: (orders) => {
+    //       this.userRequests.set(orders || []);
+    //     },
+    //     error: () => {
+    //       this.userRequests.set([]);
+    //     }
+    //   });
   }
 
   completedCount = computed(() =>

@@ -1,152 +1,106 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { RewardDto, RedeemRewardDto, CreateHistoryRewardDto, RedeemHistoryRewardDto } from '../models/dtos.model';
+import { map } from 'rxjs';
+import { Reward } from '../models/reward.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RewardService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:4375/api';
 
-  // ===== CITIZEN: View & Redeem Rewards =====
+  private baseUrl = 'https://localhost:4375/api/Reward';
+  private apiRoot = 'https://localhost:4375';
 
-  /** Citizen: Get all available rewards */
-  getAvailableRewards(): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward/available`);
+  // =====================
+  // IMAGE URL NORMALIZER
+  // =====================
+  private normalizeImageUrl(imageUrl?: string | null): string | null {
+    if (!imageUrl) return null;
+
+    // لو URL كامل (حتى لو ببورت غلط)
+    if (imageUrl.startsWith('http')) {
+      return imageUrl.replace(/https?:\/\/localhost:\d+/, this.apiRoot);
+    }
+
+    // لو جاي /uploads/...
+    if (imageUrl.startsWith('/')) {
+      return `${this.apiRoot}${imageUrl}`;
+    }
+
+    // لو اسم ملف بس
+    return `${this.apiRoot}/uploads/rewards/${imageUrl}`;
   }
 
-  /** Citizen: Get rewards by category */
-  getRewardsByCategory(category: string): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward/category/${category}`);
+  // =====================
+  // MAPPERS
+  // =====================
+  private mapReward(r: Reward): Reward {
+    return {
+      ...r,
+      imageUrl: this.normalizeImageUrl(r.imageUrl)
+    };
   }
 
-  /** Citizen: Get popular rewards */
-  getPopularRewards(topCount: number = 10): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward/popular`, {
-      params: { topCount: topCount.toString() }
-    });
+  private mapRewards(list: Reward[]): Reward[] {
+    return list.map(r => this.mapReward(r));
   }
 
-  /** Citizen: Search rewards */
-  searchRewards(term: string): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward/search`, {
-      params: { term }
-    });
+  // =====================
+  // API CALLS
+  // =====================
+  getAll() {
+    return this.http
+      .get<Reward[]>(this.baseUrl)
+      .pipe(map(res => this.mapRewards(res)));
   }
 
-  /** Citizen: Redeem a reward */
-  redeemReward(dto: RedeemRewardDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Reward/redeem`, dto);
+  create(formData: FormData) {
+    return this.http
+      .post<Reward>(this.baseUrl, formData)
+      .pipe(map(res => this.mapReward(res)));
   }
 
-  /** Get reward details */
-  getReward(id: number): Observable<RewardDto> {
-    return this.http.get<RewardDto>(`${this.apiUrl}/Reward/${id}`);
+  update(id: number, formData: FormData) {
+    return this.http
+      .put<Reward>(`${this.baseUrl}/${id}`, formData)
+      .pipe(map(res => this.mapReward(res)));
   }
 
-  // ===== HISTORY REWARD: Track Rewards =====
-
-  /** Get reward redemption history for a user */
-  getRewardHistory(userId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/HistoryReward/user/${userId}`);
+  // ✅ كانت ناقصة
+  getLowStock(threshold: number = 10) {
+    return this.http
+      .get<Reward[]>(`${this.baseUrl}/low-stock`, {
+        params: { threshold }
+      })
+      .pipe(map(res => this.mapRewards(res)));
   }
 
-  /** Get reward history summary */
-  getRewardHistorySummary(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/HistoryReward/${userId}/summary`);
+  updateStock(id: number, quantity: number) {
+    // الباك مستني رقم raw مش object
+    return this.http.patch(
+      `${this.baseUrl}/${id}/stock`,
+      quantity,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   }
 
-  /** Redeem reward (using HistoryReward) */
-  redeemHistoryReward(dto: RedeemHistoryRewardDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/HistoryReward/redeem`, dto);
-  }
+getStats(id: number) {
+  return this.http
+    .get<any>(`${this.baseUrl}/${id}/stats`)
+    .pipe(
+      map(res => ({
+        ...res,
+        imageUrl: this.normalizeImageUrl(res.imageUrl)
+      }))
+    );
+}
 
-  /** Validate redeem before processing */
-  validateRedeem(dto: RedeemHistoryRewardDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/HistoryReward/validate-redeem`, dto);
-  }
 
-  // ===== ADMIN: Manage Rewards =====
-
-  /** Admin: Get all rewards */
-  getAllRewards(): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward`);
-  }
-
-  /** Admin: Create reward (with image) */
-  createReward(formData: FormData): Observable<RewardDto> {
-    return this.http.post<RewardDto>(`${this.apiUrl}/Reward`, formData);
-  }
-
-  /** Admin: Update reward */
-  updateReward(id: number, formData: FormData): Observable<RewardDto> {
-    return this.http.put<RewardDto>(`${this.apiUrl}/Reward/${id}`, formData);
-  }
-
-  /** Admin: Delete reward */
-  deleteReward(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/Reward/${id}`);
-  }
-
-  /** Admin: Get reward statistics */
-  getRewardStats(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/Reward/${id}/stats`);
-  }
-
-  /** Admin: Update reward stock */
-  updateRewardStock(id: number, quantity: number): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/Reward/${id}/stock`, quantity);
-  }
-
-  /** Admin: Get low stock rewards */
-  getLowStockRewards(threshold: number = 10): Observable<RewardDto[]> {
-    return this.http.get<RewardDto[]>(`${this.apiUrl}/Reward/low-stock`, {
-      params: { threshold: threshold.toString() }
-    });
-  }
-
-  /** Admin: Get all reward categories */
-  getRewardCategories(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/Reward/categories`);
-  }
-
-  // ===== ADMIN: Manage Reward History =====
-
-  /** Admin: Get all reward history */
-  getAllRewardHistory(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/HistoryReward`);
-  }
-
-  /** Admin: Get reward history with pagination & filters */
-  getRewardHistoryPaged(filters: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/HistoryReward/paged`, { params: filters });
-  }
-
-  /** Admin: Create reward history entry */
-  createRewardHistory(dto: CreateHistoryRewardDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/HistoryReward`, dto);
-  }
-
-  /** Admin: Bulk create reward history */
-  createRewardHistoryBulk(dtos: CreateHistoryRewardDto[]): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/HistoryReward/bulk`, dtos);
-  }
-
-  /** Admin: Get reward history by ID */
-  getRewardHistoryById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/HistoryReward/${id}`);
-  }
-
-  /** Admin: Update reward history status */
-  updateRewardHistoryStatus(id: number, status: string): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/HistoryReward/${id}/status`, status);
-  }
-
-  /** Admin: Delete reward history */
-  deleteRewardHistory(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/HistoryReward/${id}`);
+  delete(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

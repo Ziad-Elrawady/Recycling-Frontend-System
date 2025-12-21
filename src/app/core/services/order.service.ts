@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Order } from '../models/order.model';
 import { Observable } from 'rxjs';
-import { CreateOrderDto, OrderDto, UpdateOrderStatusRequest, AssignOrderRequest } from '../models/order.model';
+import { CreateOrderDto, OrderDto, UpdateOrderStatusRequest } from '../models/order.model';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +12,7 @@ import { CreateOrderDto, OrderDto, UpdateOrderStatusRequest, AssignOrderRequest 
 export class OrderService {
 
   private http = inject(HttpClient);
+  private base = 'https://localhost:4375/api/Order';
   private apiUrl = 'https://localhost:4375/api';
 
   // ===== CITIZEN APIs =====
@@ -50,50 +54,46 @@ export class OrderService {
     return this.http.patch<any>(`${this.apiUrl}/collector/orders/${orderId}/status`, request);
   }
 
-  // ===== ADMIN APIs =====
 
-  /** Admin: Get all orders */
-  getAllOrders(): Observable<OrderDto[]> {
-    return this.http.get<OrderDto[]>(`${this.apiUrl}/Order`);
+  getAll() {
+    return this.http.get<Order[]>(this.base);
   }
 
-  /** Admin: Assign order to collector */
-  assignOrder(orderId: number, request: AssignOrderRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/collector/orders/${orderId}/assign`, request);
+  getById(id: number) {
+    return this.http.get<Order>(`${this.base}/${id}`);
   }
 
-  /** Admin: Get orders by status */
-  getOrdersByStatus(status: string): Observable<OrderDto[]> {
-    return this.http.get<OrderDto[]>(`${this.apiUrl}/Order/status/${status}`);
+  create(model: Partial<Order>) {
+    return this.http.post(this.base, model);
   }
 
-  /** Admin: Get orders by collector */
-  getOrdersByCollector(collectorId: string): Observable<OrderDto[]> {
-    return this.http.get<OrderDto[]>(`${this.apiUrl}/Order/collector/${collectorId}`);
+  update(id: number, model: Partial<Order>) {
+    return this.http.put(`${this.base}/${id}`, model);
   }
 
-  /** Admin: Get orders by factory */
-  getOrdersByFactory(factoryId: number): Observable<OrderDto[]> {
-    return this.http.get<OrderDto[]>(`${this.apiUrl}/Order/factory/${factoryId}`);
+  delete(id: number) {
+    return this.http.delete(`${this.base}/${id}`);
   }
 
-  /** Admin: Complete an order */
-  completeOrder(id: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Order/${id}/complete`, {});
+  getByUser(userId: string) {
+    return this.http.get<Order[]>(`${this.base}/user/${userId}`);
   }
 
-  /** Admin: Cancel an order */
-  cancelOrder(id: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Order/${id}/cancel`, {});
+  getByCollector(collectorId: string) {
+    return this.http.get<Order[]>(`${this.base}/collector/${collectorId}`);
   }
 
-  /** Admin: Update an order */
-  updateOrder(id: number, dto: OrderDto): Observable<OrderDto> {
-    return this.http.put<OrderDto>(`${this.apiUrl}/Order/${id}`, dto);
+  getByFactory(factoryId: number) {
+    return this.http.get<Order[]>(`${this.base}/factory/${factoryId}`);
   }
 
-  /** Admin: Delete an order */
-  deleteOrder(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/Order/${id}`);
+  getByStatus(status: string) {
+    return this.http.get<Order[]>(`${this.base}/status/${status}`);
   }
+  complete(id: number) {
+  return this.http.post(`${this.base}/${id}/complete`, {});
 }
+}
+
+
+

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./register-success.css']
 })
 export class RegisterSuccessComponent {
+  
   private router = inject(Router);
 
   goToLogin() {

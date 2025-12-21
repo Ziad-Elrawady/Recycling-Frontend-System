@@ -1,0 +1,260 @@
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+.tabs-container {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+/* =====================================================
+   TABS
+===================================================== */
+.tabs-menu {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tabs-menu button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  background: #eef2f7;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.tabs-menu button:hover {
+  background: #d2e3ff;
+}
+
+.tabs-menu button.active {
+  background: #0d6efd;
+  color: #fff;
+}
+
+/* =====================================================
+   REWARD GRID & CARDS
+===================================================== */
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.reward-card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+  transition: transform .3s, box-shadow .3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reward-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .12);
+}
+
+/* =====================================================
+   IMAGE – FIXED SQUARE
+===================================================== */
+.reward-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f1f3f6;
+  overflow: hidden;
+}
+
+.reward-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =====================================================
+   CARD CONTENT
+===================================================== */
+.reward-card-content {
+  padding: 14px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.reward-card-content h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.reward-card-content p {
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.reward-card-content span.red {
+  color: #d90429;
+  font-weight: 600;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.actions .btn {
+  flex: 1;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 768px) {
+  .reward-image-wrapper {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* =====================================================
+   STATS TAB – VIEW BUTTON
+===================================================== */
+.reward-card-content .btn-outline-info {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #0dcaf0;
+  color: #0dcaf0;
+  background: transparent;
+  transition: .3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.reward-card-content .btn-outline-info:hover {
+  background: #0dcaf0;
+  color: #fff;
+}
+
+/* =====================================================
+   STATS MODAL
+===================================================== */
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+
+.stats-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 20px;
+  overflow-y: auto;
+  z-index: 1001;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+  transition: color .2s;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.stats-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.stats-list {
+  padding: 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.stats-list p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.stats-list b {
+  color: #111;
+}
+
+.text-success {
+  color: #198754 !important;
+  font-weight: 700;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+  font-weight: 700;
+}
+/* =====================================================
+   IMAGE FIX – FILL CARD WITHOUT DISTORTION
+===================================================== */
+.reward-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #ffffff; /* أو #f1f3f6 حسب الخلفية العامة */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.reward-image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* تصغير الصورة لتبين كاملة */
+  display: block;
+}
+/* =====================================================
+   RESPONSIVE – SMALL SCREENS
+===================================================== */
+@media (max-width: 576px) {
+  .stats-modal {
+    width: 98vw;
+    border-radius: 16px;
+  }
+
+  .stats-image {
+    height: 180px;
+  }
+}

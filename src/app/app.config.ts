@@ -3,6 +3,12 @@ import { provideRouter, withPreloading } from '@angular/router';
 import { routes } from './app.routes';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { CustomPreloadingStrategy } from './core/utils/custom-preloading.strategy';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 
 /**
  * Global Error Handler for uncaught errors
@@ -22,6 +28,20 @@ export const appConfig: ApplicationConfig = {
       withPreloading(CustomPreloadingStrategy) // Smart preloading for performance
     ),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    provideCharts(withDefaultRegisterables())
+    provideCharts(withDefaultRegisterables()),
+
+      // ✅ HttpClient + Interceptors
+    provideHttpClient(withInterceptorsFromDi()),
+
+    // ✅ Register Interceptor correctly
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
+    provideCharts(withDefaultRegisterables()),
   ]
 };
+
+

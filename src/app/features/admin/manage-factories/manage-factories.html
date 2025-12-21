@@ -1,0 +1,105 @@
+<h1 class="page-title">Factories</h1>
+<p class="page-sub">Manage factories and linked orders</p>
+
+<div class="header-row">
+
+  @if (isAdmin()) {
+    <button class="btn-primary" (click)="startAdd()">+ Add Factory</button>
+  }
+
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchText"
+      (input)="onSearchChange()" />
+
+    <button class="btn-secondary" (click)="search()">Search</button>
+  </div>
+
+</div>
+
+<div class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Details</th>
+        @if (isAdmin()) { <th>Actions</th> }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (f of factories; track f.id) {
+        <tr>
+          <td>{{ f.id }}</td>
+          <td>{{ f.name }}</td>
+          <td>{{ f.location }}</td>
+
+          <td>
+            <button class="btn-secondary" (click)="showDetails(f.id)">
+              View
+            </button>
+          </td>
+
+          @if (isAdmin()) {
+            <td class="actions">
+              <button class="btn-edit" (click)="startEdit(f)">Edit</button>
+              <button class="btn-delete" (click)="delete(f.id)">Delete</button>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== VIEW FACTORY MODAL ===== -->
+@if (selectedFactory) {
+<div class="modal-backdrop" (click)="closeFactory()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="closeFactory()">✖</button>
+
+    <h2>{{ selectedFactory.name }}</h2>
+    <p><b>Location:</b> {{ selectedFactory.location }}</p>
+
+    <h4>Orders</h4>
+
+    @if (!selectedFactory.orders || selectedFactory.orders.length === 0) {
+      <p class="muted">No orders linked</p>
+    } @else {
+      <ul>
+        @for (o of selectedFactory.orders; track o.id) {
+          <li>Order #{{ o.id }} — {{ o.status }}</li>
+        }
+      </ul>
+    }
+
+  </div>
+</div>
+}
+
+<!-- ===== ADD / EDIT MODAL ===== -->
+@if (showForm && isAdmin()) {
+<div class="modal-backdrop" (click)="closeForm()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <h3>{{ editing ? 'Edit Factory' : 'Add Factory' }}</h3>
+
+    <input type="text" placeholder="Name" [(ngModel)]="form.name">
+    <input type="text" placeholder="Location" [(ngModel)]="form.location">
+
+    <div class="modal-actions">
+      <button class="btn-save" (click)="save()">
+        {{ editing ? 'Save Changes' : 'Add Factory' }}
+      </button>
+
+      <button class="btn-cancel" (click)="closeForm()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+}

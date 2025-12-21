@@ -1,9 +1,9 @@
+// core/models/application-user.model.ts
 export interface ApplicationUser {
   id: string;
-  userName: string;
-  email: string;
   fullName: string;
-  points: number;
-  PasswordHash: string;
+  email: string;
   phoneNumber: string;
+  points: number;
+  createdAt: string;
 }

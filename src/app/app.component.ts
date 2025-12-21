@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
-import { FlashMessagesComponent } from './shared/components/flash-messages/flash-messages.component';
+import { FlashMessageComponent } from './features/flash-message/flash-message/flash-message';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FlashMessagesComponent],
+  imports: [RouterOutlet, NavbarComponent, FlashMessageComponent],
     templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class AppComponent {
   title = 'GreenZone';
 }
+
 

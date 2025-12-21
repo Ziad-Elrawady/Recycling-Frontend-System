@@ -1,0 +1,196 @@
+<div class="tabs-container">
+
+  <!-- ===== TABS ===== -->
+  <div class="tabs-menu">
+    <button [class.active]="activeTab === 'list'" (click)="setTab('list')">List</button>
+    <button [class.active]="activeTab === 'create'" (click)="setTab('create')">
+      {{ isEditMode ? 'Edit' : 'Create' }}
+    </button>
+    <button [class.active]="activeTab === 'low'" (click)="setTab('low')">Low Stock</button>
+    <button [class.active]="activeTab === 'stats'" (click)="setTab('stats')">Stats</button>
+  </div>
+
+  <!-- ===== FLASH ===== -->
+  @if (flashMessage) {
+    <div class="alert mt-3"
+         [class.alert-success]="flashType === 'success'"
+         [class.alert-danger]="flashType === 'error'">
+      {{ flashMessage }}
+    </div>
+  }
+
+  <!-- ===== LIST ===== -->
+  @if (activeTab === 'list') {
+
+    <h3>Rewards List</h3>
+
+    <div class="d-flex gap-2 mb-3 w-50">
+      <input class="form-control" placeholder="Search reward..." [(ngModel)]="searchTerm">
+      <button class="btn btn-primary" (click)="search()">Search</button>
+      <button class="btn btn-secondary" (click)="resetSearch()">Reset</button>
+    </div>
+
+    <div class="reward-grid">
+      @for (r of rewards; track r.id) {
+
+        <div class="reward-card">
+
+          <div class="reward-image-wrapper">
+            <img [src]="r.imageUrl" alt="Reward image">
+          </div>
+
+          <div class="reward-card-content">
+            <h4>{{ r.name }}</h4>
+            <p>{{ r.requiredPoints }} points</p>
+
+            <span [class.red]="r.stockQuantity <= 5">
+              {{ r.stockQuantity }} in stock
+            </span>
+
+            <div class="actions mt-3 d-flex justify-content-between">
+              <button class="btn btn-sm btn-outline-primary" (click)="openEdit(r)">Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteReward(r.id!)">Delete</button>
+            </div>
+          </div>
+
+        </div>
+
+      }
+    </div>
+  }
+
+  <!-- ===== CREATE / EDIT ===== -->
+  @if (activeTab === 'create') {
+
+    <h3>{{ isEditMode ? 'Edit Reward' : 'Create Reward' }}</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <input class="form-control mb-2" formControlName="name" placeholder="Name">
+      <textarea class="form-control mb-2" formControlName="description" placeholder="Description"></textarea>
+      <input class="form-control mb-2" formControlName="category" placeholder="Category">
+      <input class="form-control mb-2" type="number" formControlName="requiredPoints" placeholder="Required Points">
+      <input class="form-control mb-2" type="number" formControlName="stockQuantity" placeholder="Stock Quantity">
+
+      <input type="file" class="form-control mb-2" accept="image/*" (change)="onImageSelect($event)">
+
+      @if (imagePreview) {
+        <div class="image-preview-box">
+          <img [src]="imagePreview">
+        </div>
+      }
+
+      <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-success w-100" type="submit" [disabled]="isLoading || form.invalid">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+
+        @if (isEditMode) {
+          <button type="button" class="btn btn-outline-secondary w-100" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+    </form>
+  }
+
+  <!-- ===== LOW STOCK ===== -->
+  @if (activeTab === 'low') {
+
+    <h3>Low Stock Rewards</h3>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Points</th>
+          <th>Stock</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (r of lowStockRewards; track r.id) {
+          <tr>
+            <td>{{ r.name }}</td>
+            <td>{{ r.requiredPoints }}</td>
+            <td class="text-danger fw-bold">{{ r.stockQuantity }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="selectedRewardId = r.id">Restock</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (selectedRewardId) {
+      <div class="mt-3 d-flex gap-2">
+        <input type="number" class="form-control w-25" [(ngModel)]="restockAmount">
+        <button class="btn btn-success" (click)="updateStock()">Update</button>
+      </div>
+    }
+  }
+  <!-- ===== STATS TAB ===== -->
+  @if (activeTab === 'stats') {
+
+    <h3>Rewards Statistics</h3>
+
+    <div class="reward-grid">
+      @for (r of rewards; track r.id) {
+
+        <div class="reward-card">
+
+          <div class="reward-image-wrapper">
+            <img [src]="r.imageUrl" alt="Reward image">
+          </div>
+
+          <div class="reward-card-content">
+            <h4>{{ r.name }}</h4>
+            <p>{{ r.requiredPoints }} points</p>
+
+            <button
+              class="btn btn-sm btn-outline-info w-100 mt-2"
+              (click)="loadStats(r)">
+              View
+            </button>
+          </div>
+
+        </div>
+
+      }
+    </div>
+  }
+
+</div>
+<!-- ===== STATS MODAL ===== -->
+@if (stats) {
+
+  <div class="modal-backdrop-custom" (click)="closeStats()"></div>
+
+  <div class="stats-modal">
+
+    <button class="close-btn" (click)="closeStats()">✕</button>
+
+    @if (stats.imageUrl) {
+      <img class="stats-image" [src]="stats.imageUrl" alt="Reward image">
+    }
+
+    <h4 class="text-center mt-2">{{ stats.name }}</h4>
+
+    <div class="stats-list">
+      <p><b>Description:</b> {{ stats.description }}</p>
+      <p><b>Category:</b> {{ stats.category }}</p>
+      <p><b>Required Points:</b> {{ stats.requiredPoints }}</p>
+      <p><b>Stock Quantity:</b> {{ stats.stockQuantity }}</p>
+      <p><b>Total Redeemptions:</b> {{ stats.totalRedeemptions }}</p>
+      <p><b>Pending Redeemptions:</b> {{ stats.pendingRedeemptions }}</p>
+      <p>
+        <b>Status:</b>
+        <span
+          [class.text-success]="stats.isAvailable"
+          [class.text-danger]="!stats.isAvailable">
+          {{ stats.isAvailable ? 'Available' : 'Not Available' }}
+        </span>
+      </p>
+    </div>
+
+  </div>
+}

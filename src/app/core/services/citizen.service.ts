@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ApplicationUser } from '../models/application-user.model';
 import { ApplicationUserDto, UpdateUserDto } from '../models/dtos.model';
 import { API_CONFIG } from '@core/config/api.config';
 
@@ -8,8 +9,18 @@ import { API_CONFIG } from '@core/config/api.config';
 export class CitizenService {
 
   private http = inject(HttpClient);
+
+  private baseUrl = 'https://localhost:4375/api/User';
   private apiUrl = `${API_CONFIG.baseUrl}/api`;
 
+
+  getAll(): Observable<ApplicationUser[]> {
+    return this.http.get<ApplicationUser[]>(this.baseUrl);
+  }
+
+  getById(id: string): Observable<ApplicationUser> {
+    return this.http.get<ApplicationUser>(`${this.baseUrl}/${id}`);
+  }
 
   // ===== CITIZEN: Profile Management =====
 
