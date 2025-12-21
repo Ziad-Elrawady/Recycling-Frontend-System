@@ -18,13 +18,13 @@ import { collectorGuard } from './core/guards/collector/collector-guard';
 import { authPagesGuard } from './core/guards/auth-pages/auth-pages.guard';
 import { AddCollectorComponent } from './features/admin/add-collector/add-collector';
 import { ManageCollectorsComponent } from './features/admin/manage-collectors/manage-collectors';
-import { LandingComponent } from '@features/landing/landing.component';
+import { HomeComponent } from '@features/home/home';
 
 
 
 export const routes: Routes = [
 
-  { path: '', component: LandingComponent },
+  { path: '', component: HomeComponent },
 
   // Auth
 
