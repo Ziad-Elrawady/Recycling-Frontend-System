@@ -1,14 +1,22 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { inject } from '@angular/core';
+import { Role } from '../../models/role.enum';
 
 export const collectorGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (auth.getRole()?.toLowerCase() === 'collector') return true;
+  if (!auth.isLogged()) {
+    router.navigate(['/login']);
+    return false;
+  }
 
-  router.navigate(['/']);
-  return false;
+  if (auth.getRole() !== Role.Collector) {
+    router.navigate(['/']);
+    return false;
+  }
+
+  return true;
 };
 

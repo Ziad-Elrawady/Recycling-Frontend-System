@@ -21,31 +21,28 @@ export class ConfirmEmailComponent {
 
   status: 'success' | 'error' | null = null;
 
-ngOnInit() {
-  const email = this.route.snapshot.queryParamMap.get('email');
-  const rawToken = this.route.snapshot.queryParamMap.get('token');
+  ngOnInit() {
+    const email = this.route.snapshot.queryParamMap.get('email');
+    const token = this.route.snapshot.queryParamMap.get('token');
 
-  if (!email || !rawToken) {
-    this.status = 'error';
-    this.cdr.detectChanges();
-    return;
-  }
-
-  const encodedToken = encodeURIComponent(rawToken);
-
-  this.auth.confirmEmail(email, encodedToken).subscribe({
-    next: () => {
-      this.status = 'success';
-      this.flash.showSuccess("Email confirmed successfully ✔");
-      this.cdr.detectChanges();
-    },
-    error: () => {
+    if (!email || !token) {
       this.status = 'error';
       this.cdr.detectChanges();
+      return;
     }
-  });
-}
 
+    this.auth.confirmEmail(email, token).subscribe({
+      next: () => {
+        this.status = 'success';
+        this.flash.showSuccess("Email confirmed successfully ✔");
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.status = 'error';
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   goToLogin() {
     this.zone.run(() => {

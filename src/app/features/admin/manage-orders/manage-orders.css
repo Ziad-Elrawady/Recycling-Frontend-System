@@ -1,7 +1,17 @@
-.page-title { font-size: 26px; font-weight: 800; }
-.page-sub { margin-top: -4px; color: #6c757d; }
+/* ================= PAGE ================= */
+.page-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e293b;
+}
 
-/* Card */
+.page-sub {
+  margin-top: -4px;
+  color: #6c757d;
+  margin-bottom: 18px;
+}
+
+/* ================= CARD ================= */
 .section-card {
   background: white;
   padding: 18px;
@@ -11,123 +21,175 @@
 }
 
 .section-title {
-  margin-bottom: 10px;
   font-weight: 600;
+  margin-bottom: 10px;
 }
 
-/* Form Row */
+/* ================= FILTER ================= */
 .form-row {
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
-.form-row input, select {
+.form-row input,
+.form-row select {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #dadee2;
   flex: 1;
 }
 
-/* Buttons */
-.btn-create {
-  background: #10b981;
-  padding: 10px;
+/* ================= BUTTONS ================= */
+.btn-view {
+  background: #14b8a6;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-view:hover {
+  background: #0d9488;
+}
+
+.btn-clear {
+  background: #6c757d;
+  padding: 10px 14px;
   color: white;
   border-radius: 8px;
   border: none;
   cursor: pointer;
 }
-.btn-create:hover { background: #0e9168; }
 
-.btn-secondary {
-  background: #0ea5e9;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-.btn-clear {
-  background: #6c757d;
-  padding: 10px;
-  color: white;
-  border-radius: 8px;
-  border: none;
-}
-
-/* Table */
-.table-card table {
+/* ================= TABLE ================= */
+table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
+
 th {
   background: #f1f5f9;
   padding: 12px;
   text-align: left;
 }
+
 td {
   padding: 12px;
   border-bottom: 1px solid #eee;
 }
+
 tr:hover {
   background: #f9fafb;
 }
 
-/* Status Badge */
+/* ================= STATUS BADGE ================= */
 .badge {
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 13px;
   color: white;
 }
-.pending { background: #facc15; color: black; }
-.accepted { background: #3b82f6; }
-.completed { background: #10b981; }
-.cancelled { background: #ef4444; }
 
-/* View Button */
-.btn-view {
-  background: #14b8a6;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
+.pending {
+  background: #facc15;
+  color: #1f2937;
 }
-.btn-delete {
+
+.accepted {
+  background: #3b82f6;
+}
+
+.delivered {
+  background: #8b5cf6;
+}
+
+.completed {
+  background: #10b981;
+}
+
+.cancelled {
   background: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-left: 4px;
-}
-.btn-close {
-  margin-top: 12px;
-  padding: 8px;
-  background: #6c757d;
-  color: white;
-  width: 100%;
-  border-radius: 6px;
 }
 
-/* Modal */
+/* ================= MODAL ================= */
 .modal-backdrop {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,.4);
-  display: flex; justify-content: center; align-items: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
+
 .modal-card {
   background: white;
-  width: 350px;
-  border-radius: 12px;
-  padding: 20px;
-  animation: pop .3s;
+  width: 420px;
+  max-width: 92%;
+  padding: 22px 24px;
+  border-radius: 14px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,.25);
+  animation: modalFade .35s ease;
 }
-@keyframes pop { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-.status-actions {
-  display: flex; gap: 6px;
-  margin: 10px 0;
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.close-btn:hover {
+  color: #ef4444;
+}
+
+.modal-card h2 {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.modal-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* ================= MODAL ACTION ================= */
+.modal-actions {
+  margin-top: 16px;
+}
+
+.btn-save {
+  width: 100%;
+  background: #10b981;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #059669;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: scale(.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

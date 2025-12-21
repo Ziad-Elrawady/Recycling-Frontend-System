@@ -147,3 +147,12 @@
   border-radius: 8px;
   margin-bottom: 12px;   /* خلي في مساحة بعد الرسالة */
 }
+
+.row-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-input.half {
+  width: 100%;
+}

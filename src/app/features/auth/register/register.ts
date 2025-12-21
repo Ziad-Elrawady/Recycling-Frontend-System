@@ -25,55 +25,67 @@ export class RegisterComponent {
   error: string | null = null;
   isLoading = false;
 
-  onRegister(form: NgForm) {
+onRegister(form: NgForm) {
 
-    this.error = null;
-
-    // Validation
-    if (form.invalid) {
-      this.error = "Please complete the fields.";
-      form.form.markAllAsTouched();
-      this.cdr.detectChanges();
-      return;
-    }
-
-    if (form.value.password !== form.value.confirmPassword) {
-      this.error = "The passwords do not match ❌";
-      this.cdr.detectChanges();
-      return;
-    }
-
-    this.isLoading = true;
-    this.cdr.detectChanges();
-
-    this.auth.register(form.value).subscribe({
-      next: () => {
-        this.flash.showSuccess("Account created successfully ✔");
-
-        this.zone.run(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-            this.router.navigate(['/register-success']);
-            this.cdr.detectChanges();
-          }, 1500);
-        });
-      },
-
-      error: (err) => {
-        this.isLoading = false;
-
-        if (err.status === 400) {
-          this.error = "This email is already registered ❌";
-          this.flash.showError("This email is pre-registered");
-        } else {
-          this.error = "An unexpected error occurred.";
-          this.flash.showError("An unexpected error occurred.");
-        }
-
-        this.cdr.detectChanges();
-      }
-    });
+  if (form.invalid) {
+    this.error = "Please complete the fields.";
+    return;
   }
+
+  if (form.value.password !== form.value.confirmPassword) {
+    this.error = "The passwords do not match ❌";
+    return;
+  }
+
+  const payload = {
+    fullName: form.value.fullName,
+    email: form.value.email,
+    phoneNumber: form.value.phoneNumber,
+    password: form.value.password,
+    confirmPassword: form.value.confirmPassword,
+    city: form.value.city,
+    street: form.value.street,
+    buildingNo: String(form.value.buildingNo), // 👈 مهم
+    apartment: form.value.apartment
+  };
+
+  this.isLoading = true;
+
+  this.auth.register(payload).subscribe({
+    next: () => {
+      this.isLoading = false;
+      this.router.navigate(['/register-success']);
+    },
+error: (err) => {
+  this.isLoading = false;
+
+  // الأخطاء اللي جاية من ASP.NET Identity
+  if (err.status === 400 && Array.isArray(err.error)) {
+
+    const codes: string[] = err.error.map(
+      (e: { code: string }) => e.code
+    );
+
+    if (codes.includes('DuplicateEmail')) {
+      this.error = 'This email is already registered ❌';
+    }
+    else if (codes.includes('DuplicateUserName')) {
+      this.error = 'This username is already taken ❌';
+    }
+    else {
+      this.error = 'Invalid registration data ❌';
+    }
+
+  } else {
+    this.error = 'Unexpected error occurred ❌';
+  }
+
+  this.cdr.detectChanges();
+}
+
+  });
+}
+
 
   goToLogin() {
     this.router.navigate(['/login']);

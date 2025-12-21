@@ -1,0 +1,73 @@
+<div class="auth-wrapper">
+  <div class="auth-card collector-card">
+
+    <!-- HEADER -->
+    <div class="collector-header">
+      <span class="collector-icon">👷</span>
+      <div>
+        <h2 class="auth-title">Add New Collector</h2>
+        <p class="auth-subtitle">
+          Create a collector account (Admin only)
+        </p>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    @if (error) {
+      <div class="alert alert-danger mt-2">
+        {{ error }}
+      </div>
+    }
+
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="collector-form">
+
+      <!-- BASIC INFO -->
+      <div class="form-section">
+        <h5 class="section-title">Basic Information</h5>
+
+        <input class="auth-input" name="fullName" ngModel required
+               placeholder="Full Name">
+
+        <input class="auth-input" type="email" name="email" ngModel required
+               placeholder="Email Address">
+
+        <input class="auth-input" type="password" name="password" ngModel
+               required minlength="6"
+               placeholder="Temporary Password">
+      </div>
+
+      <!-- CONTACT -->
+      <div class="form-section">
+        <h5 class="section-title">Contact</h5>
+
+        <input class="auth-input" name="phoneNumber" ngModel required
+               placeholder="Phone Number">
+      </div>
+
+      <!-- ADDRESS -->
+      <div class="form-section">
+        <h5 class="section-title">Address</h5>
+
+        <input class="auth-input" name="city" ngModel required
+               placeholder="City">
+
+        <input class="auth-input" name="street" ngModel required
+               placeholder="Street">
+
+        <div class="row-inputs">
+          <input class="auth-input half" name="buildingNo" ngModel required
+                 placeholder="Building No">
+
+          <input class="auth-input half" name="apartment" ngModel required
+                 placeholder="Apartment">
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <button class="auth-btn submit-btn" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Creating Collector...' : 'Add Collector' }}
+      </button>
+
+    </form>
+  </div>
+</div>

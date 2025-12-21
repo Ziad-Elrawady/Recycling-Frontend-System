@@ -1,35 +1,59 @@
 <nav class="eco-navbar" [ngClass]="{'auth-small-logo': isAuthPage()}">
   <div class="nav-container">
 
-    <!-- LEFT SIDE — LOGO + NAME -->
-<div class="eco-logo-wrapper" (click)="goTo('/')">
-  <img src="assets/images/greenzone-logo.jpg" class="eco-logo-img" alt="GreenZone Logo">
-  <span class="eco-text">GreenZone</span>
-</div>
+    <!-- LEFT — LOGO -->
+    <div class="eco-logo-wrapper" (click)="goTo('/')">
+      <img src="assets/images/greenzone-logo.jpg" class="eco-logo-img" alt="GreenZone Logo">
+      <span class="eco-text">GreenZone</span>
+    </div>
 
-
-    <!-- RIGHT SIDE — BUTTONS -->
+    <!-- RIGHT — ACTIONS -->
     <div class="nav-right">
 
+      <!-- ================= GUEST ================= -->
       @if (!auth.isLogged()) {
+        <button class="nav-btn nav-login" (click)="goTo('login')">
+          Login
+        </button>
 
-      <button class="nav-btn nav-login" (click)="goTo('login')">
-        Login
-      </button>
-
-      <button class="nav-btn nav-register" (click)="goTo('register')">
-        Create Account
-      </button>
+        <button class="nav-btn nav-register" (click)="goTo('register')">
+          Create Account
+        </button>
       }
 
-      @if (auth.isLogged()) {
+      <!-- ================= ADMIN ================= -->
+      @if (auth.isLogged() && role === Role.Admin) {
+        <button class="nav-btn" (click)="goTo('admin/dashboard')">
+          Admin Panel
+        </button>
 
-      <button class="nav-btn nav-logout" (click)="logout()">
-        Logout
-      </button>
+        <button class="nav-btn nav-logout" (click)="logout()">
+          Logout
+        </button>
+      }
+
+      <!-- ================= COLLECTOR ================= -->
+      @if (auth.isLogged() && role === Role.Collector) {
+        <button class="nav-btn" (click)="goTo('collector')">
+          Collector Dashboard
+        </button>
+
+        <button class="nav-btn nav-logout" (click)="logout()">
+          Logout
+        </button>
+      }
+
+      <!-- ================= USER ================= -->
+      @if (auth.isLogged() && role === Role.User) {
+        <button class="nav-btn" (click)="goTo('user')">
+          My Orders
+        </button>
+
+        <button class="nav-btn nav-logout" (click)="logout()">
+          Logout
+        </button>
       }
 
     </div>
-
   </div>
 </nav>

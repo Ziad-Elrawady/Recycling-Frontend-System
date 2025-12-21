@@ -1,153 +1,196 @@
 <div class="tabs-container">
 
+  <!-- ===== TABS ===== -->
   <div class="tabs-menu">
     <button [class.active]="activeTab === 'list'" (click)="setTab('list')">List</button>
-    <button [class.active]="activeTab === 'create'" (click)="setTab('create')">Create</button>
+    <button [class.active]="activeTab === 'create'" (click)="setTab('create')">
+      {{ isEditMode ? 'Edit' : 'Create' }}
+    </button>
     <button [class.active]="activeTab === 'low'" (click)="setTab('low')">Low Stock</button>
     <button [class.active]="activeTab === 'stats'" (click)="setTab('stats')">Stats</button>
   </div>
 
-  @if(activeTab === 'list') {
-    <h3 class="mb-3">Rewards List</h3>
-<div class="d-flex gap-2 mb-3 w-50">
-  <input type="text" [(ngModel)]="searchTerm" class="form-control" placeholder="Search reward name...">
+  <!-- ===== FLASH ===== -->
+  @if (flashMessage) {
+    <div class="alert mt-3"
+         [class.alert-success]="flashType === 'success'"
+         [class.alert-danger]="flashType === 'error'">
+      {{ flashMessage }}
+    </div>
+  }
 
-  <button class="btn btn-primary" (click)="search()">Search</button>
+  <!-- ===== LIST ===== -->
+  @if (activeTab === 'list') {
 
-  <button class="btn btn-secondary" (click)="resetSearch()">Reset</button>
-</div>
+    <h3>Rewards List</h3>
+
+    <div class="d-flex gap-2 mb-3 w-50">
+      <input class="form-control" placeholder="Search reward..." [(ngModel)]="searchTerm">
+      <button class="btn btn-primary" (click)="search()">Search</button>
+      <button class="btn btn-secondary" (click)="resetSearch()">Reset</button>
+    </div>
 
     <div class="reward-grid">
-      @for(r of applySearch(); track r.id) {
+      @for (r of rewards; track r.id) {
+
         <div class="reward-card">
-          <img [src]="r.imageUrl || 'https://via.placeholder.com/200'">
-          <h4>{{ r.name }}</h4>
-          <p>{{ r.requiredPoints }} points</p>
-          <span [class.red]="r.stockQuantity <= 5">{{ r.stockQuantity }} in Stock</span>
+
+          <div class="reward-image-wrapper">
+            <img [src]="r.imageUrl" alt="Reward image">
+          </div>
+
+          <div class="reward-card-content">
+            <h4>{{ r.name }}</h4>
+            <p>{{ r.requiredPoints }} points</p>
+
+            <span [class.red]="r.stockQuantity <= 5">
+              {{ r.stockQuantity }} in stock
+            </span>
+
+            <div class="actions mt-3 d-flex justify-content-between">
+              <button class="btn btn-sm btn-outline-primary" (click)="openEdit(r)">Edit</button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteReward(r.id!)">Delete</button>
+            </div>
+          </div>
+
         </div>
+
       }
     </div>
   }
 
-@if(activeTab === 'create') {
-  <h3 class="mb-3">Create Reward</h3>
+  <!-- ===== CREATE / EDIT ===== -->
+  @if (activeTab === 'create') {
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h3>{{ isEditMode ? 'Edit Reward' : 'Create Reward' }}</h3>
 
-    <label>Name</label>
-    <input class="form-control" formControlName="name" placeholder="Reward Name">
-    @if(form.get('name')?.invalid && form.get('name')?.touched) {
-      <small class="text-danger">Name is required and must be at least 3 characters.</small>
-    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
 
-    <label>Description</label>
-    <textarea class="form-control" formControlName="description" placeholder="Description"></textarea>
-    @if(form.get('description')?.errors?.['maxlength']) {
-      <small class="text-danger">Max description length is 200 characters.</small>
-    }
+      <input class="form-control mb-2" formControlName="name" placeholder="Name">
+      <textarea class="form-control mb-2" formControlName="description" placeholder="Description"></textarea>
+      <input class="form-control mb-2" formControlName="category" placeholder="Category">
+      <input class="form-control mb-2" type="number" formControlName="requiredPoints" placeholder="Required Points">
+      <input class="form-control mb-2" type="number" formControlName="stockQuantity" placeholder="Stock Quantity">
 
-    <label>Category</label>
-    <input class="form-control" formControlName="category" placeholder="Category">
-    @if(form.get('category')?.invalid && form.get('category')?.touched) {
-      <small class="text-danger">Category is required.</small>
-    }
+      <input type="file" class="form-control mb-2" accept="image/*" (change)="onImageSelect($event)">
 
-    <label class="mt-2">Required Points</label>
-    <input class="form-control" type="number" formControlName="requiredPoints">
-    @if(form.get('requiredPoints')?.invalid && form.get('requiredPoints')?.touched) {
-      <small class="text-danger">Points must be at least 10.</small>
-    }
+      @if (imagePreview) {
+        <div class="image-preview-box">
+          <img [src]="imagePreview">
+        </div>
+      }
 
-    <label>Stock Quantity</label>
-    <input class="form-control" type="number" formControlName="stockQuantity">
-    @if(form.get('stockQuantity')?.invalid && form.get('stockQuantity')?.touched) {
-      <small class="text-danger">Stock must be more than 0.</small>
-    }
+      <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-success w-100" type="submit" [disabled]="isLoading || form.invalid">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
 
-    <label class="mt-2">Image URL</label>
-    <input class="form-control" formControlName="imageUrl" placeholder="https://example.com/pic.jpg">
-    @if(form.get('imageUrl')?.invalid && form.get('imageUrl')?.touched) {
-      <small class="text-danger">Image URL is required.</small>
-    }
+        @if (isEditMode) {
+          <button type="button" class="btn btn-outline-secondary w-100" (click)="cancelEdit()">Cancel</button>
+        }
+      </div>
+    </form>
+  }
 
-    @if(form.value.imageUrl) {
-      <img [src]="form.value.imageUrl" style="width:200px;border-radius:8px;margin-top:10px">
-    }
+  <!-- ===== LOW STOCK ===== -->
+  @if (activeTab === 'low') {
 
-    <button class="btn btn-success w-100 mt-3"
-            [disabled]="form.invalid">
-      Create Reward
-    </button>
+    <h3>Low Stock Rewards</h3>
 
-  </form>
-}
-
-
-  @if(activeTab === 'low') {
-    <h3 class="mb-3">Low Stock Rewards</h3>
-
-    <table class="table table-bordered mt-3">
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>Name</th>
-          <th>Category</th>
           <th>Points</th>
           <th>Stock</th>
-          <th>Action</th>
+          <th></th>
         </tr>
       </thead>
 
       <tbody>
-        @for(item of lowStockRewards; track item.id) {
+        @for (r of lowStockRewards; track r.id) {
           <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.requiredPoints }}</td>
-            <td style="color:red; font-weight:bold;">{{ item.stockQuantity }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.requiredPoints }}</td>
+            <td class="text-danger fw-bold">{{ r.stockQuantity }}</td>
             <td>
-              <button class="btn btn-sm btn-primary" (click)="selectedRewardId = item.id ?? null">
-                Restock
-              </button>
+              <button class="btn btn-sm btn-primary" (click)="selectedRewardId = r.id">Restock</button>
             </td>
           </tr>
         }
       </tbody>
     </table>
 
-    @if(selectedRewardId) {
-      <div class="restock-box mt-3">
-        <label>Add Stock:</label>
-        <input type="number" class="form-control w-25 d-inline" [(ngModel)]="restockAmount">
-        <button class="btn btn-success ms-2" (click)="updateStock()">Update</button>
+    @if (selectedRewardId) {
+      <div class="mt-3 d-flex gap-2">
+        <input type="number" class="form-control w-25" [(ngModel)]="restockAmount">
+        <button class="btn btn-success" (click)="updateStock()">Update</button>
       </div>
     }
   }
+  <!-- ===== STATS TAB ===== -->
+  @if (activeTab === 'stats') {
 
-  @if(activeTab === 'stats') {
-    <h3 class="mb-3">Reward Stats</h3>
+    <h3>Rewards Statistics</h3>
 
-    <div class="reward-grid mt-3">
-      @for(r of rewards; track r.id) {
+    <div class="reward-grid">
+      @for (r of rewards; track r.id) {
+
         <div class="reward-card">
-          <img [src]="r.imageUrl || 'https://via.placeholder.com/200'">
-          <h4>{{ r.name }}</h4>
-          <button class="btn btn-sm btn-outline-info mt-2" (click)="loadStats(r.id!)">
-            View Stats
-          </button>
+
+          <div class="reward-image-wrapper">
+            <img [src]="r.imageUrl" alt="Reward image">
+          </div>
+
+          <div class="reward-card-content">
+            <h4>{{ r.name }}</h4>
+            <p>{{ r.requiredPoints }} points</p>
+
+            <button
+              class="btn btn-sm btn-outline-info w-100 mt-2"
+              (click)="loadStats(r)">
+              View
+            </button>
+          </div>
+
         </div>
+
       }
     </div>
-
-    @if(stats) {
-      <div class="stats-box mt-4">
-        <h4>📊 Stats for Reward #{{ selectedRewardId }}</h4>
-        <ul>
-          <li><b>Total Redeemed:</b> {{ stats.totalRedeemed }}</li>
-          <li><b>Remaining Stock:</b> {{ stats.remaining }}</li>
-          <li><b>Last Month Redeems:</b> {{ stats.lastMonthRedeems }}</li>
-        </ul>
-      </div>
-    }
   }
 
 </div>
+<!-- ===== STATS MODAL ===== -->
+@if (stats) {
+
+  <div class="modal-backdrop-custom" (click)="closeStats()"></div>
+
+  <div class="stats-modal">
+
+    <button class="close-btn" (click)="closeStats()">✕</button>
+
+    @if (stats.imageUrl) {
+      <img class="stats-image" [src]="stats.imageUrl" alt="Reward image">
+    }
+
+    <h4 class="text-center mt-2">{{ stats.name }}</h4>
+
+    <div class="stats-list">
+      <p><b>Description:</b> {{ stats.description }}</p>
+      <p><b>Category:</b> {{ stats.category }}</p>
+      <p><b>Required Points:</b> {{ stats.requiredPoints }}</p>
+      <p><b>Stock Quantity:</b> {{ stats.stockQuantity }}</p>
+      <p><b>Total Redeemptions:</b> {{ stats.totalRedeemptions }}</p>
+      <p><b>Pending Redeemptions:</b> {{ stats.pendingRedeemptions }}</p>
+      <p>
+        <b>Status:</b>
+        <span
+          [class.text-success]="stats.isAvailable"
+          [class.text-danger]="!stats.isAvailable">
+          {{ stats.isAvailable ? 'Available' : 'Not Available' }}
+        </span>
+      </p>
+    </div>
+
+  </div>
+}

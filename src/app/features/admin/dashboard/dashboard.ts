@@ -1,14 +1,28 @@
 // src/app/features/admin/dashboard/dashboard.ts
-import { Component, OnInit, inject, NgZone, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ChartOptions, ChartData } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+
 import { MaterialService } from '../../../core/services/material.service';
 import { FactoryService } from '../../../core/services/factory.service';
 import { OrderService } from '../../../core/services/order.service';
 import { CitizenService } from '../../../core/services/citizen.service';
-import { BaseChartDirective } from 'ng2-charts';
+
+interface DashboardCard {
+  title: string;
+  count: number;
+  subtitle: string;
+  icon: string;
+  changePercent: number | null;
+}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -18,13 +32,14 @@ import { BaseChartDirective } from 'ng2-charts';
   styleUrls: ['./dashboard.css'],
 })
 export class AdminDashboardComponent implements OnInit {
-  cards: any[] = [];
+
+  cards: DashboardCard[] = [];
+
   materials: any[] = [];
   factories: any[] = [];
   orders: any[] = [];
   users: any[] = [];
 
-  private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
 
   private materialService = inject(MaterialService);
@@ -32,7 +47,9 @@ export class AdminDashboardComponent implements OnInit {
   private orderService = inject(OrderService);
   private userService = inject(CitizenService);
 
+  // ---------------------------
   // Chart Config
+  // ---------------------------
   lineChartData: ChartData<'line'> = {
     labels: [],
     datasets: []
@@ -50,52 +67,91 @@ export class AdminDashboardComponent implements OnInit {
     this.loadDashboard();
   }
 
+  // ---------------------------
+  // Load Dashboard Data
+  // ---------------------------
   loadDashboard() {
     forkJoin({
       materials: this.materialService.getAll().pipe(catchError(() => of([]))),
       factories: this.factoryService.getAll().pipe(catchError(() => of([]))),
       orders: this.orderService.getAll().pipe(catchError(() => of([]))),
-      users: this.userService ? this.userService.getAll().pipe(catchError(() => of([]))) : of([]),
-    }).subscribe(
-      (data: any) => {
-        this.materials = data.materials || [];
-        this.factories = data.factories || [];
-        this.orders = data.orders || [];
-        this.users = data.users || [];
+      users: this.userService.getAll().pipe(catchError(() => of([]))),
+    }).subscribe({
+      next: (data: any) => {
 
-        // Metrics
+        this.materials = data.materials ?? [];
+        this.factories = data.factories ?? [];
+        this.orders = data.orders ?? [];
+        this.users = data.users ?? [];
+
+        // ---------------------------
+        // Admin Metrics
+        // ---------------------------
         const totalUsers = this.users.length;
-        const collectionsThisMonth = this.countThisMonth(this.orders);
-        const collectionsLastMonth = this.countLastMonth(this.orders);
-        const collectionsChange = this.percentChange(collectionsThisMonth, collectionsLastMonth);
+
+        const deliveredOrders = this.orders.filter(
+          o => o.status === 'Delivered'
+        ).length;
+
+        const completedOrders = this.orders.filter(
+          o => o.status === 'Completed'
+        ).length;
+
+        const rewardsDistributed =
+          this.calculateDistributedRewards(this.orders);
 
         const co2Kg = this.computeCO2FromMaterials(this.materials);
         const co2Tons = +(co2Kg / 1000).toFixed(1);
 
-        const rewardsDistributed = 0;
-
-        const usersThisMonth = this.countThisMonthFromUsers(this.users);
-        const usersLastMonth = this.countLastMonthFromUsers(this.users);
-        const usersChange = this.percentChange(usersThisMonth, usersLastMonth);
-
         this.cards = [
-          { title: 'Total Users', count: totalUsers, changePercent: usersChange, subtitle: `${usersThisMonth} this month`, icon: '👥' },
-          { title: 'Collections This Month', count: collectionsThisMonth, changePercent: collectionsChange, subtitle: `${collectionsLastMonth} last month`, icon: '📦' },
-          { title: 'CO₂ Saved (tons)', count: co2Tons, changePercent: null, subtitle: `${co2Kg.toFixed(0)} kg`, icon: '🌿' },
-          { title: 'Rewards Distributed', count: rewardsDistributed, changePercent: null, subtitle: '', icon: '🎁' },
+          {
+            title: 'Total Users',
+            count: totalUsers,
+            subtitle: 'Registered users',
+            changePercent: null,
+            icon: '👥'
+          },
+          {
+            title: 'Delivered Orders',
+            count: deliveredOrders,
+            subtitle: 'Waiting for admin review',
+            changePercent: null,
+            icon: '🚚'
+          },
+          {
+            title: 'Completed Orders',
+            count: completedOrders,
+            subtitle: 'Approved by admin',
+            changePercent: null,
+            icon: '✅'
+          },
+          {
+            title: 'CO₂ Saved (tons)',
+            count: co2Tons,
+            subtitle: `${co2Kg.toFixed(0)} kg`,
+            changePercent: null,
+            icon: '🌿'
+          },
+          {
+            title: 'Rewards Distributed',
+            count: rewardsDistributed,
+            subtitle: 'Points granted by admin',
+            changePercent: null,
+            icon: '🎁'
+          },
         ];
 
-        //----------------------------------------------
-        // 🔥 CHART BASED ON REAL DB DATA (Orders + Users)
-        //----------------------------------------------
+        // ---------------------------
+        // Chart Data
+        // ---------------------------
         const monthsMeta = this.getLastMonths(6);
-        const labels = monthsMeta.map((m) => m.label);
+        const labels = monthsMeta.map(m => m.label);
 
-        const collectionSeries = monthsMeta.map((m) =>
+        const collectionSeries = monthsMeta.map(m =>
           this.countOrdersByMonth(this.orders, m.year, m.monthIndex)
         );
 
-        const usersSeries = monthsMeta.map((m) =>
+        const usersSeries = monthsMeta.map(m =>
           this.countUsersByMonth(this.users, m.year, m.monthIndex)
         );
 
@@ -113,7 +169,7 @@ export class AdminDashboardComponent implements OnInit {
               pointBackgroundColor: '#10b981',
             },
             {
-              label: 'Active Users (Signups)',
+              label: 'User Signups',
               data: usersSeries,
               tension: 0.35,
               fill: false,
@@ -125,80 +181,48 @@ export class AdminDashboardComponent implements OnInit {
         };
 
         this.cdr.detectChanges();
-      },
-      (err) => console.error('Dashboard load error', err)
-    );
+      }
+    });
   }
 
-  //-------------------------------------------------------
-  // Helpers
-  //-------------------------------------------------------
+  // ---------------------------
+  // Rewards Logic (Admin-only)
+  // ---------------------------
+  private calculateDistributedRewards(orders: any[]): number {
+    return orders
+      .filter(o => o.status === 'Completed')
+      .reduce((sum, o) => sum + (o.rewardPoints ?? 0), 0);
+  }
 
+  // ---------------------------
+  // Helpers
+  // ---------------------------
   private getLastMonths(n: number) {
     const now = new Date();
     const months: { label: string; year: number; monthIndex: number }[] = [];
     for (let i = n - 1; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const label = d.toLocaleString('default', { month: 'short' });
-      months.push({ label, year: d.getFullYear(), monthIndex: d.getMonth() });
+      months.push({
+        label: d.toLocaleString('default', { month: 'short' }),
+        year: d.getFullYear(),
+        monthIndex: d.getMonth()
+      });
     }
     return months;
   }
 
   private countOrdersByMonth(orders: any[], year: number, monthIndex: number) {
-    return orders.filter((o) => {
-      const d = this.safeDate(o.orderDate || o.date || o.createdAt);
+    return orders.filter(o => {
+      const d = this.safeDate(o.orderDate || o.createdAt);
       return d && d.getFullYear() === year && d.getMonth() === monthIndex;
     }).length;
   }
 
   private countUsersByMonth(users: any[], year: number, monthIndex: number) {
-    return users.filter((u) => {
-      const d = this.safeDate(u.createdAt || u.registeredAt || u.date);
+    return users.filter(u => {
+      const d = this.safeDate(u.createdAt);
       return d && d.getFullYear() === year && d.getMonth() === monthIndex;
     }).length;
-  }
-
-  private countThisMonth(items: any[]) {
-    const now = new Date();
-    return items.filter((it) => {
-      const d = this.safeDate(it.orderDate || it.date || it.createdAt);
-      return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-    }).length;
-  }
-
-  private countLastMonth(items: any[]) {
-    const now = new Date();
-    const last = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    return items.filter((it) => {
-      const d = this.safeDate(it.orderDate || it.date || it.createdAt);
-      return d && d.getFullYear() === last.getFullYear() && d.getMonth() === last.getMonth();
-    }).length;
-  }
-
-  private countThisMonthFromUsers(users: any[]) {
-    const now = new Date();
-    return users.filter((u) => {
-      const d = this.safeDate(u.createdAt || u.registeredAt || u.date);
-      return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-    }).length;
-  }
-
-  private countLastMonthFromUsers(users: any[]) {
-    const now = new Date();
-    const last = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    return users.filter((u) => {
-      const d = this.safeDate(u.createdAt || u.registeredAt || u.date);
-      return d && d.getFullYear() === last.getFullYear() && d.getMonth() === last.getMonth();
-    }).length;
-  }
-
-  private percentChange(current: number, previous: number) {
-    if (previous === 0) {
-      if (current === 0) return 0;
-      return 100;
-    }
-    return +(((current - previous) / previous) * 100).toFixed(0);
   }
 
   private safeDate(val: any): Date | null {
@@ -208,16 +232,9 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   private parseSizeKg(size: any): number {
-    if (size == null) return 0;
-    const s = String(size).trim();
-    const m = s.match(/[\d.,]+/);
-    if (!m) return 0;
-    const num = parseFloat(m[0].replace(',', '.'));
-    if (isNaN(num)) return 0;
-    if (/l\b|ltr|liter|litre/i.test(s)) return num;
-    if (/kg/i.test(s)) return num;
-    if (/g\b/i.test(s)) return num / 1000;
-    return num;
+    if (!size) return 0;
+    const num = parseFloat(size);
+    return isNaN(num) ? 0 : num;
   }
 
   private co2FactorByType: Record<string, number> = {
@@ -231,8 +248,7 @@ export class AdminDashboardComponent implements OnInit {
     let totalKg = 0;
     for (const m of materials) {
       const weightKg = this.parseSizeKg(m.size);
-      const key = (m.typeName || '').toLowerCase();
-      const factor = this.co2FactorByType[key] ?? 1.0;
+      const factor = this.co2FactorByType[(m.typeName || '').toLowerCase()] ?? 1;
       totalKg += weightKg * factor;
     }
     return totalKg;

@@ -3,9 +3,10 @@ import { NgForm, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NavbarComponent } from "../../../shared/components/navbar/navbar";
-import { extractAuthError } from '../../../core/utils/auth-error.util';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
+import { extractAuthError } from '../../../core/utils/auth-error.util';
 import { NgZone, ChangeDetectorRef } from '@angular/core';
+import { Role } from '../../../core/models/role.enum';
 
 @Component({
   selector: 'app-login',
@@ -26,9 +27,9 @@ export class LoginComponent {
   error: string | null = null;
   isLoading = false;
 
-  onLogin(form: NgForm) {
+    onLogin(form: NgForm) {
     if (form.invalid) {
-      this.error = "Please enter correct information.";
+      this.error = 'Please enter correct information.';
       form.form.markAllAsTouched();
       this.cdr.detectChanges();
       return;
@@ -38,30 +39,41 @@ export class LoginComponent {
     this.cdr.detectChanges();
 
     this.auth.login(form.value).subscribe({
-      next: (token) => {
-        this.auth.saveToken(token);
-        this.flash.showSuccess("Successful login 🎉");
+      next: (res) => {
+        this.auth.saveAuth(res.token);
 
-        // Delay using NgZone
+        const role = this.auth.getRole();
+        this.flash.showSuccess('Successful login 🎉');
+
         this.zone.run(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-            this.router.navigate(['/admin/dashboard']);
-            this.cdr.detectChanges();
-          }, 1200);
+          this.isLoading = false;
+          this.redirectByRole(role);
+          this.cdr.detectChanges();
         });
       },
-      error: (err) => {
-        const msg = extractAuthError(err) || "Incorrect email or password";
-        this.error = msg;
-        this.flash.showError(msg);
 
+      error: (err) => {
+        this.error = extractAuthError(err) || 'Incorrect email or password';
+        this.flash.showError(this.error);
         this.isLoading = false;
         this.cdr.detectChanges();
       }
     });
   }
 
+  // ===========================
+  // Redirect Logic
+  // ===========================
+  private redirectByRole(role: Role | null) {
+    if (role === Role.Admin) this.router.navigate(['/admin/dashboard']);
+    else if (role === Role.Collector) this.router.navigate(['/collector']);
+    else if (role === Role.User) this.router.navigate(['/user']);
+    else this.router.navigate(['/']);
+  }
+
+  // ===========================
+  // Navigation helpers (❗ كانوا ناقصين)
+  // ===========================
   goToRegister() {
     this.router.navigate(['/register']);
   }

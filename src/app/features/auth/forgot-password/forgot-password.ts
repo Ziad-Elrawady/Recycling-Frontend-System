@@ -38,24 +38,25 @@ export class ForgotPasswordComponent {
     this.cdr.detectChanges();
 
     this.auth.forgotPassword(email).subscribe({
-      next: () => {
-        this.flash.showSuccess("Password reset link sent ✔");
+  next: () => {
+    this.error = null;
+    this.flash.showSuccess("Password reset link sent ✔");
 
-        this.zone.run(() => {
-          setTimeout(() => {
-            this.isLoading = false;
-            this.router.navigate(['/login']);
-            this.cdr.detectChanges();
-          }, 1300);
-        });
-      },
-      error: () => {
+    this.zone.run(() => {
+      setTimeout(() => {
         this.isLoading = false;
-        this.flash.showError("Mail not found");
-        this.error = "Mail not found ❌";
+        this.router.navigate(['/login']);
         this.cdr.detectChanges();
-      }
+      }, 1300);
     });
+  },
+  error: () => {
+    this.isLoading = false;
+    this.error = "Mail not found ❌";
+    this.cdr.detectChanges();
+  }
+});
+
   }
 
   goToLogin() {

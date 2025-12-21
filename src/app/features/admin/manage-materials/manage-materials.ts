@@ -5,6 +5,7 @@ import { MaterialService } from '../../../core/services/material.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Material } from '../../../core/models/material.model';
 import { NgZone, ChangeDetectorRef } from '@angular/core';
+import { Role } from '../../../core/models/role.enum';
 
 @Component({
   standalone: true,
@@ -46,9 +47,9 @@ export class ManageMaterialsComponent {
     });
   }
 
-  isAdmin() {
-    return this.auth.getRole() === 'Admin';
-  }
+isAdmin(): boolean {
+  return this.auth.getRole() === Role.Admin;
+}
 
   search() {
     if (!this.searchText.trim()) {

@@ -10,23 +10,21 @@
 /* Sidebar */
 .sidebar {
   width: 240px;
+  height: 100vh;
   background: linear-gradient(180deg, #0bb56b, #088652);
   color: white;
-  padding: 28px 18px;
+  padding: 28px 18px 18px;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
 }
 
-/* Brand (Logo + Name) */
+/* Logo area */
 .brand {
+  flex-shrink: 0;              /* يمنع اللوجو يتحرك */
+  margin-bottom: 24px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-  margin-bottom: 32px;
-  cursor: pointer;
+  justify-content: center;
 }
 
 /* Logo */
@@ -172,4 +170,34 @@ main {
 
 .Home:active {
   transform: scale(0.96);
+}
+/* Scrollable menu */
+.sidebar-menu {
+  flex: 1;                     /* يملى المساحة */
+  overflow-y: auto;            /* 👈 السكرول */
+  padding-right: 6px;
+}
+
+/* Scrollbar styling (Chrome / Edge) */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Firefox */
+.sidebar-menu {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.4) transparent;
 }

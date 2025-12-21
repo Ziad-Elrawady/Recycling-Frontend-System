@@ -1,48 +1,106 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 import { Reward } from '../models/reward.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RewardService {
+
   private http = inject(HttpClient);
+
   private baseUrl = 'https://localhost:4375/api/Reward';
+  private apiRoot = 'https://localhost:4375';
 
-  getAll(): Observable<Reward[]> {
-    return this.http.get<Reward[]>(this.baseUrl);
+  // =====================
+  // IMAGE URL NORMALIZER
+  // =====================
+  private normalizeImageUrl(imageUrl?: string | null): string | null {
+    if (!imageUrl) return null;
+
+    // لو URL كامل (حتى لو ببورت غلط)
+    if (imageUrl.startsWith('http')) {
+      return imageUrl.replace(/https?:\/\/localhost:\d+/, this.apiRoot);
+    }
+
+    // لو جاي /uploads/...
+    if (imageUrl.startsWith('/')) {
+      return `${this.apiRoot}${imageUrl}`;
+    }
+
+    // لو اسم ملف بس
+    return `${this.apiRoot}/uploads/rewards/${imageUrl}`;
   }
 
-  getById(id: number): Observable<Reward> {
-    return this.http.get<Reward>(`${this.baseUrl}/${id}`);
+  // =====================
+  // MAPPERS
+  // =====================
+  private mapReward(r: Reward): Reward {
+    return {
+      ...r,
+      imageUrl: this.normalizeImageUrl(r.imageUrl)
+    };
   }
 
-  create(reward: Reward): Observable<any> {
-    return this.http.post(this.baseUrl, reward);
+  private mapRewards(list: Reward[]): Reward[] {
+    return list.map(r => this.mapReward(r));
   }
 
-  update(id: number, reward: Reward): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, reward);
+  // =====================
+  // API CALLS
+  // =====================
+  getAll() {
+    return this.http
+      .get<Reward[]>(this.baseUrl)
+      .pipe(map(res => this.mapRewards(res)));
   }
 
-  delete(id: number): Observable<any> {
+  create(formData: FormData) {
+    return this.http
+      .post<Reward>(this.baseUrl, formData)
+      .pipe(map(res => this.mapReward(res)));
+  }
+
+  update(id: number, formData: FormData) {
+    return this.http
+      .put<Reward>(`${this.baseUrl}/${id}`, formData)
+      .pipe(map(res => this.mapReward(res)));
+  }
+
+  // ✅ كانت ناقصة
+  getLowStock(threshold: number = 10) {
+    return this.http
+      .get<Reward[]>(`${this.baseUrl}/low-stock`, {
+        params: { threshold }
+      })
+      .pipe(map(res => this.mapRewards(res)));
+  }
+
+  updateStock(id: number, quantity: number) {
+    // الباك مستني رقم raw مش object
+    return this.http.patch(
+      `${this.baseUrl}/${id}/stock`,
+      quantity,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+  }
+
+getStats(id: number) {
+  return this.http
+    .get<any>(`${this.baseUrl}/${id}/stats`)
+    .pipe(
+      map(res => ({
+        ...res,
+        imageUrl: this.normalizeImageUrl(res.imageUrl)
+      }))
+    );
+}
+
+
+  delete(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
-  }
-
-  getLowStock(): Observable<Reward[]> {
-    return this.http.get<Reward[]>(`${this.baseUrl}/low-stock`);
-  }
-
-  getStats(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}/stats`);
-  }
-
-  updateStock(id: number, addStock: number): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}/stock`, { stock: addStock });
-  }
-
-  getCategories(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/categories`);
   }
 }

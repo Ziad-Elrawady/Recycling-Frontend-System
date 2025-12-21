@@ -1,4 +1,4 @@
-export interface Order {
+export interface OrderAdmin {
   id?: number;
   orderDate: string;
   status: string;

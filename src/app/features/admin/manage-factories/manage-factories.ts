@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FactoryService } from '../../../core/services/factory.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Factory } from '../../../core/models/factory.model';
-import { NgZone, ChangeDetectorRef } from '@angular/core';
+import { Role } from '../../../core/models/role.enum';
 
 @Component({
   standalone: true,
@@ -13,15 +13,18 @@ import { NgZone, ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./manage-factories.css'],
   imports: [CommonModule, FormsModule]
 })
-export class ManageFactoriesComponent {
+export class ManageFactoriesComponent implements OnInit {
 
   private service = inject(FactoryService);
-  public auth = inject(AuthService);
-  private zone = inject(NgZone);
+  private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
 
   factories: Factory[] = [];
-  details: any = null;
+
+  selectedFactory: any | null = null;
+
+  showForm = false;
+  editing = false;
 
   form: Factory = {
     id: 0,
@@ -29,131 +32,120 @@ export class ManageFactoriesComponent {
     location: ''
   };
 
-  editing = false;
-  showForm = false;
-  searchText: any;
+  searchText = '';
 
   ngOnInit() {
     this.load();
   }
 
-  /** ===========================
-   *  LOAD DATA IMMEDIATELY
-   * =========================== */
+  // ================= LOAD =================
   load() {
     this.service.getAll().subscribe(res => {
-      this.zone.run(() => {
-        this.factories = res;
-        this.details = null;
-        this.cdr.detectChanges();
-      });
+      this.factories = res;
+
+      // 👇 تحديث الـ UI بعد تحميل الداتا
+      this.cdr.detectChanges();
     });
   }
 
-  /** ===========================
-   *  SEARCH & AUTOMATIC RETURN
-   * =========================== */
+  // ================= SEARCH =================
   search() {
-    if (!this.searchText || !this.searchText.trim()) {
+    if (!this.searchText.trim()) {
       this.load();
       return;
     }
 
     this.service.search(this.searchText).subscribe(res => {
-      this.zone.run(() => {
-        this.factories = res;
-        this.cdr.detectChanges();
-      });
+      this.factories = res;
+
+      // 👇 تحديث بعد البحث
+      this.cdr.detectChanges();
     });
   }
 
   onSearchChange() {
-    if (!this.searchText || !this.searchText.trim()) {
+    if (!this.searchText.trim()) {
       this.load();
     }
   }
 
-  /** ===========================
-   *  START ADD / EDIT
-   * =========================== */
+  // ================= VIEW =================
+  showDetails(id: number) {
+    // اقفل أي مودال تاني
+    this.showForm = false;
+    this.editing = false;
+    this.selectedFactory = null;
+
+    // 👇 تحديث فوري قبل الريكوست
+    this.cdr.detectChanges();
+
+    this.service.getDetails(id).subscribe(res => {
+      this.selectedFactory = res;
+
+      // 👇 مهم جدًا لظهور المودال من أول Click
+      this.cdr.detectChanges();
+    });
+  }
+
+  closeFactory() {
+    this.selectedFactory = null;
+
+    // 👇 تحديث بعد الغلق
+    this.cdr.detectChanges();
+  }
+
+  // ================= ADD / EDIT =================
   startAdd() {
+    this.selectedFactory = null;
     this.editing = false;
     this.showForm = true;
     this.form = { id: 0, name: '', location: '' };
-    this.details = null;
+
+    this.cdr.detectChanges();
   }
 
   startEdit(factory: Factory) {
+    this.selectedFactory = null;
     this.editing = true;
     this.showForm = true;
     this.form = { ...factory };
-    this.details = null;
+
+    this.cdr.detectChanges();
   }
 
-  /** ===========================
-   *  SAVE (ADD + EDIT)
-   * =========================== */
   save() {
     if (!this.isAdmin()) return;
 
-    if (this.editing) {
-      this.service.update(this.form).subscribe(() => {
-        this.zone.run(() => {
-          this.load();
-          this.showForm = false;
-          this.cdr.detectChanges();
-        });
-      });
-    } else {
-      this.service.create(this.form).subscribe(() => {
-        this.zone.run(() => {
-          this.load();
-          this.showForm = false;
-          this.cdr.detectChanges();
-        });
-      });
-    }
+    const action$ = this.editing
+      ? this.service.update(this.form)
+      : this.service.create(this.form);
+
+    action$.subscribe(() => {
+      this.load();
+      this.closeForm();
+    });
   }
 
-  /** ===========================
-   *  DELETE FACTORY
-   * =========================== */
+  closeForm() {
+    this.showForm = false;
+    this.editing = false;
+
+    this.cdr.detectChanges();
+  }
+
+  // ================= DELETE =================
   delete(id: number) {
     if (!this.isAdmin()) return;
 
+    if (!confirm('Are you sure you want to delete this factory?')) return;
+
     this.service.delete(id).subscribe(() => {
-      this.zone.run(() => {
-        this.load();
-        this.cdr.detectChanges();
-      });
+      this.load();
     });
   }
 
-  /** ===========================
-   *  VIEW DETAILS (WITHOUT DELAY)
-   * =========================== */
-  showDetails(id: number) {
-    this.showForm = false;
-    this.editing = false;
-
-    this.service.getDetails(id).subscribe(res => {
-      this.zone.run(() => {
-        this.details = res;
-        this.cdr.detectChanges();
-      });
-    });
-  }
-
-  /** ===========================
-   *  CANCEL
-   * =========================== */
-  cancel() {
-    this.showForm = false;
-    this.editing = false;
-    this.details = null;
-  }
-
-  isAdmin() {
-    return this.auth.getRole() === 'Admin';
+  // ================= ROLE =================
+  isAdmin(): boolean {
+    return this.auth.getRole() === Role.Admin;
   }
 }

@@ -24,19 +24,20 @@ export class ResetPasswordComponent {
   email: string | null = null;
   token: string | null = null;
   error: string | null = null;
-  isLoading: boolean = false;
+  isLoading = false;
 
   ngOnInit() {
-    this.email = this.route.snapshot.queryParamMap.get('email');
-    const rawToken = this.route.snapshot.queryParamMap.get('token');
+  this.email = this.route.snapshot.queryParamMap.get('email');
+  const rawToken = this.route.snapshot.queryParamMap.get('token');
 
-    if (!this.email || !rawToken) {
-      this.error = "Invalid link ❌";
-      return;
-    }
+  this.token = rawToken ? decodeURIComponent(rawToken) : null;
 
-    this.token = encodeURIComponent(rawToken);
+  if (!this.email || !this.token) {
+    this.error = "Invalid or expired link ❌";
+    this.cdr.detectChanges();
   }
+}
+
 
   onReset(form: NgForm) {
 
@@ -57,7 +58,7 @@ export class ResetPasswordComponent {
 
     const data = {
       email: this.email!,
-      token: this.token!, // send encoded token
+      token: this.token!,   // 👈 raw token
       newPassword: form.value.newPassword,
       confirmPassword: form.value.confirmPassword
     };

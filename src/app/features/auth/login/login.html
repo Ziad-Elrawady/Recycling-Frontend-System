@@ -14,28 +14,108 @@
 
     <!-- Error -->
     @if (error) {
-    <div class="alert alert-danger">{{ error }}</div>
+      <div class="alert alert-danger mt-2">
+        {{ error }}
+      </div>
     }
 
-    <form #f="ngForm" (ngSubmit)="onLogin(f)">
+    <form #f="ngForm" (ngSubmit)="onLogin(f)" novalidate>
 
-      <input class="auth-input" type="email" name="email" ngModel required placeholder="you@example.com">
+  <!-- GENERAL ERROR (ONLY ON SUBMIT) -->
+  @if (f.submitted && f.invalid && !email.touched && !password.touched) {
+    <div class="validation-box">
+      Please complete all required fields
+    </div>
+  }
 
-      <input class="auth-input" type="password" name="password" ngModel required placeholder="Enter your password">
+  <!-- Email -->
+  <div class="form-group">
+    <input
+      class="auth-input"
+      type="email"
+      name="email"
+      ngModel
+      required
+      email
+      placeholder="you@example.com"
+      #email="ngModel"
+    >
 
-      <!-- Forgot Password -->
-      <div class="auth-forgot">
-        <span (click)="goToForgot()">Forget your password?</span>
-      </div>
+    @if (email.invalid && (email.touched || email.dirty)) {
 
-      <button class="auth-btn" type="submit">Sign In</button>
+      @if (email.errors?.['required']) {
+        <div class="validation-error">
+          Email is required
+        </div>
+      }
 
-      <div class="auth-footer">
-        Don’t have an account?
-        <span (click)="goToRegister()">Create one</span>
-      </div>
+      @if (email.errors?.['email']) {
+        <div class="validation-error">
+          Please enter a valid email address
+        </div>
+      }
 
-    </form>
+    }
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <input
+      class="auth-input"
+      type="password"
+      name="password"
+      ngModel
+      required
+      minlength="6"
+      placeholder="Enter your password"
+      #password="ngModel"
+    >
+
+    @if (password.invalid && (password.touched || password.dirty)) {
+
+      @if (password.errors?.['required']) {
+        <div class="validation-error">
+          Password is required
+        </div>
+      }
+
+      @if (password.errors?.['minlength']) {
+        <div class="validation-error">
+          Password must be at least 6 characters
+        </div>
+      }
+
+    }
+  </div>
+
+  <!-- Forgot Password -->
+  <div class="auth-forgot">
+    <span (click)="goToForgot()">Forget your password?</span>
+  </div>
+
+  <!-- Submit -->
+<button
+  class="auth-btn"
+  type="submit"
+  [disabled]="isLoading"
+>
+
+    @if (isLoading) {
+      Signing in...
+    } @else {
+      Sign In
+    }
+  </button>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    Don’t have an account?
+    <span (click)="goToRegister()">Create one</span>
+  </div>
+
+</form>
+
+
 
   </div>
 </div>

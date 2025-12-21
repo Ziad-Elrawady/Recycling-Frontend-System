@@ -1,30 +1,77 @@
 <div class="hero-container">
 
-  <img src="assets/images/greenzone-logo.jpg" class="hero-logo" alt="GreenZone Logo" />
+  <img
+    src="assets/images/greenzone-logo.jpg"
+    class="hero-logo"
+    alt="GreenZone Logo"
+  />
 
   <h1 class="hero-title">GreenZone Recycling System</h1>
+
   <p class="hero-subtitle">
     Smart platform for managing, collecting, and transforming waste into valuable environmental opportunities.
   </p>
 
-  <div class="hero-buttons">
-    <button (click)="goTo('login')" class="btn-login">Login</button>
-    <button (click)="goTo('register')" class="btn-create">Create Account</button>
-  </div>
+  <!-- ================= GUEST ACTIONS ================= -->
+  @if (!isLogged) {
+    <div class="hero-buttons">
+      <button type="button" (click)="goTo('login')" class="btn-login">
+        Login
+      </button>
 
+      <button type="button" (click)="goTo('register')" class="btn-create">
+        Create Account
+      </button>
+    </div>
+  }
+
+  <!-- ================= ROLE BASED PORTALS ================= -->
   <div class="role-buttons">
-    <button (click)="goTo('citizen')" class="role-btn">Citizen Portal</button>
-    <button (click)="goTo('collector')" class="role-btn">Collector Dashboard</button>
-    <button (click)="goTo('admin')" class="role-btn">Admin Panel</button>
+
+    @if (isLogged && role === Role.User) {
+      <button type="button" (click)="goTo('user')" class="role-btn">
+        User Portal
+      </button>
+    }
+
+    @if (isLogged && role === Role.Collector) {
+      <button type="button" (click)="goTo('collector')" class="role-btn">
+        Collector Dashboard
+      </button>
+    }
+
+    @if (isLogged && role === Role.Admin) {
+      <button type="button" (click)="goTo('admin/dashboard')" class="role-btn">
+        Admin Panel
+      </button>
+    }
+
+    <!-- Guest trying to access -->
+    @if (!isLogged) {
+      <button type="button" (click)="goProtected('user')" class="role-btn">
+        User Portal
+      </button>
+
+      <button type="button" (click)="goProtected('collector')" class="role-btn">
+        Collector Dashboard
+      </button>
+
+      <button type="button" (click)="goProtected('admin/dashboard')" class="role-btn">
+        Admin Panel
+      </button>
+    }
+
   </div>
 
-  <!-- Waves SVG -->
+  <!-- Waves -->
   <div class="waves">
-      <svg viewBox="0 0 1440 320">
-        <path fill="#ffffff33" fill-opacity="1"
-          d="M0,192L60,176C120,160,240,128,360,149.3C480,171,600,245,720,245.3C840,245,960,171,1080,154.7C1200,139,1320,181,1380,202.7L1440,224V320H0Z">
-        </path>
-      </svg>
+    <svg viewBox="0 0 1440 320">
+      <path
+        fill="#ffffff33"
+        fill-opacity="1"
+        d="M0,192L60,176C120,160,240,128,360,149.3C480,171,600,245,720,245.3C840,245,960,171,1080,154.7C1200,139,1320,181,1380,202.7L1440,224V320H0Z">
+      </path>
+    </svg>
   </div>
 
 </div>

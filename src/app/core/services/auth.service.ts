@@ -1,6 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Role } from '../models/role.enum';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  role?: string | string[];
+  roles?: string | string[];
+  'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'?: string | string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,52 +20,111 @@ export class AuthService {
 
   private apiUrl = 'https://localhost:4375/api/Auth';
 
-  register(data: any) {
-    return this.http.post(`${this.apiUrl}/register`, data, { responseType: 'text' });
-  }
+  // ===========================
+  // AUTH API
+  // ===========================
 
-  login(data: any) {
-    return this.http.post(`${this.apiUrl}/login`, data, { responseType: 'text' });
-  }
+login(data: any) {
+  return this.http.post<{ token: string }>(this.apiUrl + '/login', data);
+}
 
-  forgotPassword(email: string) {
-    return this.http.post(`${this.apiUrl}/forgot-password`, { email }, { responseType: 'text' });
-  }
 
-  resetPassword(data: any) {
-    return this.http.post(`${this.apiUrl}/reset-password`, data, { responseType: 'text' });
-  }
+register(data: any) {
+  return this.http.post(
+    `${this.apiUrl}/register`,
+    data,
+    { responseType: 'text' } // 👈 مهم
+  );
+}
 
-confirmEmail(email: string, token: string) {
-  const encodedToken = encodeURIComponent(token);
-  return this.http.get(`${this.apiUrl}/confirm-email?email=${email}&token=${encodedToken}`,
-      { responseType: 'text' });
+
+forgotPassword(email: string) {
+  return this.http.post(
+    `${this.apiUrl}/forgot-password`,
+    { email },
+    { responseType: 'text' } // 👈 الحل
+  );
+}
+
+
+resetPassword(data: any) {
+  return this.http.post(
+    `${this.apiUrl}/reset-password`,
+    data,
+    { responseType: 'text' } // 👈 مهم جدًا
+  );
+}
+
+
+  confirmEmail(email: string, token: string) {
+    const encodedToken = encodeURIComponent(token);
+    return this.http.get(
+      `${this.apiUrl}/confirm-email?email=${email}&token=${encodedToken}`
+    );
   }
 
   // ===========================
-  // TOKEN
+  // AUTH STATE
   // ===========================
 
-  saveToken(token: string) {
+
+  saveAuth(token: string) {
     localStorage.setItem('token', token);
-    localStorage.setItem('role', 'Admin'); // مؤقتًا
+
+    const decoded = jwtDecode<JwtPayload>(token);
+
+    const rawRole =
+      decoded.role ??
+      decoded.roles ??
+      decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ??
+      null;
+
+    const role = Array.isArray(rawRole) ? rawRole[0] : rawRole;
+
+    if (!role) {
+      console.error('ROLE NOT FOUND IN TOKEN');
+      return;
+    }
+
+    // normalize
+    const normalizedRole =
+      role.toString().toLowerCase() === 'admin' ? Role.Admin :
+      role.toString().toLowerCase() === 'user' ? Role.User :
+      role.toString().toLowerCase() === 'collector' ? Role.Collector :
+      null;
+
+    if (!normalizedRole) {
+      console.error('INVALID ROLE:', role);
+      return;
+    }
+
+    localStorage.setItem('role', normalizedRole);
+    console.log('ROLE FROM TOKEN:', normalizedRole);
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+getToken(): string | null {
+  return localStorage.getItem('token');
+}
+
+
+
+  getRole(): Role | null {
+    return localStorage.getItem('role') as Role | null;
   }
 
-  isLogged() {
-    return !!localStorage.getItem('token');
-  }
+isLogged(): boolean {
+  const token = this.getToken();
+  const role = this.getRole();
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    this.router.navigate(['/login']);
-  }
+  return !!token && !!role;
+}
 
-  getRole(): string {
-    return localStorage.getItem('role') || '';
-  }
+
+
+logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('role');
+  this.router.navigate(['/login']);
+}
+
 }

@@ -1,38 +1,43 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { Component, inject } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.service';
+import { Role } from '../../../core/models/role.enum';
 
 @Component({
-  standalone: true,
   selector: 'app-navbar',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css'],
-  imports: [CommonModule]
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
 
-  constructor(
-    public auth: AuthService, 
-    private router: Router
-  ) {}
+  auth = inject(AuthService);
+  router = inject(Router);
 
-  goTo(path: string) {
+  Role = Role;
 
-    // 🔥 لو ما بعتش Path → روح للهوم
-    if (!path) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.router.navigate([`/${path}`]);
+  get role() {
+    return this.auth.getRole();
   }
 
-  isAuthPage() {
-  return this.router.url.includes('login') || this.router.url.includes('register');
-}
+  goTo(path: string) {
+    this.router.navigate(['/' + path]);
+  }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.auth.logout();
+  }
+
+  // 🔹 تصغير اللوجو في صفحات auth
+  isAuthPage(): boolean {
+    return this.router.url.includes('login')
+        || this.router.url.includes('register')
+        || this.router.url.includes('forgot-password')
+        || this.router.url.includes('reset-password');
   }
 }

@@ -1,0 +1,103 @@
+<div class="card p-4 shadow-sm">
+
+  <div class="d-flex justify-content-between mb-3">
+    <h4>Collectors</h4>
+    <input
+      class="form-control w-25"
+      placeholder="Search by name or email"
+      [(ngModel)]="search"
+      (input)="filter()"
+    />
+  </div>
+
+  @if(loading) {
+    <p>Loading...</p>
+  }
+
+  @else {
+    <table class="table table-bordered table-hover text-center align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th width="200">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for(c of filtered; track c.id) {
+
+          <!-- Collector row -->
+          <tr>
+            <td>{{ c.fullName }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.phoneNumber }}</td>
+            <td>
+              <button
+                class="btn btn-sm btn-primary me-2"
+                (click)="showOrders(c.id!)">
+                Orders
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="delete(c.id!)">
+                Remove
+              </button>
+            </td>
+          </tr>
+
+          <!-- Orders row -->
+          @if(selectedCollectorId === c.id) {
+            <tr>
+              <td colspan="4">
+                @if(loadingOrders) {
+                  <p class="text-center">Loading orders...</p>
+                }
+
+                @else {
+                  <table class="table table-sm table-bordered mt-2">
+                    <thead class="table-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      @for(o of collectorOrders; track o.id) {
+                        <tr>
+                          <td>{{ o.id }}</td>
+                          <td>
+                            <span class="badge bg-info">
+                              {{ o.status }}
+                            </span>
+                          </td>
+                          <td>{{ o.orderDate  | date:'short' }}</td>
+                        </tr>
+                      }
+
+                      @if(collectorOrders.length === 0) {
+                        <tr>
+                          <td colspan="3" class="text-muted text-center">
+                            No orders for this collector
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                }
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+
+    @if(filtered.length === 0) {
+      <p class="text-center text-muted">No collectors found</p>
+    }
+  }
+</div>

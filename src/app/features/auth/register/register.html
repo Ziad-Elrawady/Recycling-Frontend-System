@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<div class="auth-wrapper" [ngClass]="{'register-page': isRegister()}">
+<div class="auth-wrapper register-page">
   <div class="auth-card">
 
     <!-- LOGO -->
@@ -10,46 +10,122 @@
     </div>
 
     <h2 class="auth-title">Create Account</h2>
-    <p class="auth-subtitle">Join GreenZone and start making a difference</p>
+    <p class="auth-subtitle">Register as a citizen user</p>
 
-    <!-- ERROR MESSAGE -->
+    <!-- ERROR -->
     @if (error) {
-    <div class="alert alert-danger">{{ error }}</div>
+      <div class="alert alert-danger">{{ error }}</div>
     }
 
     <form #f="ngForm" (ngSubmit)="onRegister(f)">
 
-      <input class="auth-input" name="fullName" ngModel required (input)="clearError()" placeholder="Full Name">
+      <!-- Full Name -->
+      <input
+        class="auth-input"
+        name="fullName"
+        ngModel
+        required
+        placeholder="Full Name"
+        (input)="clearError()"
+      >
 
-      <input class="auth-input" type="email" name="email" ngModel required (input)="clearError()"
-        placeholder="you@example.com">
+      <!-- Email -->
+      <input
+        class="auth-input"
+        type="email"
+        name="email"
+        ngModel
+        required
+        placeholder="Email Address"
+        (input)="clearError()"
+      >
 
-      <input class="auth-input" type="password" name="password" ngModel required minlength="6" (input)="clearError()"
-        placeholder="Create a secure password">
+      <!-- Phone -->
+      <input
+        class="auth-input"
+        name="phoneNumber"
+        ngModel
+        required
+        placeholder="Phone Number"
+        (input)="clearError()"
+      >
 
-      <input class="auth-input" type="password" name="confirmPassword" ngModel required minlength="6"
-        (input)="clearError()" placeholder="Confirm password">
+      <!-- Password -->
+      <input
+        class="auth-input"
+        type="password"
+        name="password"
+        ngModel
+        required
+        minlength="6"
+        placeholder="Password"
+        (input)="clearError()"
+      >
 
+      <!-- Confirm Password -->
+      <input
+        class="auth-input"
+        type="password"
+        name="confirmPassword"
+        ngModel
+        required
+        minlength="6"
+        placeholder="Confirm Password"
+        (input)="clearError()"
+      >
 
-      <!-- PASSWORD MATCH ERROR -->
-      @if (f.submitted && f.value.password !== f.value.confirmPassword) {
-      <div class="text-danger small mb-2">
-        Passwords do not match ❌
+      <!-- Address -->
+      <input
+        class="auth-input"
+        name="city"
+        ngModel
+        required
+        placeholder="City"
+      >
+
+      <input
+        class="auth-input"
+        name="street"
+        ngModel
+        required
+        placeholder="Street"
+      >
+
+      <div class="row-inputs">
+        <input
+          class="auth-input half"
+          name="buildingNo"
+          ngModel
+          required
+          placeholder="Building No"
+        >
+
+        <input
+          class="auth-input half"
+          name="apartment"
+          ngModel
+          required
+          placeholder="Apartment"
+        >
       </div>
+
+      <!-- Password mismatch -->
+      @if (f.submitted && f.value.password !== f.value.confirmPassword) {
+        <div class="text-danger small mb-2">
+          Passwords do not match ❌
+        </div>
       }
 
-      <!-- SUBMIT BUTTON -->
-      <button class="auth-btn" type="submit">
-        Create Account
+      <!-- Submit -->
+      <button class="auth-btn" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Creating...' : 'Create Account' }}
       </button>
 
-      <!-- FOOTER LINK -->
       <div class="auth-footer">
         Already have an account?
-        <span (click)="goToLogin()">Sign in</span>
+        <span (click)="goToLogin()">Login</span>
       </div>
 
     </form>
-
   </div>
 </div>

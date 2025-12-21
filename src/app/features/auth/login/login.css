@@ -156,3 +156,27 @@
   background: #089a5a;
   transform: rotate(-20deg);
 }
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.validation-error {
+  margin-top: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #b42318;
+  background: #fdecec;
+  border-radius: 6px;
+  text-align: left;
+}
+.validation-box {
+  background: #ffe6e6;
+  border: 1px solid #ff4d4f;
+  color: #b00020;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
