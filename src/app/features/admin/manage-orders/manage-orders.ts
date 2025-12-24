@@ -9,6 +9,7 @@ import { Role } from '../../../core/models/role.enum';
 import { forkJoin } from 'rxjs';
 import { FactoryService } from '../../../core/services/factory.service';
 import { CollectorService } from '../../../core/services/collector.service';
+import { FlashMessageService } from '../../../core/services/flash-message.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ private citizenService = inject(CitizenService);
 private factoryService = inject(FactoryService);
 private collectorService = inject(CollectorService);
 private cdr = inject(ChangeDetectorRef);
+private flash = inject(FlashMessageService);
 
   orders: Order[] = [];
   filteredOrders: Order[] = [];   // ✅ الجديد
@@ -120,17 +122,48 @@ showDetails(id: number) {
     return this.auth.getRole() === Role.Admin;
   }
 
-  canComplete(): boolean {
-    return this.isAdmin() && this.selectedOrder?.status === 'Delivered';
-  }
+canComplete(): boolean {
+  return (
+    this.isAdmin() &&
+    this.selectedOrder?.status?.toLowerCase() === 'delivered'
+  );
+}
 
-  completeOrder() {
-    if (!this.selectedOrder) return;
 
-    this.service.complete(this.selectedOrder.id!)
-      .subscribe(() => {
-        this.load();
-        this.closeDetails();
-      });
-  }
+completeOrder() {
+  if (!this.selectedOrder) return;
+
+  console.log('Completing order:', this.selectedOrder.id);
+
+  this.service.complete(this.selectedOrder.id!)
+    .subscribe({
+      next: (res: any) => {
+        console.log('Order completed:', res);
+
+        this.flash.showSuccess(
+          res?.message || 'Order completed successfully'
+        );
+
+        this.load();          // reload orders
+        this.closeDetails();  // close modal
+      },
+      error: err => {
+        console.error('Complete order failed:', err);
+
+        if (err.status === 401 || err.status === 403) {
+          this.flash.showError(
+            'You are not authorized to complete this order (Admin only)'
+          );
+        } else if (err.status === 400) {
+          this.flash.showError(
+            err.error?.error || 'Invalid order state'
+          );
+        } else {
+          this.flash.showError('Something went wrong');
+        }
+      }
+    });
+}
+
+
 }

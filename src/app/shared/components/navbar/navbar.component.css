@@ -277,23 +277,53 @@
   text-decoration: none;
 }
 
-.btn-ghost {
-  padding: .55rem 1.3rem;
+/* ===== Primary Green Button ===== */
+.btn-ghost,
+.logout-direct {
+  padding: 0.6rem 1.5rem;
   border-radius: 999px;
   font-weight: 700;
-  background: transparent;
-  color: var(--green-primary);
-  border: 2px solid rgba(22,163,74,.5);
+  font-size: 0.95rem;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #ffffff;
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  box-shadow: 0 6px 14px rgba(34, 197, 94, 0.35);
+  transition: 
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
-.logout-direct {
-  color: var(--danger);
-  border-color: rgba(220,38,38,.45);
-}
-
+/* ===== Hover Effect ===== */
+.btn-ghost:hover,
 .logout-direct:hover {
-  background: rgba(220,38,38,.12);
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.45);
 }
+
+/* ===== Active (Click) ===== */
+.btn-ghost:active,
+.logout-direct:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.35);
+}
+
+/* ===== Focus (Keyboard Accessibility) ===== */
+.btn-ghost:focus-visible,
+.logout-direct:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.35),
+    0 6px 14px rgba(34, 197, 94, 0.35);
+}
+
 
 /* ===============================
    📱 Responsive

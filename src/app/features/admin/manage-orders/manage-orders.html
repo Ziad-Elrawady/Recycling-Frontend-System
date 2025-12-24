@@ -96,13 +96,16 @@
     <p><b>Collector:</b> {{ selectedOrder.collectorName }}</p>
     <p><b>Factory:</b> {{ selectedOrder.factoryName }}</p>
 
-    @if (canComplete()) {
-      <div class="modal-actions">
-        <button class="btn-save" (click)="completeOrder()">
-          ✔ Complete Order & Reward User
-        </button>
-      </div>
-    }
+@if (canComplete()) {
+  <div class="modal-actions">
+    <button
+      class="btn-save"
+      (click)="completeOrder(); $event.stopPropagation()">
+      ✔ Complete Order & Reward User
+    </button>
+  </div>
+}
+
   </div>
 </div>
 }

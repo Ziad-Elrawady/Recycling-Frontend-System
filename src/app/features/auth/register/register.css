@@ -59,6 +59,9 @@ html, body {
     0 4px 10px rgba(0,0,0,0.08);
 
   animation: fadeIn 0.35s ease;
+    /* ✅ الحل */
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== Fade Animation ===== */
@@ -112,6 +115,9 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px 12px;
+   /* 👇 المهم */
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 /* عناصر تاخد صف كامل */

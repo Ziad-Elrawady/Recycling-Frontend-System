@@ -63,12 +63,12 @@ resetPassword(data: any) {
 }
 
 
-  confirmEmail(email: string, token: string) {
-    const encodedToken = encodeURIComponent(token);
-    return this.http.get(
-      `${this.apiUrl}/confirm-email?email=${email}&token=${encodedToken}`
-    );
-  }
+confirmEmail(email: string, token: string) {
+  return this.http.get(
+    `${this.apiUrl}/confirm-email?email=${email}&token=${token}`
+  );
+}
+
 
   // ===========================
   // AUTH STATE
