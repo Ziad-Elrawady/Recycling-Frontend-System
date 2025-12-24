@@ -86,6 +86,12 @@ export const routes: Routes = [
         .then(m => m.MyRequestsComponent)
   },
   {
+    path: 'collector-requests',
+    loadComponent: () =>
+      import('./features/collector/collector-dashboard/available-requests/available-requests.component')
+        .then(m => m.CollectorAvailableRequestsComponent)
+  },
+  {
     path: 'profile',
     loadComponent: () =>
       import('./features/profile/profile.component')
