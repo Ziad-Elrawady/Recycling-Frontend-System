@@ -187,11 +187,15 @@
 
   </div>
 }
-
-
 </div>
 
       }
+      @if (isLoggedIn()) {
+  <button class="btn-ghost logout-direct" (click)="logout()">
+    Logout
+  </button>
+}
+
         @if (isAdmin() && isCollector()) {
   <button class="btn-ghost logout-direct" (click)="logout()">
     Logout
@@ -199,7 +203,7 @@
 }
       <!-- 👋 Guest -->
       @if (!isLoggedIn() && !isAuthRoute()) {
-        <a routerLink="/login" class="btn-ghost">Login</a>
+        <a routerLink="/login" class="btn-ghost1">Login</a>
         <a routerLink="/register" class="btn-primary">Get Started</a>
       }
 
