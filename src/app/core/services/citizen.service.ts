@@ -11,7 +11,7 @@ export class CitizenService {
   private http = inject(HttpClient);
 
   private baseUrl = 'https://localhost:4375/api/User';
-  private apiUrl = `${API_CONFIG.baseUrl}/api`;
+  private apiUrl = `${API_CONFIG.baseUrl}`;
 
 
   getAll(): Observable<ApplicationUser[]> {
@@ -47,9 +47,10 @@ export class CitizenService {
   // ===== CITIZEN: Points Management =====
 
   /** Get citizen's points */
-  getPoints(): Observable<{ points: number }> {
-    return this.http.get<{ points: number }>(`${this.apiUrl}/User/points`);
-  }
+getPoints(): Observable<{ points: number }> {
+  return this.http.get<{ points: number }>(`${this.apiUrl}/User/points`);
+}
+
 
   // ===== ADMIN: User Management =====
 

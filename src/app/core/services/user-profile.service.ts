@@ -7,18 +7,13 @@ import { of } from 'rxjs';
 
 export interface UserProfileResponse {
   id: string;
-  firstName: string;
-  lastName: string;
   fullName?: string;
   email: string;
   phoneNumber: string;
-  address?: string;
+  street?: string;
   city?: string;
-  country?: string;
-  coordinates?: {
-    lat: number;
-    lng: number;
-  } | null;
+  buildingNo?: string;
+  apartment?: string;
   points?: number;
   roles?: string[];
 }
@@ -45,13 +40,10 @@ export class UserProfileService {
 
   // Computed
   isProfileLoaded = computed(() => this._userProfile() !== null);
-  fullName = computed(() => {
-    const profile = this._userProfile();
-    if (profile) {
-      return `${profile.firstName || ''} ${profile.lastName || ''}`.trim();
-    }
-    return '';
-  });
+fullName = computed(() => {
+  return this._userProfile()?.fullName ?? '';
+});
+
 
   constructor() {}
 

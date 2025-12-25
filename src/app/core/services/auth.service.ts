@@ -136,5 +136,24 @@ logout() {
   this._token.set(null);
   this._role.set(null);
 }
+getUserIdFromToken(): string | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const decoded: any = jwtDecode(token);
+
+    // ASP.NET Identity غالبًا
+    return (
+      decoded?.nameid ||
+      decoded?.sub ||
+      decoded?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ||
+      null
+    );
+  } catch (e) {
+    console.error('Invalid token', e);
+    return null;
+  }
+}
 
 }

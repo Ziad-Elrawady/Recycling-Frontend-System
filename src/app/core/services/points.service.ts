@@ -1,20 +1,18 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-// import { API_CONFIG } from './api.config';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { API_CONFIG } from '../config/api.config';
 
-// @Injectable({ providedIn: 'root' })
-// export class PointsService {
+@Injectable({ providedIn: 'root' })
+export class PointsService {
 
-//   private url = `${API_CONFIG.baseUrl}/points`;
+  private url = `${API_CONFIG.baseUrl}/points`;
 
-//   constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-//   getUserPoints(userId: number): Observable<any> {
-//     return this.http.get(`${this.url}/${userId}`);
-//   }
+  getMyPoints(): Observable<number> {
+    return this.http.get<number>(`${this.url}/points`);
+  }
 
-//   addPoints(userId: number, points: number): Observable<any> {
-//     return this.http.post(`${this.url}/add`, { userId, points });
-//   }
-// }
+
+}
