@@ -1,0 +1,154 @@
+/* ================= Footer Wrapper ================= */
+.footer-wrapper {
+  background: linear-gradient(135deg, #052e16, #064e3b);
+  color: #d1fae5;
+  padding-top: 60px;
+}
+
+/* ================= Content ================= */
+.footer-content {
+  padding: 0 8%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+/* ================= Brand ================= */
+.footer-brand h3 {
+  font-size: 1.8rem;
+  color: #22c55e;
+  margin-bottom: 10px;
+}
+
+.footer-brand p {
+  font-size: .95rem;
+  line-height: 1.6;
+  opacity: .9;
+}
+
+/* ================= Section Titles ================= */
+.footer-content h4 {
+  color: #22c55e;
+  margin-bottom: 12px;
+}
+
+/* ================= Links ================= */
+.footer-content a,
+.footer-content p {
+  display: flex;
+  align-items: center;
+  color: #d1fae5;
+  font-size: .95rem;
+  margin-bottom: 8px;
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  color: #22c55e;
+}
+
+/* ================= Icon + Text ================= */
+.link-item {
+  display: flex;
+  align-items: center;      /* يخلي الأيقونة والنص على نفس الخط */
+  gap: 10px;                /* مسافة مريحة */
+  margin-bottom: 10px;
+}
+
+/* ================= Lucide Icons ================= */
+.footer-icon {
+  width: 18px;
+  height: 18px;
+  color: #22c55e;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+  .link-item {
+  display: flex;
+  align-items: center;      /* يخلي الأيقونة والنص على نفس الخط */
+  gap: 10px;                /* مسافة مريحة */
+  margin-bottom: 10px;
+}
+}
+
+/* ================= Social Icons ================= */
+.socials {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.socials {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+/* الدايرة */
+.socials a {
+  width: 38px;
+  height: 38px;
+  background: rgba(255,255,255,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: .3s;
+
+  overflow: hidden;     /* مهم */
+  line-height: 0;       /* ⭐ يمنع أي baseline */
+}
+
+/* عنصر lucide نفسه */
+.socials lucide-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22c55e;
+  stroke: currentColor;
+}
+
+/* الـ SVG الداخلي (ده المفتاح الحقيقي) */
+.socials lucide-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: scale(0.85);   /* ⭐ الحل السحري */
+}
+
+/* Hover */
+.socials a:hover {
+  background: #22c55e;
+}
+
+.socials a:hover lucide-icon {
+  color: #052e16;
+}
+
+
+
+/* ================= Bottom ================= */
+.footer-bottom {
+  margin-top: 50px;
+  padding: 20px 8%;
+  border-top: 1px solid rgba(255,255,255,.15);
+  display: flex;
+  justify-content: space-between;
+  font-size: .85rem;
+  opacity: .85;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 900px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}

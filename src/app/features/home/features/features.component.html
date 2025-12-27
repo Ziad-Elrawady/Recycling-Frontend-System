@@ -1,0 +1,13 @@
+<section id="features" class="why">
+  <h2>Why Choose GreenZone?</h2>
+
+  <div class="why-grid">
+    @for (f of features; track $index) {
+      <div class="why-card">
+        <div class="icon">{{ getIconEmoji(f.icon) }}</div>
+        <h4>{{ f.title }}</h4>
+        <p>{{ f.description }}</p>
+      </div>
+    }
+  </div>
+</section>

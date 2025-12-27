@@ -1,11 +1,12 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+// import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
-import { FlashMessageService } from '../../core/services/flash-message.service';
+// import { FlashMessageService } from '../../core/services/flash-message.service';
 import { Role } from '../../core/models/role.enum';
 import { LanguageService } from '../../core/services/language.service';
-import { HomeFeaturesComponent } from './components/features/features.component';
+import { HomeFeaturesComponent } from './features/features.component';
+import { HomeFooterComponent } from './footer/footer'
 
 interface Feature {
   icon: string;
@@ -16,117 +17,51 @@ interface Feature {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, HomeFeaturesComponent],
+  imports: [
+    CommonModule,
+    // RouterModule,
+    HomeFeaturesComponent,
+    HomeFooterComponent
+  ],
   templateUrl: './home.html',
   styleUrls: ['./home.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
-  // ==================== INJECTIONS ====================
-  private readonly router = inject(Router);
-  private readonly authService = inject(AuthService);
-  private readonly flashMessage = inject(FlashMessageService);
-  private readonly languageService = inject(LanguageService);
 
-  // ==================== PUBLIC PROPERTIES ====================
+  // private router = inject(Router);
+  private auth = inject(AuthService);
+  // private flash = inject(FlashMessageService);
+  private lang = inject(LanguageService);
+
   readonly Role = Role;
-  readonly direction = this.languageService.direction;
+  readonly direction = this.lang.direction;
 
-  // ==================== GETTERS ====================
   get isLogged(): boolean {
-    return this.authService.isLogged();
+    return this.auth.isLogged();
   }
-
-  get role(): Role | null {
-    return this.authService.getRole();
-  }
-
-  // ==================== TRANSLATIONS ====================
-  private readonly translations: Record<string, string> = {
-    'heroTitle': 'GreenZone Recycling System',
-    'heroSubtitle': 'Smart platform for managing, collecting, and transforming waste into valuable environmental opportunities.',
-    'getStarted': 'Get Started',
-    'learnMore': 'Learn More'
-  };
 
   t(key: string): string {
-    return this.translations[key] ?? this.languageService.t(key) ?? key;
+    const map: Record<string, string> = {
+      heroTitle: 'GreenZone Recycling System',
+      heroSubtitle: 'Transform waste into real environmental impact with smart recycling solutions.',
+      getStarted: 'Get Started',
+      learnMore: 'Learn More'
+    };
+    return map[key] ?? key;
   }
 
-  // ==================== NAVIGATION ====================
-  goTo(path: string): void {
-    try {
-      this.router.navigateByUrl('/' + path).catch(err => {
-        console.error('Navigation error:', err);
-        this.flashMessage.showError('Navigation failed');
-      });
-    } catch (error) {
-      console.error('Navigate error:', error);
-    }
-  }
-
-  goProtected(path: string): void {
-    if (!this.authService.isLogged()) {
-      this.flashMessage.showError('You must login first 🔒');
-      this.router.navigateByUrl('/login');
-      return;
-    }
-    this.goTo(path);
-  }
-
-  // ==================== SCROLL & UI ====================
   scrollToFeatures(): void {
-    try {
-      this.router.navigate([], { fragment: 'features' });
-      setTimeout(() => {
-        const element = document.getElementById('features');
-        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    } catch (error) {
-      console.error('Scroll error:', error);
-    }
+    document.getElementById('features')
+      ?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // ==================== FEATURES DATA ====================
   readonly features: Feature[] = [
-    {
-      icon: 'Recycle',
-      title: 'Easy Collection Requests',
-      description: 'Schedule pickups for your recyclable materials with just a few clicks.'
-    },
-    {
-      icon: 'MapPin',
-      title: 'Smart Route Planning',
-      description: 'Our collectors use optimized routes to reduce emissions.'
-    },
-    {
-      icon: 'Gift',
-      title: 'Earn Rewards',
-      description: 'Get rewarded for your recycling efforts with points.'
-    },
-    {
-      icon: 'TrendingUp',
-      title: 'Track Your Impact',
-      description: 'Monitor your environmental contribution with detailed analytics.'
-    },
-    {
-      icon: 'Users',
-      title: 'Community Driven',
-      description: 'Join thousands of eco-conscious citizens making a difference.'
-    },
-    {
-      icon: 'Leaf',
-      title: 'Sustainable Future',
-      description: 'Be part of the solution for a greener tomorrow.'
-    }
+    { icon: 'Recycle', title: 'Easy Collection', description: 'Schedule pickups in seconds.' },
+    { icon: 'MapPin', title: 'Smart Routes', description: 'Optimized paths reduce emissions.' },
+    { icon: 'Gift', title: 'Earn Rewards', description: 'Recycle and earn points.' },
+    { icon: 'TrendingUp', title: 'Track Impact', description: 'Visualize your eco impact.' },
+    { icon: 'Users', title: 'Community', description: 'Join eco-conscious users.' },
+    { icon: 'Leaf', title: 'Sustainability', description: 'Build a greener future.' }
   ];
-
-
-
 }
-
-
-
-
-
-
