@@ -71,6 +71,13 @@ export const routes: Routes = [
         .then(m => m.CollectorDashboardComponent),
     canActivate: [collectorGuard]
   },
+  {
+    path: 'collector-active-route',
+    loadComponent: () =>
+      import('./features/collector/active-route/active-route.component')
+        .then(m => m.CollectorActiveRouteComponent),
+    canActivate: [collectorGuard]
+  },
 
   // ===================== SHARED =====================
   {
@@ -88,7 +95,7 @@ export const routes: Routes = [
   {
     path: 'collector-requests',
     loadComponent: () =>
-      import('./features/collector/collector-dashboard/available-requests/available-requests.component')
+      import('./features/collector/available-requests/available-requests.component')
         .then(m => m.CollectorAvailableRequestsComponent)
   },
   {

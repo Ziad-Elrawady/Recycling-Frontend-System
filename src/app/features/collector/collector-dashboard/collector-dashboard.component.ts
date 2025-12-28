@@ -3,7 +3,8 @@ import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/data.service';
 import { OrderDto } from '@core/models/order.model';
 import { CollectorHeaderComponent } from './header/header.component';
-import { CollectorRequestsComponent } from "./requests/my-requests/my-requests.component";
+import { CollectorRequestsComponent } from "./my-requests/my-requests.component";
+import { CollectorRecentCollectionsComponent } from './recent-collections/recent-collections.component';
 
 @Component({
   selector: 'app-collector-dashboard',
@@ -11,7 +12,8 @@ import { CollectorRequestsComponent } from "./requests/my-requests/my-requests.c
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CollectorHeaderComponent,
-    CollectorRequestsComponent
+    CollectorRequestsComponent,
+    CollectorRecentCollectionsComponent
 ],
   templateUrl: './collector-dashboard.component.html',
   styleUrl: './collector-dashboard.component.css'

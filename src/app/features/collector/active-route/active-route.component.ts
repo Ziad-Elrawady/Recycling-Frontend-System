@@ -1,68 +1,67 @@
-import { Component, DestroyRef, inject, output, signal } from '@angular/core';
+import { Component, inject, signal, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../../../../core/services/data.service';
-import { OrderDto } from '@core/models/order.model';
-import { CardContentComponent } from '../../../../shared/ui/card/card.component';
-import { CollectorService } from '@core/services/collector.service';
+import { DataService } from '../../../core/services/data.service';
+import { CollectorService } from '../../../core/services/collector.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageService } from '@core/services/language.service';
-import { BadgeComponent } from '@shared/ui/badge/badge.component';
+import { CardContentComponent } from '../../../shared/ui/card/card.component';
+import { LanguageService } from '../../../core/services/language.service';
+import { BadgeComponent } from '../../../shared/ui/badge/badge.component';
 
 @Component({
-  selector: 'app-collector-available-requests',
+  selector: 'app-collector-active-route',
   standalone: true,
   imports: [
     CommonModule,
     CardContentComponent,
-    BadgeComponent,
+    BadgeComponent
   ],
-  templateUrl: './available-requests.component.html',
-  styleUrl: './available-requests.component.css',
+  templateUrl: './active-route.component.html',
+  styleUrl: './active-route.component.css'
 })
-export class CollectorAvailableRequestsComponent {
+export class CollectorActiveRouteComponent {
   dataService: DataService = inject(DataService);
   collectorService = inject(CollectorService);
   destroyRef = inject(DestroyRef);
+  languageService = inject(LanguageService);
 
   collectorId = 1;
-  pendingRequests = signal<any[]>([]);
-  index: number = 0;
-  showActions = false;
-  clickable = true;
-  className?: string;
+  activeRouteRequests = signal<any[]>([]);
 
-  languageService = inject(LanguageService);
   t = (key: string) => this.languageService.t(key);
-  // pendingRequests = computed(() =>
-  //   this.dataService.pendingRequests().filter((r: any) => !r.collectorId || r.collectorId !== this.collectorId)
-  // );
 
   ngOnInit(): void {
-    this.loadCollectorOrders();
+    this.loadActiveRoute();
   }
-  private loadCollectorOrders(): void {
+
+  /**
+   * Load active (accepted/collected) orders from API
+   */
+  private loadActiveRoute(): void {
     this.collectorService
       .getMyOrders()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (orders) => {
-          this.pendingRequests.set(orders || []);
+          if (!orders) {
+            this.activeRouteRequests.set([]);
+            return;
+          }
+
+          // Get active orders (accepted or collected) sorted by route order
+          const activeOrders = orders
+            .filter((o: any) => {
+              const status = o.status?.toLowerCase();
+              return status === 'accepted' || status === 'collected';
+            })
+            .sort((a: any, b: any) => (a.routeOrder || 0) - (b.routeOrder || 0));
+
+          this.activeRouteRequests.set(activeOrders);
         },
-        error: () => {
-          this.pendingRequests.set([]);
+        error: (err) => {
+          console.error('Failed to load active route:', err);
+          this.activeRouteRequests.set([]);
         },
       });
-  }
-
-  selectRequest = output<OrderDto>();
-  acceptRequest = output<OrderDto>();
-
-  onCardClick(request: OrderDto): void {
-    this.selectRequest.emit(request);
-  }
-
-  onAccept(request: OrderDto): void {
-    this.acceptRequest.emit(request);
   }
 
   formatDate(isoString?: string): string {
@@ -78,13 +77,13 @@ export class CollectorAvailableRequestsComponent {
       case 'completed':
         return 'default';
       case 'accepted':
-        return 'default';
+        return 'warning';
       case 'in-progress':
         return 'secondary';
       case 'collected':
         return 'secondary';
       case 'delivered':
-        return 'secondary';
+        return 'default';
       case 'pending':
         return 'warning';
       default:
@@ -111,27 +110,18 @@ export class CollectorAvailableRequestsComponent {
     }
   }
 
-  acceptOrder(orderId: number): void {
-    this.collectorService
-      .acceptOrder(orderId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.loadCollectorOrders();
-          console.log(`Order ${orderId} accepted successfully.`);
-        },
-      });
-  }
-
   changeStatus(orderId: number, status: string): void {
     this.collectorService
       .changeStatus(orderId, status)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.loadCollectorOrders();
-          console.log(`Order ${orderId} status changed successfully.`);
+          this.loadActiveRoute();
+          console.log(`Order ${orderId} status changed to ${status} successfully.`);
         },
+        error: (err) => {
+          console.error('Failed to change order status:', err);
+        }
       });
   }
 }

@@ -119,6 +119,8 @@
   font-weight: 600;
   color: var(--text-main);
   text-decoration: none;
+  position: relative;
+  transition: all 0.25s ease;
 }
 
 .nav-link:hover {
@@ -129,7 +131,9 @@
 .nav-link.active {
   background: rgba(22,163,74,.22);
   color: var(--green-dark);
-  font-weight: 800;
+  font-weight: 700;
+  border-bottom: 3px solid #16a34a;
+  padding-bottom: calc(0.5rem - 3px);
 }
 
 /* Admin only tuning */
@@ -483,4 +487,13 @@
   position: fixed;
   inset: 0;
   z-index: 9998;
+}
+
+/* ===============================
+   🌙 Dark Mode Support
+   =============================== */
+.dark .nav-link.active {
+  background: rgba(74, 222, 128, .15);
+  color: #4ade80;
+  border-bottom-color: #4ade80;
 }

@@ -252,10 +252,22 @@ html {
   @apply bg-primary text-primary-foreground;
 }
 
+/* ===================== DARK MODE SUPPORT ===================== */
+.dark {
+  --brand-green: #4ade80;
+  --muted: #9ca3af;
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --radius: 12px;
+}
 
-
-
-
+:root {
+  --brand-green: #10b981;
+  --muted: #6b7280;
+  --bg: #f8fafb;
+  --card-bg: #ffffff;
+  --radius: 12px;
+}
 
 
 
@@ -275,6 +287,12 @@ body{
   margin: 0;
   padding: 0;
   color: #222;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  color: #f8fafc;
 }
 
 
@@ -327,6 +345,11 @@ body{
   border: 1px dashed rgba(15,23,42,0.03);
 }
 
+.dark .map-placeholder {
+  background: #334155;
+  border-color: rgba(255,255,255,0.1);
+}
+
 /* Requests section */
 .requests-section { margin-top: 22px; }
 .requests-grid {
@@ -346,6 +369,12 @@ body{
   flex-direction: column;
   justify-content: space-between;
 }
+
+.dark .request-card {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
 .request-top { display:flex; justify-content:space-between; align-items:center; }
 .request-meta { color: var(--muted); font-size:13px; margin-top:8px; }
 .pill {
@@ -355,6 +384,11 @@ body{
   border-radius: 999px;
   font-weight:600;
   font-size:13px;
+}
+
+.dark .pill {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4ade80;
 }
 
 /* buttons */

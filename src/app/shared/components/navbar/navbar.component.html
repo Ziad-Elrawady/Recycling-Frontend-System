@@ -35,6 +35,7 @@
           <div class="nav-links">
             <a routerLink="/collector-dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
             <a routerLink="/collector-requests" routerLinkActive="active" class="nav-link">My Orders</a>
+            <a routerLink="/collector-active-route" routerLinkActive="active" class="nav-link">Active Route</a>
           </div>
         }
 
@@ -61,29 +62,6 @@
 
     <!-- ===== Right ===== -->
     <div class="navbar-right">
-
-      <!-- 🔔 Notifications (User + Collector فقط) -->
-      @if (isLoggedIn() && !isAuthRoute() && !isAdmin()) {
-        <div class="relative">
-          <button
-            type="button"
-            class="action-btn"
-            (click)="toggleNotifications($event)"
-          >
-            <i class="fa-regular fa-bell"></i>
-          </button>
-
-          @if (showNotificationsDropdown()) {
-            <div class="dropdown-overlay" (click)="closeDropdowns()"></div>
-
-            <div class="dropdown-menu">
-              <a routerLink="/notifications" class="dropdown-item">
-                View all notifications
-              </a>
-            </div>
-          }
-        </div>
-      }
 
       <!-- 🌐 Language -->
       <button
@@ -113,7 +91,7 @@
           <app-user-menu-dropdown></app-user-menu-dropdown>
         </div>
       }
-      <!-- 👋 Guest -->
+      <!-- 👋 Guest (on non-auth pages) -->
       @if (!isLoggedIn() && !isAuthRoute()) {
         <a routerLink="/login" class="btn-ghost1">Login</a>
         <a routerLink="/register" class="btn-primary">Get Started</a>
