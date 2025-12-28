@@ -1,7 +1,6 @@
 import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../../core/services/language.service';
-import { DataService } from '../../../core/services/data.service';
 import { UserService } from '../../../core/services/user.service';
 import { OrderService } from '../../../core/services/order.service';
 import { OrderDto } from '@core/models/order.model';
@@ -11,6 +10,7 @@ import { CardComponent, CardContentComponent } from '../../../shared/ui/card/car
 import { CreateCollectionModalComponent } from '../../../shared/components/create-collection-modal/create-collection-modal.component';
 import { TabsListComponent, TabsTriggerComponent } from '../../../shared/ui/tabs/tabs.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CitizenService } from '@core/services/citizen.service';
 
 @Component({
   selector: 'app-my-requests',
@@ -132,10 +132,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class MyRequestsComponent {
   languageService = inject(LanguageService);
-  dataService = inject(DataService);
   userService = inject(UserService);
   orderService = inject(OrderService);
   destroyRef = inject(DestroyRef);
+citizenService = inject(CitizenService);
 
   selectedTab = signal<string>('all');
   modalOpen = signal(false);
@@ -159,25 +159,33 @@ export class MyRequestsComponent {
    * Load user's orders from API and update local state
    */
   private loadUserOrders(): void {
-    const user = this.dataService.currentUser();
-    const userId = user?.id;
+  this.citizenService.getProfile().subscribe({
+    next: (user) => {
+      const userId = user.id;
 
-    if (!userId) {
+      if (!userId) {
+        this.userRequests.set([]);
+        return;
+      }
+
+      this.orderService
+        .getUserOrders(String(userId))
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (orders) => {
+            this.userRequests.set(orders || []);
+          },
+          error: () => {
+            this.userRequests.set([]);
+          }
+        });
+    },
+    error: () => {
       this.userRequests.set([]);
-      return;
     }
+  });
+}
 
-    this.orderService.getUserOrders(String(userId))
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (orders) => {
-          this.userRequests.set(orders || []);
-        },
-        error: () => {
-          this.userRequests.set([]);
-        }
-      });
-  }
 
   completedCount = computed(() =>
     this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'completed').length
