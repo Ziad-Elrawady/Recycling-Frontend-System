@@ -15,25 +15,10 @@ html, body {
   justify-content: center;
   align-items: center;
 
-  /* 🌿 Modern Eco-Tech Gradient */
+  /* 🌿 Light Background - Similar to other pages */
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(255, 255, 255, 0.18),
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(0, 200, 140, 0.25),
-      transparent 50%
-    ),
-    linear-gradient(
-      135deg,
-      #0b7d4f 0%,
-      #0bb56b 35%,
-      #0aa45f 60%,
-      #064e3b 100%
-    );
+    radial-gradient(at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 
   padding: 0;
   overflow: hidden;
