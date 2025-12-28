@@ -23,8 +23,8 @@ import { CollectorService } from '@core/services/collector.service';
     TabsTriggerComponent
   ],
   template: `
-    <div class="">
-      <div class="max-w-7xl mx-auto space-y-8">
+    <div>
+      <div class="space-y-8">
 
         <!-- Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
