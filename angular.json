@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lovable-eco": {
+    "greenzone-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/lovable-eco",
+            "outputPath": "dist/greenzone-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "lovable-eco:build:production"
+              "buildTarget": "greenzone-angular:build:production"
             },
             "development": {
-              "buildTarget": "lovable-eco:build:development"
+              "buildTarget": "greenzone-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
