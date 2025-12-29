@@ -16,11 +16,10 @@
   justify-content: center;
   align-items: center;
 
-  /* 🌿 Glassy Eco-Tech Gradient */
+  /* 🌿 Light Background - Similar to other pages */
   background:
-    radial-gradient(at 20% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(at 80% 80%, rgba(0, 200, 140, 0.2) 0%, transparent 50%),
-    linear-gradient(135deg, #0b7d4f 0%, #0bb56b 40%, #0aa45f 70%, #064e3b 100%);
+    radial-gradient(at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 
   padding: 16px;
   overflow: hidden;
