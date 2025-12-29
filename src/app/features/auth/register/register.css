@@ -24,6 +24,12 @@ html, body {
   overflow: hidden;
 }
 
+:host(.dark) .auth-wrapper {
+  background:
+    radial-gradient(at 20% 20%, rgba(74, 222, 128, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #16191d 0%, #1a1e26 100%) !important;
+}
+
 
 
 /* ===== CARD ===== */
@@ -47,6 +53,12 @@ html, body {
     /* ✅ الحل */
   display: flex;
   flex-direction: column;
+}
+
+:host(.dark) .auth-card {
+  background: rgba(15, 17, 23, 0.95) !important;
+  border: 1px solid rgba(74, 222, 128, 0.15) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* ===== Fade Animation ===== */
@@ -87,10 +99,18 @@ html, body {
   margin-bottom: 2px;
 }
 
+:host(.dark) .auth-title {
+  color: hsl(210, 15%, 95%) !important;
+}
+
 .auth-subtitle {
   font-size: 12.5px;
   color: #445b51;
   margin-bottom: 12px;
+}
+
+:host(.dark) .auth-subtitle {
+  color: hsl(210, 15%, 70%) !important;
 }
 
 /* ======================================================
@@ -123,8 +143,18 @@ html, body {
   color: #264235;
 }
 
+:host(.dark) .auth-input {
+  background: rgba(30, 40, 50, 0.8) !important;
+  border-color: rgba(74, 222, 128, 0.15) !important;
+  color: hsl(210, 15%, 95%) !important;
+}
+
 .auth-input::placeholder {
   color: #7d9288;
+}
+
+:host(.dark) .auth-input::placeholder {
+  color: hsl(210, 15%, 60%) !important;
 }
 
 .auth-input:focus {
@@ -132,6 +162,12 @@ html, body {
   border-color: #0bb56b;
   background: #ffffff;
   box-shadow: 0 0 0 2px rgba(11,181,107,0.25);
+}
+
+:host(.dark) .auth-input:focus {
+  border-color: hsl(120, 100%, 50%) !important;
+  background: rgba(20, 30, 40, 0.9) !important;
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2) !important;
 }
 
 /* ===== VALIDATION (مش بتكبر الصفحة) ===== */
@@ -151,6 +187,13 @@ html, body {
   border-radius: 6px;
 
   text-align: left;
+}
+
+:host(.dark) .text-danger,
+:host(.dark) .alert-danger {
+  color: #fca5a5 !important;
+  background: rgba(127, 29, 29, 0.3) !important;
+  border-left-color: #ef4444 !important;
 }
 
 /* ===== ROW INPUTS (BUILDING / APARTMENT) ===== */
@@ -214,8 +257,17 @@ html, body {
   box-shadow: 0 6px 14px rgba(11,181,107,0.35);
 }
 
+:host(.dark) .auth-btn {
+  background: linear-gradient(135deg, #0bb56b, #089a5a) !important;
+  box-shadow: 0 6px 14px rgba(74, 222, 128, 0.3) !important;
+}
+
 .auth-btn:hover {
   background: linear-gradient(135deg, #089a5a, #06723b);
+}
+
+:host(.dark) .auth-btn:hover {
+  background: linear-gradient(135deg, #4ade80, #22c55e) !important;
 }
 
 /* ===== FOOTER ===== */
@@ -227,10 +279,18 @@ html, body {
   text-align: center;
 }
 
+:host(.dark) .auth-footer {
+  color: hsl(210, 15%, 70%) !important;
+}
+
 .auth-footer span {
   color: #0a8f4c;
   cursor: pointer;
   font-weight: 700;
+}
+
+:host(.dark) .auth-footer span {
+  color: #4ade80 !important;
 }
 
 /* ===== MOBILE FALLBACK ===== */

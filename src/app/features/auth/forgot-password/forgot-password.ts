@@ -1,24 +1,30 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [FormsModule],  
+  imports: [FormsModule],
   templateUrl: './forgot-password.html',
-  styleUrls: ['./forgot-password.css']
+  styleUrls: ['./forgot-password.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.dark]': 'isDarkMode()' }
 })
 export class ForgotPasswordComponent {
 
   private flash = inject(FlashMessageService);
   private router = inject(Router);
-  private auth = inject(AuthService);  
+  private auth = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
+  private themeService = inject(ThemeService);
+
+  isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
   error: string | null = null;
   isLoading = false;

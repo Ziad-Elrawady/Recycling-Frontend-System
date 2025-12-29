@@ -26,6 +26,12 @@
   perspective: 1200px; /* 3D hover prep */
 }
 
+:host(.dark) .auth-wrapper {
+  background:
+    radial-gradient(at 20% 20%, rgba(74, 222, 128, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #16191d 0%, #1a1e26 100%) !important;
+}
+
 /* ---------- Card ---------- */
 .auth-card {
   width: 100%;
@@ -44,6 +50,15 @@
   animation: fadeIn 0.6s ease-out forwards;
   transform-style: preserve-3d;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+:host(.dark) .auth-card {
+  background: rgba(15, 17, 23, 0.95) !important;
+  border-color: rgba(74, 222, 128, 0.15) !important;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 10px 20px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(74, 222, 128, 0.1) !important;
 }
 .auth-card:hover {
   transform: rotateX(2deg) rotateY(-2deg) scale(1.01);
@@ -101,10 +116,19 @@
   margin-bottom: 6px;
   letter-spacing: -0.5px;
 }
+
+:host(.dark) .auth-title {
+  color: hsl(210, 15%, 95%) !important;
+}
+
 .auth-subtitle {
   font-size: 14.5px;
   color: #475569;
   margin-bottom: 22px;
+}
+
+:host(.dark) .auth-subtitle {
+  color: hsl(210, 15%, 70%) !important;
 }
 
 /* ---------- Form Group ---------- */
@@ -123,14 +147,31 @@
   font-size: 15px;
   transition: all 0.25s ease;
 }
+
+:host(.dark) .auth-input {
+  background: rgba(30, 40, 50, 0.8) !important;
+  color: hsl(210, 15%, 95%) !important;
+  border-color: rgba(74, 222, 128, 0.15) !important;
+}
+
 .auth-input:focus {
   outline: none;
   background: #ffffff;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(11, 181, 107, 0.25);
 }
+
+:host(.dark) .auth-input:focus {
+  background: rgba(20, 30, 40, 0.9) !important;
+  border-color: hsl(120, 100%, 50%) !important;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2) !important;
+}
 .auth-input::placeholder {
   color: #94a3b8;
+}
+
+:host(.dark) .auth-input::placeholder {
+  color: hsl(210, 15%, 60%) !important;
 }
 
 /* ---------- Validation (Inline – No Height Jump) ---------- */
@@ -145,6 +186,13 @@
   text-align: left;
   animation: slideDown 0.2s ease;
 }
+
+:host(.dark) .validation-error {
+  color: #fca5a5 !important;
+  background: rgba(127, 29, 29, 0.3) !important;
+  border-left-color: #ef4444 !important;
+}
+
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
@@ -162,6 +210,13 @@
   text-align: center;
   animation: shake 0.3s ease;
 }
+
+:host(.dark) .validation-box {
+  background: rgba(127, 29, 29, 0.3) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-3px); }
@@ -180,6 +235,12 @@
   animation: shake 0.3s ease;
 }
 
+:host(.dark) .alert-danger {
+  background: rgba(127, 29, 29, 0.3) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+}
+
 /* ---------- Forgot Password ---------- */
 .auth-forgot {
   width: 100%;
@@ -194,6 +255,11 @@
   font-weight: 600;
   position: relative;
 }
+
+:host(.dark) .auth-forgot span {
+  color: #4ade80 !important;
+}
+
 .auth-forgot span::after {
   content: "";
   position: absolute;
@@ -206,6 +272,10 @@
 }
 .auth-forgot span:hover::after {
   width: 100%;
+}
+
+:host(.dark) .auth-forgot span::after {
+  background: #4ade80 !important;
 }
 
 /* ---------- Submit Button ---------- */
@@ -224,6 +294,12 @@
   position: relative;
   overflow: hidden;
 }
+
+:host(.dark) .auth-btn {
+  background: linear-gradient(135deg, #0bb56b 0%, #089a5a 100%) !important;
+  box-shadow: 0 8px 24px rgba(74, 222, 128, 0.3) !important;
+}
+
 .auth-btn::before {
   content: "";
   position: absolute;
@@ -238,6 +314,12 @@
 .auth-btn:hover {
   box-shadow: 0 10px 28px rgba(11, 181, 107, 0.5);
 }
+
+:host(.dark) .auth-btn:hover {
+  box-shadow: 0 10px 28px rgba(74, 222, 128, 0.4) !important;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%) !important;
+}
+
 .auth-btn:active {
   transform: scale(0.98);
 }
@@ -248,12 +330,22 @@
   font-size: 14px;
   color: #334155;
 }
+
+:host(.dark) .auth-footer {
+  color: hsl(210, 15%, 70%) !important;
+}
+
 .auth-footer span {
   color: var(--primary-dark);
   font-weight: 700;
   cursor: pointer;
   position: relative;
 }
+
+:host(.dark) .auth-footer span {
+  color: #4ade80 !important;
+}
+
 .auth-footer span::after {
   content: "";
   position: absolute;
@@ -266,6 +358,10 @@
 }
 .auth-footer span:hover::after {
   width: 100%;
+}
+
+:host(.dark) .auth-footer span::after {
+  background: #4ade80 !important;
 }
 
 /* ---------- Mobile Safety ---------- */

@@ -1,16 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
   imports: [FormsModule],
   templateUrl: './reset-password.html',
-  styleUrls: ['./reset-password.css']
+  styleUrls: ['./reset-password.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.dark]': 'isDarkMode()' }
 })
 export class ResetPasswordComponent {
 
@@ -20,6 +23,9 @@ export class ResetPasswordComponent {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
+  private themeService = inject(ThemeService);
+
+  isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
   email: string | null = null;
   token: string | null = null;
