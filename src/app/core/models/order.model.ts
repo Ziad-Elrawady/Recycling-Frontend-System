@@ -1,7 +1,9 @@
 // ===== Order DTOs =====
+import { MaterialType } from './material-type.enum';
+
 export interface CreateOrderDto {
   email: string;
-  typeOfMaterial: string;
+  typeOfMaterial: MaterialType;
   quantity: number;
   city: string;
   street: string;
@@ -20,7 +22,7 @@ export interface OrderDto {
   email?: string;
   collectorName?: string;
   factoryName?: string;
-  typeOfMaterial?: string;
+  typeOfMaterial: MaterialType;
   quantity?: number;
   city?: string;
   street?: string;

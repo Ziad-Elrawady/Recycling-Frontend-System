@@ -6,6 +6,7 @@ import { DataService } from '../../../../core/services/data.service';
 import { CreateOrderDto, OrderDto } from '@core/models/order.model';
 import { OrderService } from '@core/services/order.service';
 import { MaterialService } from '../../../../core/services/material.service';
+import { MaterialType } from '@core/models/material-type.enum';
 
 interface MaterialItem {
   id: string;        // TypeName from backend: "Plastic", "Carton", "Can", "Glass"
@@ -198,15 +199,25 @@ export class CreateCollectionModalComponent implements OnChanges, OnInit {
     }
 
     const formValue = this.form.value;
-    const selectedMaterials = this.selectedMaterials();
+    const selectedId = this.selectedMaterials()[0]?.id;
 
-    // Get the first selected material as primary (backend supports one material per order)
-    const primaryMaterial = selectedMaterials[0]?.id; // This will be "Plastic", "Carton", etc.
 
-    // Create collection request object matching backend CreateOrderDto
+    // ✅ التعديل المهم هنا فقط
+    const materialMap: Record<string, MaterialType> = {
+      Plastic: MaterialType.Plastic,
+      Can: MaterialType.Can,
+      Carton: MaterialType.Carton,
+      Glass: MaterialType.Glass
+    };
+
+    if (!selectedId) {
+      this.submitError.set('Select material');
+      return;
+    }
+
     const request: CreateOrderDto = {
       email: formValue.email,
-      typeOfMaterial: primaryMaterial,  // Sends "Plastic", "Carton", "Can", or "Glass"
+      typeOfMaterial: materialMap[selectedId], // ✅ enum رقم
       quantity: this.getTotalWeight(),
       city: formValue.city,
       street: formValue.street,

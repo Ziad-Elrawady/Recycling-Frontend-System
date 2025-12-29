@@ -41,6 +41,9 @@
 
           <div class="reward-card-content">
             <h4>{{ r.name }}</h4>
+            <p class="reward-description">
+  {{ r.description }}
+</p>
             <p>{{ r.requiredPoints }} points</p>
 
             <span [class.red]="r.stockQuantity <= 5">
