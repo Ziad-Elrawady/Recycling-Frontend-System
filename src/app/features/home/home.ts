@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-// import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 // import { FlashMessageService } from '../../core/services/flash-message.service';
@@ -18,6 +18,7 @@ interface Feature {
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     HomeFeaturesComponent,
   ],
   templateUrl: './home.html',

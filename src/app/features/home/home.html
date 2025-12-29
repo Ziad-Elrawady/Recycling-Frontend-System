@@ -11,9 +11,11 @@
       <p>{{ t('heroSubtitle') }}</p>
 
       <div class="hero-actions">
-        <a *ngIf="!isLogged" routerLink="/register" class="btn-primary">
-          {{ t('getStarted') }}
-        </a>
+        @if (!isLogged) {
+          <a routerLink="/register" class="btn-primary">
+            {{ t('getStarted') }}
+          </a>
+        }
 
         <button class="btn-outline" (click)="scrollToFeatures()">
           {{ t('learnMore') }}
