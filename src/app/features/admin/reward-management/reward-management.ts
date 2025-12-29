@@ -7,7 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { RewardService } from '../../../core/services/reward.service';
+import { RewardService } from '../../../core/services/adminreward.service';
 import { Reward } from '../../../core/models/reward.model';
 
 @Component({

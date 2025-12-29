@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RewardService } from './reward.service';
+import { RewardService } from './adminreward.service';
 
 describe('Reward', () => {
   let service: RewardService;
