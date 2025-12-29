@@ -1,14 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { NgZone, ChangeDetectorRef } from '@angular/core';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-confirm-email',
   standalone: true,
   templateUrl: './confirm-email.html',
-  styleUrls: ['./confirm-email.css']
+  styleUrls: ['./confirm-email.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.dark]': 'isDarkMode()' }
 })
 export class ConfirmEmailComponent {
 
@@ -18,6 +21,9 @@ export class ConfirmEmailComponent {
   private router = inject(Router);
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
+  private themeService = inject(ThemeService);
+
+  isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
   status: 'success' | 'error' | null = null;
 

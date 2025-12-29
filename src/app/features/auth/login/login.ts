@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -7,6 +7,7 @@ import { extractAuthError } from '../../../core/utils/auth-error.util';
 import { NgZone, ChangeDetectorRef } from '@angular/core';
 import { Role } from '../../../core/models/role.enum';
 import { UserProfileService } from '@core/services/user-profile.service';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ import { UserProfileService } from '@core/services/user-profile.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
   imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.dark]': 'isDarkMode()' }
 })
 export class LoginComponent {
 
@@ -24,6 +26,9 @@ export class LoginComponent {
   private flash = inject(FlashMessageService);
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
+  private themeService = inject(ThemeService);
+
+  isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
   error: string | null = null;
   isLoading = false;

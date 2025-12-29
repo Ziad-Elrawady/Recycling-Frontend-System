@@ -1,17 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class.dark]': 'isDarkMode()' }
 })
 export class RegisterComponent {
 
@@ -20,6 +23,9 @@ export class RegisterComponent {
   private flash = inject(FlashMessageService);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
+  private themeService = inject(ThemeService);
+
+  isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
   error: string | null = null;
   isLoading = false;
