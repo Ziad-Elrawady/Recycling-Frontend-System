@@ -1,130 +1,186 @@
-<div class="min-h-screen py-8 px-4 md:px-6 lg:px-8">
+<div class="min-h-screen py-8 px-4 md:px-6 lg:px-8 bg-gradient-to-b from-background to-background/50">
   <div class="max-w-4xl mx-auto space-y-8">
 
     <!-- Header -->
-    <div>
-      <h1 class="text-3xl md:text-4xl font-bold text-foreground">
-        {{ t('profile') || 'Profile' }}
-      </h1>
-      <p class="text-muted-foreground mt-2">
-        Manage your account information
+    <div class="space-y-2 mb-8">
+      <div class="flex items-center gap-2">
+        <div class="h-1 w-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded"></div>
+        <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+          {{ t('profile') || 'Profile' }}
+        </h1>
+      </div>
+      <p class="text-muted-foreground mt-2 text-sm md:text-base">
+        Manage your account information and preferences
       </p>
     </div>
 
     <!-- Profile Card -->
-    <app-card class="shadow-md">
-      <app-card-content class="p-6">
-        <div class="flex flex-col sm:flex-row items-center gap-6">
+    <app-card class="shadow-xl border-0 overflow-hidden transition-all duration-300 hover:shadow-2xl bg-card">
+      <!-- Header Gradient Background -->
+      <div class="h-28 bg-gradient-to-r from-green-400/20 via-emerald-400/20 to-teal-400/20 dark:from-green-500/10 dark:via-emerald-500/10 dark:to-teal-500/10"></div>
 
-          <div class="text-center sm:text-start flex-1">
-            <h2 class="text-2xl font-bold text-card-foreground">
+      <app-card-content class="p-8 -mt-20 relative">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+
+          <!-- Profile Picture Section - Column 1 -->
+          <div class="relative flex-shrink-0">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 p-1 shadow-lg ring-4 ring-white dark:ring-slate-800 transition-all duration-300 hover:shadow-xl hover:scale-105">
+              <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 flex items-center justify-center text-3xl font-bold text-slate-600 dark:text-slate-300">
+                {{ fullName().charAt(0).toUpperCase() }}
+              </div>
+            </div>
+            <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-2 border-white dark:border-slate-800 shadow-md"></div>
+          </div>
+
+          <!-- User Info - Column 2 -->
+          <div class="flex flex-col items-center md:items-start gap-2 flex-1">
+            <h2 class="text-2xl md:text-3xl font-bold text-card-foreground">
               {{ fullName() }}
             </h2>
 
-            <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
+            <div class="flex flex-wrap justify-center md:justify-start gap-2 mt-2">
               @for (role of profileData()?.roles ?? []; track role) {
-                <app-badge class="capitalize">
+                <app-badge class="capitalize text-xs md:text-sm bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700">
                   {{ role }}
                 </app-badge>
               }
             </div>
           </div>
 
-          <app-button variant="outline" class="gap-2" (click)="toggleEditMode()">
-            <span>{{ isEditMode() ? '❌' : '✏️' }}</span>
-            {{ isEditMode() ? 'Cancel' : 'Edit Profile' }}
+          <!-- Edit Button - Column 3 -->
+          <app-button
+            variant="outline"
+            class="gap-2 whitespace-nowrap transition-all duration-200"
+            (click)="toggleEditMode()"
+            [class.bg-green-500/10]="isEditMode()"
+          >
+            <span class="text-lg">{{ isEditMode() ? '❌' : '✏️' }}</span>
+            <span class="hidden sm:inline">{{ isEditMode() ? 'Cancel' : 'Edit Profile' }}</span>
+            <span class="sm:hidden">{{ isEditMode() ? 'Cancel' : 'Edit' }}</span>
           </app-button>
         </div>
       </app-card-content>
     </app-card>
 
     <!-- Account Information -->
-    <app-card class="shadow-md">
-      <app-card-header>
-        <app-card-title>Account Information</app-card-title>
-        <app-card-description>Your personal details</app-card-description>
+    <app-card class="shadow-xl border-0 transition-all duration-300 hover:shadow-2xl bg-card">
+      <app-card-header class="pb-4 border-b border-border/50">
+        <app-card-title class="text-2xl">Account Information</app-card-title>
+        <app-card-description>Your personal details and contact information</app-card-description>
       </app-card-header>
 
-      <app-card-content>
+      <app-card-content class="pt-6">
 
         @if (!editForm) {
           <p class="text-muted-foreground">Loading profile...</p>
         }
 
         @if (editForm) {
-    <form [formGroup]="editForm" class="space-y-5">
+    <form [formGroup]="editForm" class="space-y-6">
 
-            <div>
-              <label class="text-sm font-medium">Full Name</label>
-              <input
-                formControlName="fullName"
-                class="w-full px-3 py-2 border rounded-md"
-                [readonly]="!isEditMode()"
-              />
-            </div>
-
-            <div>
-              <label class="text-sm font-medium">Email</label>
-              <input
-                formControlName="email"
-                readonly
-                class="w-full px-3 py-2 border rounded-md bg-muted"
-              />
-            </div>
-
-            <div>
-              <label class="text-sm font-medium">Phone Number</label>
-              <input
-                formControlName="phoneNumber"
-                class="w-full px-3 py-2 border rounded-md"
-                [readonly]="!isEditMode()"
-              />
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Personal Section -->
+            <div class="space-y-4 pb-4">
               <div>
-                <label class="text-sm font-medium">Street</label>
+                <label class="text-sm font-semibold text-foreground block mb-2">Full Name</label>
                 <input
-                  formControlName="street"
-                  class="w-full px-3 py-2 border rounded-md"
+                  formControlName="fullName"
+                  class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                  [readonly]="!isEditMode()"
+                  [class.bg-muted]="!isEditMode()"
+                  placeholder="Enter your full name"
                 />
               </div>
 
               <div>
-                <label class="text-sm font-medium">City</label>
+                <label class="text-sm font-semibold text-foreground block mb-2">Email</label>
                 <input
-                  formControlName="city"
-                  class="w-full px-3 py-2 border rounded-md"
+                  formControlName="email"
+                  readonly
+                  class="w-full px-4 py-2.5 border border-border rounded-lg bg-muted text-muted-foreground placeholder-muted-foreground cursor-not-allowed"
+                  placeholder="Email address"
+                />
+                <p class="text-xs text-muted-foreground mt-1">Email cannot be changed</p>
+              </div>
+
+              <div>
+                <label class="text-sm font-semibold text-foreground block mb-2">Phone Number</label>
+                <input
+                  formControlName="phoneNumber"
+                  class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                  [readonly]="!isEditMode()"
+                  [class.bg-muted]="!isEditMode()"
+                  placeholder="Enter your phone number"
                 />
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="text-sm font-medium">Building No</label>
-                <input
-                  formControlName="buildingNo"
-                  class="w-full px-3 py-2 border rounded-md"
-                />
+            <!-- Address Section -->
+            <div class="space-y-4 border-t border-border/50 pt-4">
+              <h3 class="font-semibold text-foreground text-sm">Address Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-semibold text-foreground block mb-2">Street</label>
+                  <input
+                    formControlName="street"
+                    class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                    [readonly]="!isEditMode()"
+                    [class.bg-muted]="!isEditMode()"
+                    placeholder="Street address"
+                  />
+                </div>
+
+                <div>
+                  <label class="text-sm font-semibold text-foreground block mb-2">City</label>
+                  <input
+                    formControlName="city"
+                    class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                    [readonly]="!isEditMode()"
+                    [class.bg-muted]="!isEditMode()"
+                    placeholder="City"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label class="text-sm font-medium">Apartment</label>
-                <input
-                  formControlName="apartment"
-                  class="w-full px-3 py-2 border rounded-md"
-                />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-semibold text-foreground block mb-2">Building No</label>
+                  <input
+                    formControlName="buildingNo"
+                    class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                    [readonly]="!isEditMode()"
+                    [class.bg-muted]="!isEditMode()"
+                    placeholder="Building number"
+                  />
+                </div>
+
+                <div>
+                  <label class="text-sm font-semibold text-foreground block mb-2">Apartment</label>
+                  <input
+                    formControlName="apartment"
+                    class="w-full px-4 py-2.5 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+                    [readonly]="!isEditMode()"
+                    [class.bg-muted]="!isEditMode()"
+                    placeholder="Apartment"
+                  />
+                </div>
               </div>
             </div>
 
             @if (isEditMode()) {
-              <div class="flex gap-3 pt-4">
+              <div class="flex gap-3 pt-6 border-t border-border/50">
                 <app-button
-                  class="flex-1"
+                  variant="default"
+                  class="flex-1 gap-2 transition-all duration-300"
                   (click)="saveProfile()"
                   [disabled]="isSaving()"
                 >
-                  {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+                  @if (isSaving()) {
+                    <span class="inline-block animate-spin text-base">⏳</span>
+                    <span>Saving...</span>
+                  } @else {
+                    <span class="text-base">✓</span>
+                    <span>Save Changes</span>
+                  }
                 </app-button>
               </div>
             }
