@@ -123,20 +123,7 @@ export class RequestCardComponent {
   languageService = inject(LanguageService);
   t = (key: string) => this.languageService.t(key);
 
-  // getMaterialIcon(material?: string): string {
-  //   switch (material?.toLowerCase()) {
-  //     case 'plastic':
-  //       return '♻️';
-  //     case 'paper':
-  //       return '📄';
-  //     case 'glass':
-  //       return '🍶';
-  //     case 'metal':
-  //       return '🔩';
-  //     default:
-  //       return '🔄';
-  //   }
-  // }
+
 
   getBadgeVariant(
     status?: string

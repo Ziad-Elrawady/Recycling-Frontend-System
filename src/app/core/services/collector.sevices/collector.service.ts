@@ -55,6 +55,13 @@ export class CollectorService {
   newStatus: status
     });
   }
+
+cancelOrder(orderId: number) {
+  return this.http.post(
+    `${API_CONFIG.baseUrl}/Order/${orderId}/cancel`,
+    {}
+  );
+}
 }
 
 

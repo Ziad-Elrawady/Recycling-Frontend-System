@@ -93,6 +93,7 @@ export const API_ENDPOINTS = {
   collectorOrders: {
     accept: (orderId: number) => `/collector/orders/${orderId}/accept`,
     updateStatus: (orderId: number) => `/collector/orders/${orderId}/status`,
+    cancel: (id: number) => `/Order/${id}/cancel`,
     getAvailable: '/collector/orders/available',
     getMyOrders: '/collector/orders/my-orders'
   },

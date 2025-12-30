@@ -132,4 +132,26 @@ export class CollectorActiveRouteComponent {
         }
       });
   }
+
+rejectOrder(orderId: number): void {
+  if (!confirm('Are you sure you want to reject this order?')) return;
+
+  this.collectorService
+    .cancelOrder(orderId)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
+      next: () => {
+        // يشيله فورًا من الصفحة
+        this.activeRouteRequests.update(list =>
+          list.filter(o => o.id !== orderId)
+        );
+      },
+      error: (err) => {
+        console.error('Reject failed', err);
+      }
+    });
+}
+
+
+
 }

@@ -10,134 +10,169 @@
         <p class="text-muted-foreground mt-2">Your current collection route</p>
       </div>
     </div>
-    <app-card-content>
-      <div class="space-y-4 max-h-[600px] overflow-y-auto requests-list pr-2">
-        @for (request of activeRouteRequests(); track request.id; let i = $index) {
-        <div
-          class="border border-border rounded-xl p-4 hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer group bg-white"
-        >
-          <!-- Header with Order ID and Status -->
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h3 class="font-bold text-base text-card-foreground">
-                #{{ i + 1 }} Order #{{ request.id }}
-                @if (request.orderDate) {
-                <span class="font-semibold text-card-foreground">{{ " , " + formatDate(request.orderDate) }}</span>
-                }
-              </h3>
-            </div>
-            <div class="text-right">
-              <app-badge [variant]="getBadgeVariant(request.status)">
-                {{ getStatusText(request.status) }}
-              </app-badge>
+<app-card-content>
+  <div class="space-y-4 max-h-[600px] overflow-y-auto requests-list pr-2">
+
+    @for (request of activeRouteRequests(); track request.id; let i = $index) {
+
+      <div
+        class="border border-border rounded-xl p-4 hover:shadow-lg hover:border-primary/40 transition-all cursor-pointer group bg-white"
+      >
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="font-bold text-base text-card-foreground">
+              #{{ i + 1 }} Order #{{ request.id }}
+              @if (request.orderDate) {
+                <span class="font-semibold text-card-foreground">
+                  {{ " , " + formatDate(request.orderDate) }}
+                </span>
+              }
+            </h3>
+          </div>
+
+          <div class="text-right">
+            <app-badge [variant]="getBadgeVariant(request.status)">
+              {{ getStatusText(request.status) }}
+            </app-badge>
+          </div>
+        </div>
+
+        <!-- From & To -->
+        <div class="grid grid-cols-2 gap-3 mb-3">
+
+          <!-- FROM -->
+          <div class="p-3 border-l-4 border-l-blue-500 bg-blue-50/50 rounded-lg">
+            <p class="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1">
+              📍 From (Pickup)
+            </p>
+            <div class="text-xs space-y-1">
+              <p class="font-semibold text-gray-800">{{ request.userName }}</p>
+
+              @if (request.street) {
+                <p class="text-gray-700">Street: {{ request.street }}</p>
+              }
+              @if (request.buildingNo) {
+                <p class="text-gray-700">Building: {{ request.buildingNo }}</p>
+              }
+              @if (request.apartment) {
+                <p class="text-gray-700">Apartment: {{ request.apartment }}</p>
+              }
+              @if (request.city) {
+                <p class="text-gray-700">City: {{ request.city }}</p>
+              }
             </div>
           </div>
 
-          <!-- From & To Section -->
-          <div class="grid grid-cols-2 gap-3 mb-3">
-            <!-- FROM: Pickup Location -->
-            <div
-              class="p-3 border-l-4 border-l-blue-500 bg-blue-50/50 rounded-lg"
-            >
-              <p
-                class="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1"
-              >
-                📍 From (Pickup)
-              </p>
-              <div class="text-xs space-y-1">
-                <p class="font-semibold text-gray-800">
-                  {{ request.userName }}
-                </p>
-                @if (request.street) {
-                <p class="text-gray-700">Street: {{ request.street }}</p>
-                } @if (request.buildingNo) {
-                <p class="text-gray-700">Building: {{ request.buildingNo }}</p>
-                } @if (request.apartment) {
-                <p class="text-gray-700">Apartment: {{ request.apartment }}</p>
-                } @if (request.city) {
-                <p class="text-gray-700">City: {{ request.city }}</p>
-                }
-              </div>
-            </div>
-
-            <!-- TO: Delivery Location -->
-            <div
-              class="p-3 border-l-4 border-l-green-500 bg-green-50/50 rounded-lg"
-            >
-              <p
-                class="text-xs font-bold text-green-700 uppercase tracking-wide mb-1"
-              >
-                🏭 To (Delivery)
-              </p>
-              <div class="text-xs space-y-1">
-                @if (request.factoryName) {
-                <p class="font-semibold text-gray-800">
-                  {{ request.factoryName }}
-                </p>
-                } @if (request.factoryArea) {
+          <!-- TO -->
+          <div class="p-3 border-l-4 border-l-green-500 bg-green-50/50 rounded-lg">
+            <p class="text-xs font-bold text-green-700 uppercase tracking-wide mb-1">
+              🏭 To (Delivery)
+            </p>
+            <div class="text-xs space-y-1">
+              @if (request.factoryName) {
+                <p class="font-semibold text-gray-800">{{ request.factoryName }}</p>
+              }
+              @if (request.factoryArea) {
                 <p class="text-gray-700">Area: {{ request.factoryArea }}</p>
-                } @if (request.factoryStreet) {
+              }
+              @if (request.factoryStreet) {
                 <p class="text-gray-700">Street: {{ request.factoryStreet }}</p>
-                } @if (request.factoryBuildingNo) {
+              }
+              @if (request.factoryBuildingNo) {
                 <p class="text-gray-700">
                   Building: {{ request.factoryBuildingNo }}
                 </p>
-                } @if (request.factoryCity) {
+              }
+              @if (request.factoryCity) {
                 <p class="text-gray-700">City: {{ request.factoryCity }}</p>
-                }
-              </div>
+              }
             </div>
           </div>
 
-          <!-- Details Row -->
-          <div class="flex items-center gap-4 text-sm text-muted-foreground mb-3 py-2 border-y border-border/30">
-            @if (request.quantity) {
-              <div class="flex items-center gap-2">
-                <span class="text-base">⚖️</span>
-                <div>
-                  <p class="text-muted-foreground">Quantity</p>
-                  <p class="font-semibold text-card-foreground">{{ request.quantity }} kg</p>
-                </div>
-              </div>
-            }
-             @if (request.email) {
-              <div class="flex items-center gap-2">
-                <span class="text-base">�</span>
-                <span class="truncate">{{ request.email }}</span>
-              </div>
-            }
-          </div>
+        </div>
 
-          <!-- Action Button -->
-          @if (request.status.toLowerCase() === 'accepted') {
-          <button
-            class="w-full py-2.5 px-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
-            (click)="changeStatus(request.id, 'Collected'); $event.stopPropagation()"
-          >
-            📦 Mark as Collected
-          </button>
-          } @if (request.status.toLowerCase() === 'collected') {
-          <button
-            class="w-full py-2.5 px-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white text-sm font-bold rounded-lg transition-all shadow-sm hover:shadow-md"
-            (click)="changeStatus(request.id, 'Delivered'); $event.stopPropagation()"
-          >
-            ✅ Mark as Delivered
-          </button>
+        <!-- Details -->
+        <div class="flex items-center gap-4 text-sm text-muted-foreground mb-3 py-2 border-y border-border/30">
+
+          @if (request.quantity) {
+            <div class="flex items-center gap-2">
+              <span class="text-base">⚖️</span>
+              <div>
+                <p class="text-muted-foreground">Quantity</p>
+                <p class="font-semibold text-card-foreground">
+                  {{ request.quantity }} kg
+                </p>
+              </div>
+            </div>
           }
-        </div>
-        }
 
-        <!-- Empty State -->
-        @if (activeRouteRequests().length === 0) {
-        <div class="text-center py-16 text-muted-foreground">
-          <span class="text-6xl block mb-4">📦</span>
-          <p class="font-semibold text-lg">No Active Orders</p>
-          <p class="text-sm mt-2">
-            Accept orders from available requests to start your collection route
-          </p>
+          @if (request.email) {
+            <div class="flex items-center gap-2">
+              <span class="text-base">📧</span>
+              <span class="truncate">{{ request.email }}</span>
+            </div>
+          }
+
         </div>
-        }
+
+        <!-- Action Buttons -->
+<!-- Action Buttons -->
+@if (request.status.toLowerCase() === 'accepted') {
+
+  <div class="grid grid-cols-2 gap-3">
+
+    <!-- Mark Collected -->
+    <button
+      class="py-2.5 px-3 bg-gradient-to-r from-blue-600 to-blue-700
+             hover:from-blue-700 hover:to-blue-800
+             text-white text-sm font-bold rounded-lg transition-all shadow-sm"
+      (click)="changeStatus(request.id, 'Collected'); $event.stopPropagation()"
+    >
+      📦 Mark as Collected
+    </button>
+
+    <!-- Reject -->
+    <button
+      class="py-2.5 px-3 bg-gradient-to-r from-red-600 to-red-700
+             hover:from-red-700 hover:to-red-800
+             text-white text-sm font-bold rounded-lg transition-all shadow-sm"
+      (click)="rejectOrder(request.id); $event.stopPropagation()"
+    >
+      ❌ Reject Order
+    </button>
+
+  </div>
+}
+
+@if (request.status.toLowerCase() === 'collected') {
+  <button
+    class="w-full py-2.5 px-3 bg-gradient-to-r from-green-600 to-green-700
+           hover:from-green-700 hover:to-green-800
+           text-white text-sm font-bold rounded-lg transition-all shadow-sm"
+    (click)="changeStatus(request.id, 'Delivered'); $event.stopPropagation()"
+  >
+    ✅ Mark as Delivered
+  </button>
+}
+
       </div>
-    </app-card-content>
+    }
+
+    <!-- Empty State -->
+    @if (activeRouteRequests().length === 0) {
+      <div class="text-center py-16 text-muted-foreground">
+        <span class="text-6xl block mb-4">📦</span>
+        <p class="font-semibold text-lg">No Active Orders</p>
+        <p class="text-sm mt-2">
+          Accept orders from available requests to start your collection route
+        </p>
+      </div>
+    }
+
+  </div>
+</app-card-content>
+
   </div>
 </div>
