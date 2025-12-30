@@ -1,29 +1,28 @@
 // core/services/admin-user.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { API_CONFIG } from '../config/api.config';
 import { ApplicationUser } from '../models/application-user.model';
 import { Order } from '../models/order.model';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUserService {
 
-  private baseUrl = 'https://localhost:4375/api';
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll() {
-    return this.http.get<ApplicationUser[]>(`${this.baseUrl}/User`);
+    return this.http.get<ApplicationUser[]>(`${API_CONFIG.baseUrl}/User`);
   }
 
   getById(id: string) {
-    return this.http.get<ApplicationUser>(`${this.baseUrl}/User/${id}`);
+    return this.http.get<ApplicationUser>(`${API_CONFIG.baseUrl}/User/${id}`);
   }
 
   update(id: string, data: Partial<ApplicationUser>) {
-    return this.http.put(`${this.baseUrl}/User/${id}`, data);
+    return this.http.put(`${API_CONFIG.baseUrl}/User/${id}`, data);
   }
 
   getOrders(userId: string) {
-    return this.http.get<Order[]>(`${this.baseUrl}/Order/user/${userId}`);
+    return this.http.get<Order[]>(`${API_CONFIG.baseUrl}/Order/user/${userId}`);
   }
 }

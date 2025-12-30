@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiConfigService } from '../config/api.config.service';
+import { API_CONFIG } from '../config/api.config';
 import { UpdateUserDto } from '../models/update-user.dto';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -23,7 +23,6 @@ export interface UserProfileResponse {
 })
 export class UserProfileService {
   private http = inject(HttpClient);
-  private apiConfig = inject(ApiConfigService);
 
   // Signals for profile state
   private _userProfile = signal<UserProfileResponse | null>(null);
@@ -55,7 +54,7 @@ fullName = computed(() => {
     this._error.set(null);
 
     return this.http.get<UserProfileResponse>(
-      `${this.apiConfig.apiUrl}/User/profile`
+      `${API_CONFIG.baseUrl}/User/profile`
     ).pipe(
       tap((profile) => {
         this._userProfile.set(profile);
@@ -78,7 +77,7 @@ fullName = computed(() => {
     this._error.set(null);
 
     return this.http.put<{ success: boolean; message: string }>(
-      `${this.apiConfig.apiUrl}/User/profile`,
+      `${API_CONFIG.baseUrl}/User/profile`,
       data
     ).pipe(
       tap((response) => {
