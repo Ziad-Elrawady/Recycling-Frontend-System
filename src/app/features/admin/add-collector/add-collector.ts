@@ -23,6 +23,7 @@ export class AddCollectorComponent {
 
   isLoading = false;
 error = '';
+  showPassword = false;
 
   onSubmit(form: NgForm) {
 
@@ -84,5 +85,9 @@ error = '';
         });
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

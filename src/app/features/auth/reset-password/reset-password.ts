@@ -31,6 +31,8 @@ export class ResetPasswordComponent {
   token: string | null = null;
   error: string | null = null;
   isLoading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   ngOnInit() {
   this.email = this.route.snapshot.queryParamMap.get('email');
@@ -87,5 +89,13 @@ export class ResetPasswordComponent {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

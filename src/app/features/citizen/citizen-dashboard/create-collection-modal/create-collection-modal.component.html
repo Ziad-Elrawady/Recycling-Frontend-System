@@ -1,190 +1,267 @@
 @if (open) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" (click)="close()">
-    <div class="bg-card rounded-lg border border-border shadow-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+  <div class="fixed inset-0 z-[9998] bg-black/50" (click)="close()"></div>
+  <div class="fixed left-0 right-0 top-[70px] z-[9999] flex items-center justify-center p-4 h-[calc(100vh-70px)] overflow-hidden" (click)="close()">
+    <div class="bg-card rounded-xl border border-border shadow-2xl w-full max-w-2xl mx-auto max-h-full overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border p-6">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">🌱 {{ t('createRequest') }}</h2>
+        <p class="text-sm text-muted-foreground mt-1">Help us recycle and earn rewards!</p>
+      </div>
+      
       <div class="p-6">
-        <h2 class="text-2xl font-bold mb-4">{{ t('createRequest') }}</h2>
 
-        <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-6">
-          <!-- Email -->
-          <div class="space-y-2">
-            <label for="email" class="text-sm font-medium">{{ t('email') }} <span class="text-destructive">*</span></label>
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="example@email.com"
-              class="w-full px-3 py-2 border border-input rounded-md bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-              [class.border-destructive]="form.get('email')?.invalid && form.get('email')?.touched"
-            />
-            <!-- ✅ Email validation error -->
-            @if (form.get('email')?.invalid && form.get('email')?.touched) {
-              <p class="text-xs text-destructive">{{ t('emailRequired') || 'Valid email is required' }}</p>
-            }
-          </div>
-
-          <!-- Materials Section -->
-          <div class="space-y-3">
-            <label class="text-sm font-medium">{{ t('materialsToCollect') }} <span class="text-destructive">*</span></label>
-            <div class="grid grid-cols-2 gap-3">
-              @for (material of materials(); track material.id) {
-                <label class="flex items-start space-x-2 p-3 border border-input rounded-md cursor-pointer hover:bg-muted/50 transition-colors" 
-                       [class.bg-primary/10]="isSelectedMaterial(material.id)"
-                       [class.border-primary]="isSelectedMaterial(material.id)">
-                  <input
-                    type="checkbox"
-                    [checked]="isSelectedMaterial(material.id)"
-                    (change)="toggleMaterial(material.id)"
-                    class="mt-1 rounded"
-                  />
-                  <span class="text-lg">{{ material.icon }}</span>
-                  <span class="flex-1 capitalize">{{ t(material.label) }}</span>
-                </label>
+        <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-8">
+          <!-- Step 1: Contact Information -->
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-primary/20">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">1</span>
+              <h3 class="text-lg font-semibold">Contact Information</h3>
+            </div>
+            
+            <div class="space-y-2">
+              <label for="email" class="text-sm font-medium flex items-center gap-2">
+                <span>📧</span> {{ t('email') }} <span class="text-destructive">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="your.email@example.com"
+                class="w-full px-4 py-3 border border-input rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                [class.border-destructive]="form.get('email')?.invalid && form.get('email')?.touched"
+              />
+              @if (form.get('email')?.invalid && form.get('email')?.touched) {
+                <p class="text-xs text-destructive flex items-center gap-1">
+                  <span>❌</span> {{ t('emailRequired') || 'Valid email is required' }}
+                </p>
               }
             </div>
-            <!-- ✅ Material selection error -->
+          </div>
+
+          <!-- Step 2: Material Selection -->
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-primary/20">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">2</span>
+              <h3 class="text-lg font-semibold">What would you like to recycle?</h3>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+              @for (material of materials(); track material.id) {
+                <button
+                  type="button"
+                  (click)="toggleMaterial(material.id)"
+                  [class.bg-primary/10]="isSelectedMaterial(material.id)"
+                  [class.border-primary]="isSelectedMaterial(material.id)"
+                  [class.border-input]="!isSelectedMaterial(material.id)"
+                  class="p-4 border-2 rounded-lg cursor-pointer hover:border-primary/50 transition-all duration-200 text-left hover:shadow-md"
+                >
+                  <div class="text-3xl mb-2">{{ material.icon }}</div>
+                  <div class="capitalize font-medium text-sm">{{ t(material.label) }}</div>
+                  @if (isSelectedMaterial(material.id)) {
+                    <div class="text-xs text-primary font-semibold mt-1">✓ Selected</div>
+                  }
+                </button>
+              }
+            </div>
+            
             @if (selectedMaterials().length === 0 && form.touched) {
-              <p class="text-xs text-destructive">{{ t('selectMaterial') || 'Please select at least one material' }}</p>
+              <div class="p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive flex items-center gap-2">
+                <span>⚠️</span> {{ t('selectMaterial') || 'Please select at least one material' }}
+              </div>
             }
           </div>
 
           <!-- Selected Materials with Individual Weights -->
           @if (selectedMaterials().length > 0) {
-            <div class="space-y-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <h3 class="font-semibold text-sm">📦 {{ t('selectedMaterials') || 'Selected Materials' }}</h3>
-              @for (material of selectedMaterials(); let i = $index; track material.id) {
-                <div class="flex items-end gap-3 p-3 bg-background rounded-md border border-border">
-                  <div class="flex-1">
-                    <label class="text-xs font-medium text-muted-foreground capitalize">
-                      {{ material.icon }} {{ t(material.label) }}
-                    </label>
-                    <input
-                      type="number"
-                      [value]="getMaterialWeight(material.id)"
-                      (change)="setMaterialWeight(material.id, $event)"
-                      placeholder="0.0"
-                      min="0.1"
-                      step="0.1"
-                      class="w-full px-2 py-2 border border-input rounded-md bg-background text-sm mt-1"
-                      [class.border-destructive]="getMaterialWeight(material.id) <= 0"
-                    />
-                    <!-- ✅ Weight validation -->
-                    @if (getMaterialWeight(material.id) <= 0) {
-                      <p class="text-xs text-destructive mt-1">{{ t('weightRequired') || 'Weight must be > 0' }}</p>
-                    }
+            <div class="space-y-4">
+              <div class="flex items-center gap-3 pb-3 border-b border-primary/20">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">3</span>
+                <h3 class="text-lg font-semibold">How much are you recycling?</h3>
+              </div>
+              
+              <div class="space-y-3 p-4 bg-primary/5 rounded-xl border border-primary/20">
+                @for (material of selectedMaterials(); let i = $index; track material.id) {
+                  <div class="flex items-end gap-3 p-4 bg-background rounded-lg border border-border/50 hover:border-primary/30 transition-colors">
+                    <div class="flex-1 space-y-2">
+                      <label class="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <span class="text-lg">{{ material.icon }}</span> 
+                        <span class="capitalize">{{ t(material.label) }}</span>
+                      </label>
+                      <input
+                        type="number"
+                        [value]="getMaterialWeight(material.id)"
+                        (change)="setMaterialWeight(material.id, $event)"
+                        placeholder="0.0"
+                        min="0.1"
+                        step="0.1"
+                        class="w-full px-3 py-3 border border-input rounded-lg bg-background text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                        [class.border-destructive]="getMaterialWeight(material.id) <= 0"
+                      />
+                      @if (getMaterialWeight(material.id) <= 0) {
+                        <p class="text-xs text-destructive flex items-center gap-1">
+                          <span>⚠️</span> {{ t('weightRequired') || 'Weight must be greater than 0' }}
+                        </p>
+                      }
+                    </div>
+                    <span class="text-sm font-semibold text-primary pb-3 min-w-10">kg</span>
+                    <button
+                      type="button"
+                      (click)="removeMaterial(material.id)"
+                      class="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors font-bold text-lg hover:scale-110"
+                      title="{{ t('remove') || 'Remove' }}"
+                    >
+                      ✕
+                    </button>
                   </div>
-                  <span class="text-xs text-muted-foreground pb-2">kg</span>
-                  <button
-                    type="button"
-                    (click)="removeMaterial(material.id)"
-                    class="px-3 py-2 text-destructive hover:bg-destructive/10 rounded-md text-sm transition-colors"
-                    title="{{ t('remove') || 'Remove' }}"
-                  >
-                    ✕
-                  </button>
-                </div>
-              }
-              <div class="pt-2 border-t border-border">
-                <p class="text-sm font-medium flex justify-between items-center">
-                  <span>{{ t('totalWeight') || 'Total Weight' }}:</span>
-                  <span class="font-bold text-primary text-lg">{{ getTotalWeight() }} kg</span>
-                </p>
-                <!-- ✅ Total weight error -->
-                @if (getTotalWeight() <= 0 && selectedMaterials().length > 0) {
-                  <p class="text-xs text-destructive mt-1">{{ t('totalWeightRequired') || 'Total weight must be greater than 0' }}</p>
                 }
+                
+                <div class="pt-4 border-t border-primary/10 mt-4">
+                  <div class="flex justify-between items-center bg-primary/5 p-3 rounded-lg">
+                    <span class="text-sm font-medium text-muted-foreground">📦 {{ t('totalWeight') || 'Total Weight' }}:</span>
+                    <span class="font-bold text-primary text-xl">{{ getTotalWeight() }} kg</span>
+                  </div>
+                  @if (getTotalWeight() <= 0 && selectedMaterials().length > 0) {
+                    <p class="text-xs text-destructive mt-2 flex items-center gap-1">
+                      <span>⚠️</span> {{ t('totalWeightRequired') || 'Total weight must be greater than 0' }}
+                    </p>
+                  }
+                </div>
               </div>
             </div>
           }
 
           <!-- Address Section -->
-          <div class="space-y-4 p-4 bg-muted/30 rounded-lg border border-border">
-            <h3 class="font-semibold">📍 {{ t('location') }}</h3>
-
-            <!-- City -->
-            <div class="space-y-2">
-              <label for="city" class="text-sm font-medium">{{ t('city') }} <span class="text-destructive">*</span></label>
-              <input
-                id="city"
-                type="text"
-                formControlName="city"
-                placeholder="Cairo"
-                class="w-full px-3 py-2 border border-input rounded-md bg-background"
-                [class.border-destructive]="form.get('city')?.invalid && form.get('city')?.touched"
-              />
-              @if (form.get('city')?.invalid && form.get('city')?.touched) {
-                <p class="text-xs text-destructive">{{ t('cityRequired') || 'City is required' }}</p>
-              }
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-primary/20">
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">4</span>
+              <h3 class="text-lg font-semibold">Where should we pick it up?</h3>
             </div>
-
-            <!-- Street -->
-            <div class="space-y-2">
-              <label for="street" class="text-sm font-medium">{{ t('street') }} <span class="text-destructive">*</span></label>
-              <input
-                id="street"
-                type="text"
-                formControlName="street"
-                placeholder="Main Street"
-                class="w-full px-3 py-2 border border-input rounded-md bg-background"
-                [class.border-destructive]="form.get('street')?.invalid && form.get('street')?.touched"
-              />
-              @if (form.get('street')?.invalid && form.get('street')?.touched) {
-                <p class="text-xs text-destructive">{{ t('streetRequired') || 'Street is required' }}</p>
-              }
-            </div>
-
-            <!-- Building Number -->
-            <div class="grid grid-cols-2 gap-4">
+            
+            <div class="space-y-4 p-4 bg-muted/30 rounded-xl border border-border">
+              <!-- City -->
               <div class="space-y-2">
-                <label for="buildingNo" class="text-sm font-medium">{{ t('buildingNo') }} <span class="text-destructive">*</span></label>
+                <label for="city" class="text-sm font-medium flex items-center gap-2">
+                  <span>🏙️</span> {{ t('city') }} <span class="text-destructive">*</span>
+                </label>
                 <input
-                  id="buildingNo"
+                  id="city"
                   type="text"
-                  formControlName="buildingNo"
-                  placeholder="123"
-                  class="w-full px-3 py-2 border border-input rounded-md bg-background"
-                  [class.border-destructive]="form.get('buildingNo')?.invalid && form.get('buildingNo')?.touched"
+                  formControlName="city"
+                  placeholder="Cairo, Alexandria, etc."
+                  class="w-full px-4 py-3 border border-input rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                  [class.border-destructive]="form.get('city')?.invalid && form.get('city')?.touched"
                 />
-                @if (form.get('buildingNo')?.invalid && form.get('buildingNo')?.touched) {
-                  <p class="text-xs text-destructive">{{ t('buildingNoRequired') || 'Building number is required' }}</p>
+                @if (form.get('city')?.invalid && form.get('city')?.touched) {
+                  <p class="text-xs text-destructive flex items-center gap-1">
+                    <span>❌</span> {{ t('cityRequired') || 'City is required' }}
+                  </p>
                 }
               </div>
 
-              <!-- Apartment (Optional) -->
+              <!-- Street -->
               <div class="space-y-2">
-                <label for="apartment" class="text-sm font-medium">{{ t('apartment') }} <span class="text-xs text-muted-foreground">({{ t('optional') || 'optional' }})</span></label>
+                <label for="street" class="text-sm font-medium flex items-center gap-2">
+                  <span>🛣️</span> {{ t('street') }} <span class="text-destructive">*</span>
+                </label>
                 <input
-                  id="apartment"
+                  id="street"
                   type="text"
-                  formControlName="apartment"
-                  placeholder="A1"
-                  class="w-full px-3 py-2 border border-input rounded-md bg-background"
+                  formControlName="street"
+                  placeholder="Main Street, Tahrir Street, etc."
+                  class="w-full px-4 py-3 border border-input rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                  [class.border-destructive]="form.get('street')?.invalid && form.get('street')?.touched"
                 />
+                @if (form.get('street')?.invalid && form.get('street')?.touched) {
+                  <p class="text-xs text-destructive flex items-center gap-1">
+                    <span>❌</span> {{ t('streetRequired') || 'Street is required' }}
+                  </p>
+                }
+              </div>
+
+              <!-- Building Number -->
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label for="buildingNo" class="text-sm font-medium flex items-center gap-2">
+                    <span>🏢</span> {{ t('buildingNo') }} <span class="text-destructive">*</span>
+                  </label>
+                  <input
+                    id="buildingNo"
+                    type="text"
+                    formControlName="buildingNo"
+                    placeholder="123"
+                    class="w-full px-4 py-3 border border-input rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                    [class.border-destructive]="form.get('buildingNo')?.invalid && form.get('buildingNo')?.touched"
+                  />
+                  @if (form.get('buildingNo')?.invalid && form.get('buildingNo')?.touched) {
+                    <p class="text-xs text-destructive flex items-center gap-1">
+                      <span>❌</span> {{ t('buildingNoRequired') || 'Building number is required' }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Apartment (Optional) -->
+                <div class="space-y-2">
+                  <label for="apartment" class="text-sm font-medium flex items-center gap-2">
+                    <span>🚪</span> {{ t('apartment') }} 
+                    <span class="text-xs text-muted-foreground font-normal">({{ t('optional') || 'optional' }})</span>
+                  </label>
+                  <input
+                    id="apartment"
+                    type="text"
+                    formControlName="apartment"
+                    placeholder="A1"
+                    class="w-full px-4 py-3 border border-input rounded-lg bg-background focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <!-- ✅ Backend Error Display -->
           @if (submitError()) {
-            <div class="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <p class="text-sm text-destructive">{{ submitError() }}</p>
+            <div class="p-4 bg-destructive/10 border border-destructive/30 rounded-lg">
+              <p class="text-sm text-destructive flex items-center gap-2">
+                <span class="text-lg">⚠️</span> {{ submitError() }}
+              </p>
+            </div>
+          }
+
+          <!-- Summary Card -->
+          @if (form.valid && selectedMaterials().length > 0) {
+            <div class="p-4 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+              <h4 class="text-sm font-semibold mb-3 flex items-center gap-2">
+                <span>✨</span> Request Summary
+              </h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between items-center">
+                  <span class="text-muted-foreground">📍 Location:</span>
+                  <span class="font-medium">{{ form.get('city')?.value }}, {{ form.get('street')?.value }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-muted-foreground">♻️ Total Weight:</span>
+                  <span class="font-bold text-primary text-lg">{{ getTotalWeight() }} kg</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-muted-foreground">🎁 Materials:</span>
+                  <span class="font-medium">{{ selectedMaterials().length }} type(s)</span>
+                </div>
+              </div>
             </div>
           }
 
           <!-- Actions -->
-          <div class="flex gap-4 pt-4 border-t border-border">
+          <div class="flex gap-3 pt-6 border-t border-border sticky bottom-0 bg-background">
             <button
               type="button"
               (click)="close()"
-              class="flex-1 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4"
+              class="flex-1 inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-muted hover:text-foreground h-12 px-4"
             >
               {{ t('cancel') }}
             </button>
             <button
               type="submit"
               [disabled]="!form.valid || selectedMaterials().length === 0 || getTotalWeight() <= 0 || isSubmitting()"
-              class="flex-1 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:opacity-90 h-10 px-4"
+              class="flex-1 inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:opacity-90 hover:shadow-lg h-12 px-4"
             >
-              <!-- ✅ Loading state -->
               @if (isSubmitting()) {
                 <span class="inline-flex items-center gap-2">
                   <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -194,7 +271,9 @@
                   {{ t('submitting') || 'Submitting...' }}
                 </span>
               } @else {
-                {{ t('submitRequest') }}
+                <span class="flex items-center gap-2">
+                  <span>🚀</span> {{ t('submitRequest') }}
+                </span>
               }
             </button>
           </div>

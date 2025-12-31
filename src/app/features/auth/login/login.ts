@@ -32,6 +32,7 @@ export class LoginComponent {
 
   error: string | null = null;
   isLoading = false;
+  showPassword = false;
 
     onLogin(form: NgForm) {
     if (form.invalid) {
@@ -88,5 +89,9 @@ export class LoginComponent {
 
   goToForgot() {
     this.router.navigate(['/forgot-password']);
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

@@ -29,6 +29,8 @@ export class RegisterComponent {
 
   error: string | null = null;
   isLoading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   onRegister(form: NgForm) {
 
@@ -127,5 +129,13 @@ export class RegisterComponent {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }
