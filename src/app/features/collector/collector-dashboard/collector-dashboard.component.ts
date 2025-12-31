@@ -4,7 +4,6 @@ import { DataService } from '../../../core/services/user.services/data.service';
 import { OrderDto } from '@core/models/orders/order.model';
 import { CollectorHeaderComponent } from './header/header.component';
 import { CollectorRequestsComponent } from "./my-requests/my-requests.component";
-import { CollectorRecentCollectionsComponent } from './recent-collections/recent-collections.component';
 
 @Component({
   selector: 'app-collector-dashboard',
@@ -12,8 +11,7 @@ import { CollectorRecentCollectionsComponent } from './recent-collections/recent
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CollectorHeaderComponent,
-    CollectorRequestsComponent,
-    CollectorRecentCollectionsComponent
+    CollectorRequestsComponent
 ],
   templateUrl: './collector-dashboard.component.html',
   styleUrl: './collector-dashboard.component.css'
