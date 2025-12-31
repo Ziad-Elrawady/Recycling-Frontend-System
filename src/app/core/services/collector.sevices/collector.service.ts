@@ -56,7 +56,7 @@ export class CollectorService {
     });
   }
 
-cancelOrder(orderId: number): Observable<any> {
+  cancelOrder(orderId: number): Observable<any> {
     return this.http.post<any>(`${API_CONFIG.baseUrl}${API_ENDPOINTS.collectorOrders.cancel(orderId)}`, {});
   }
 }
