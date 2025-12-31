@@ -30,7 +30,7 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
       <!-- Animated Background -->
       <div class="background-orb orb-1"></div>
       <div class="background-orb orb-2"></div>
-      
+
       <div class="content-wrapper">
         <!-- Header -->
         <div class="page-header">
@@ -60,20 +60,26 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
+              <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
+              <p class="stat-label">{{ t('pending') }}</p>
+            </app-card-content>
+          </app-card>
+          <app-card class="stat-card">
+            <app-card-content class="stat-card-content">
+              <div class="stat-value stat-value-accent">{{ deliveredCount() }}</div>
+              <p class="stat-label">Delivered</p>
+            </app-card-content>
+          </app-card>
+          <app-card class="stat-card">
+            <app-card-content class="stat-card-content">
               <div class="stat-value">{{ completedCount() }}</div>
               <p class="stat-label">{{ t('completed') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
-              <div class="stat-value stat-value-accent">{{ inProgressCount() }}</div>
-              <p class="stat-label">{{ t('inProgress') }}</p>
-            </app-card-content>
-          </app-card>
-          <app-card class="stat-card">
-            <app-card-content class="stat-card-content">
-              <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ t('pending') }}</p>
+              <div class="stat-value">{{ cancelledCount() }}</div>
+              <p class="stat-label">Cancelled</p>
             </app-card-content>
           </app-card>
         </div>
@@ -99,8 +105,8 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
               @case ('pending') {
                 <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('pending'), emptyIcon: '⏳', emptyText: 'No pending requests' }"></ng-container>
               }
-              @case ('in-progress') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('in-progress'), emptyIcon: '🔄', emptyText: 'No in-progress requests' }"></ng-container>
+              @case ('delivered') {
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('delivered'), emptyIcon: '🔄', emptyText: 'No delivered requests' }"></ng-container>
               }
               @case ('completed') {
                 <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('completed'), emptyIcon: '✅', emptyText: 'No completed requests' }"></ng-container>
@@ -234,7 +240,7 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
 
     @media (min-width: 768px) {
       .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
       }
     }
 
@@ -341,7 +347,7 @@ citizenService = inject(CitizenService);
   tabs = [
     { value: 'all', label: 'All' },
     { value: 'pending', label: 'Pending' },
-    { value: 'in-progress', label: 'In Progress' },
+    { value: 'delivered', label: 'Delivered' },
     { value: 'completed', label: 'Completed' },
     { value: 'cancelled', label: 'Cancelled' }
   ];
@@ -388,12 +394,16 @@ citizenService = inject(CitizenService);
     this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'completed').length
   );
 
-  inProgressCount = computed(() =>
-    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'in-progress').length
+  deliveredCount = computed(() =>
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'delivered').length
   );
 
   pendingCount = computed(() =>
     this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'pending').length
+  );
+
+  cancelledCount = computed(() =>
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'cancelled').length
   );
 
   getRequestsByStatus(status: string): OrderDto[] {

@@ -39,7 +39,7 @@ export const translations: Translations = {
   collectorDashboard: { en: "Collector Dashboard", ar: "لوحة تحكم الجامع" },
   adminDashboard: { en: "Admin Dashboard", ar: "لوحة تحكم المدير" },
   createRequest: { en: "Create Collection Request", ar: "إنشاء طلب جمع" },
-  totalCollections: { en: "Total Collections", ar: "إجمالي عمليات الجمع" },
+  totalCollections: { en: "Total Requests", ar: "إجمالي الطلبات" },
   co2Saved: { en: "CO₂ Saved", ar: "ثاني أكسيد الكربون الموفر" },
   rewardPoints: { en: "Reward Points", ar: "نقاط المكافآت" },
   recentRequests: { en: "Recent Collection Requests", ar: "طلبات الجمع الأخيرة" },
