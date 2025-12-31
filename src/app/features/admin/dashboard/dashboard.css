@@ -229,9 +229,6 @@
   color: hsl(var(--foreground));
   font-size: 14px;
 }
-  font-size: 15px;
-  transition: color 0.3s ease;
-}
 
 .dark .eco-title {
   color: hsl(160, 84%, 50%);

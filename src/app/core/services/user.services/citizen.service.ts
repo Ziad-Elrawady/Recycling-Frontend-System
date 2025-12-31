@@ -56,11 +56,5 @@ getPoints(): Observable<{ points: number }> {
     return this.http.get<ApplicationUserDto[]>(`${API_CONFIG.baseUrl}${API_ENDPOINTS.users.getAll}`);
   }
 
-  cancelOrder(orderId: number): Observable<any> {
-  return this.http.post(
-    `${API_CONFIG.baseUrl}/Order/${orderId}/user-cancel`,
-    {}
-  );
-}
 
 }

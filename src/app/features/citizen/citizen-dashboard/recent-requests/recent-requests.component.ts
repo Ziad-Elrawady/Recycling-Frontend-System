@@ -1,9 +1,10 @@
-import { Component, Input, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LanguageService } from '../../../../core/services/language.service';
-import { OrderDto } from '@core/models/orders/order.model';
-import { RequestCardComponent } from '../../../../shared/ui/request-card/request-card.component';
-import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from '../../../../shared/ui/card/card.component';
+import { CommonModule } from "@angular/common";
+import { Component, inject, Input } from "@angular/core";
+import { OrderDto } from "@core/models/order.model";
+import { LanguageService } from "@core/services/language.service";
+import { OrderService } from "@core/services/order.services/order.service";
+import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from "@shared/ui/card/card.component";
+import { RequestCardComponent } from "@shared/ui/request-card/request-card.component";
 
 @Component({
   selector: 'app-citizen-recent-requests',
@@ -21,9 +22,50 @@ import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescription
   styleUrl: './recent-requests.component.css'
 })
 export class CitizenRecentRequestsComponent {
+
   @Input() requests: OrderDto[] = [];
 
-  languageService: LanguageService = inject(LanguageService);
+  languageService = inject(LanguageService);
+  orderService = inject(OrderService);
+cancelingOrderId: number | null = null;
 
   t = (key: string) => this.languageService.t(key);
+  flashMessage: string | null = null;
+  flashType: 'success' | 'error' = 'success';
+
+  showFlash(message: string, type: 'success' | 'error') {
+    this.flashMessage = message;
+    this.flashType = type;
+
+    setTimeout(() => {
+      this.flashMessage = null;
+    }, 3000);
+  }
+
+  // ✅ هنا بالظبط
+cancelOrder(order: OrderDto) {
+
+  // ❗️تغيير الحالة فورًا
+  this.requests = this.requests.map(r =>
+    r.id === order.id ? { ...r, status: 'cancelled' } : r
+  );
+
+  this.orderService.cancelOrder(order.id).subscribe({
+    next: () => {
+      this.showFlash('Order canceled successfully ❌', 'success');
+    },
+    error: () => {
+      // لو حصل Error نرجّع الحالة تاني
+      this.requests = this.requests.map(r =>
+        r.id === order.id ? { ...r, status: 'pending' } : r
+      );
+
+      this.showFlash('Failed to cancel order', 'error');
+    }
+  });
 }
+
+
+
+}
+

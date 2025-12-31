@@ -8,7 +8,7 @@
           <div class="icon-badge">🎁</div>
           <div>
             <h1 class="page-title">{{ t('rewards') || 'Rewards Store' }}</h1>
-            <p class="page-subtitle">{{ t('redeemDescription') || 'Redeem your points for amazing rewards' }}</p>
+            <p class="page-subtitle">{{ t('RedeemDescription') || 'Redeem your points for amazing rewards' }}</p>
           </div>
         </div>
       </div>
@@ -19,6 +19,19 @@
         <div class="stats-card">
           <app-citizen-stats-cards [stats]="stats()"></app-citizen-stats-cards>
         </div>
+<!-- Redeemed Gifts Card -->
+@if (showRedeemedCard()) {
+  <div class="stats-card redeemed-card" (click)="openRedeemedModal()">
+    <div class="redeemed-icon">🎁</div>
+
+    <div class="redeemed-info">
+      <span class="redeemed-title">Redeemed Gifts</span>
+      <span class="redeemed-count">
+        {{ redeemedGifts().length }} items
+      </span>
+    </div>
+  </div>
+}
 
         <!-- Cart Button -->
         <button class="cart-button" (click)="openCart()">
@@ -54,6 +67,7 @@
         }
       </div>
     </div>
+
 
     <!-- Toast Notification -->
     @if (showToast) {
@@ -254,5 +268,59 @@
         </div>
       </div>
     }
+  </div>
+}
+@if (showRedeemedModal()) {
+  <div class="modal-overlay" (click)="closeRedeemedModal()"></div>
+
+  <div class="redeemed-modal">
+    <h2>🎁 Your Redeemed Gifts</h2>
+    <p class="modal-subtitle">
+      Click on any gift to view delivery details
+    </p>
+
+    <div class="redeemed-gifts-grid">
+      @for (gift of redeemedGifts(); track gift.id) {
+        <div class="redeemed-gift-card"
+             (click)="selectedRedeemedGift.set(gift)">
+          <img [src]="gift.imageUrl" />
+          <h4>{{ gift.name }}</h4>
+          <span class="gift-badge">Redeemed</span>
+        </div>
+      }
+    </div>
+
+    <button class="btn-secondary" (click)="closeRedeemedModal()">
+      Close
+    </button>
+  </div>
+}
+
+@if (selectedRedeemedGift()) {
+  <div class="modal-overlay"
+       (click)="selectedRedeemedGift.set(null)"></div>
+
+  <div class="gift-details-modal">
+    <img [src]="selectedRedeemedGift()!.imageUrl" />
+
+    <h2>{{ selectedRedeemedGift()!.name }}</h2>
+    <p>{{ selectedRedeemedGift()!.description }}</p>
+
+    <div class="gift-message">
+      🎉 Your gift has been successfully redeemed
+    </div>
+
+    <div class="delivery-info">
+      🚚 Delivery within <b>3–5 working days</b>
+    </div>
+
+    <div class="eco-message">
+      🌱 Thank you for supporting a greener environment
+    </div>
+
+    <button class="btn-primary"
+            (click)="selectedRedeemedGift.set(null)">
+      Got it 👍
+    </button>
   </div>
 }

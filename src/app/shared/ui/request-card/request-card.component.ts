@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BadgeComponent } from '../badge/badge.component';
-import { ButtonComponent } from '../button/button.component';
 import { OrderDto } from '@core/models/orders/order.model';
 import { LanguageService } from '@core/services/language.service';
 
@@ -16,7 +15,7 @@ import { LanguageService } from '@core/services/language.service';
   selector: 'app-request-card',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, BadgeComponent, ButtonComponent],
+  imports: [CommonModule, BadgeComponent, ],
   template: `
     <div
       [class]="
@@ -96,16 +95,23 @@ import { LanguageService } from '@core/services/language.service';
       </div>
 
       <!-- Actions -->
-      @if (showActions && request.status === 'pending') {
-      <app-button
-        variant="default"
-        size="sm"
-        class="w-full"
-        (onClick)="onAccept.emit(request); $event.stopPropagation()"
-      >
-        {{ t('acceptRequest') }}
-      </app-button>
-      }
+<!-- Actions -->
+@if (showActions && request.status.toLowerCase() === 'pending') {
+
+<div class="flex justify-end mt-3">
+  <button
+    class="text-sm font-semibold
+           text-red-600 hover:text-red-700
+           border border-red-200 hover:border-red-300
+           px-3 py-1.5 rounded-lg transition"
+    (click)="onCancel.emit(request); $event.stopPropagation()"
+  >
+    ✖ Cancel
+  </button>
+</div>
+
+}
+
     </div>
   `,
   styles: [`
@@ -220,9 +226,11 @@ export class RequestCardComponent {
   @Input() showActions = false;
   @Input() clickable = true;
   @Input() className?: string;
+  @Input() isCanceling = false;
 
   @Output() onCardClick = new EventEmitter<OrderDto>();
   @Output() onAccept = new EventEmitter<OrderDto>();
+  @Output() onCancel = new EventEmitter<OrderDto>();
 
   languageService = inject(LanguageService);
   t = (key: string) => this.languageService.t(key);

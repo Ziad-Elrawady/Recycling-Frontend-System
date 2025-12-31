@@ -188,12 +188,11 @@ export class AdminDashboardComponent implements OnInit {
   // ---------------------------
   // Rewards Logic (Admin-only)
   // ---------------------------
-  private calculateDistributedRewards(orders: any[]): number {
-    return orders
-      .filter(o => o.status === 'Completed')
-      .reduce((sum, o) => sum + (o.rewardPoints ?? 0), 0);
-  }
-
+private calculateDistributedRewards(orders: any[]): number {
+  return orders.filter(
+    o => String(o.status).toLowerCase() === 'completed'
+  ).length;
+}
   // ---------------------------
   // Helpers
   // ---------------------------
@@ -239,9 +238,9 @@ export class AdminDashboardComponent implements OnInit {
 
   private co2FactorByType: Record<string, number> = {
     plastic: 2.5,
-    paper: 1.0,
+    can: 1.0,
     glass: 0.6,
-    metal: 3.0,
+    carton: 3.0,
   };
 
   private computeCO2FromMaterials(materials: any[]): number {

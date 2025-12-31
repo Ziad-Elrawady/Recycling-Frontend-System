@@ -10,6 +10,15 @@
         <p class="text-muted-foreground mt-2">Your current collection route</p>
       </div>
     </div>
+    @if (flashMessage) {
+  <div
+    class="alert mb-4"
+    [class.alert-success]="flashType === 'success'"
+    [class.alert-danger]="flashType === 'error'"
+  >
+    {{ flashMessage }}
+  </div>
+}
 <app-card-content>
   <div class="space-y-4 max-h-[600px] overflow-y-auto requests-list pr-2">
 
@@ -173,6 +182,5 @@
 
   </div>
 </app-card-content>
-
   </div>
 </div>

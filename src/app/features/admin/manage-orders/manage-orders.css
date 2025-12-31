@@ -443,15 +443,7 @@ tr:hover {
 .btn-complete:active {
   transform: translateY(0);
 }
-  width: 100%;
-  background: #10b981;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-}
+
 
 .btn-save:hover {
   background: #059669;

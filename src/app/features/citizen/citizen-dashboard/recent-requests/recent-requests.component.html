@@ -6,11 +6,16 @@
   <app-card-content>
     <div class="space-y-4">
       @for (request of requests; track request.id) {
-        <app-request-card
-          [request]="request"
-          [clickable]="false"
-          [showActions]="false"
-        ></app-request-card>
+<app-request-card
+  [request]="request"
+  [clickable]="false"
+  [showActions]="true"
+  [isCanceling]="cancelingOrderId === request.id"
+  (onCancel)="cancelOrder($event)"
+>
+</app-request-card>
+
+
       }
       @if (requests.length === 0) {
         <div class="text-center py-8 text-muted-foreground">
@@ -21,3 +26,12 @@
     </div>
   </app-card-content>
 </app-card>
+@if (flashMessage) {
+  <div
+    class="alert mb-4"
+    [class.alert-success]="flashType === 'success'"
+    [class.alert-danger]="flashType === 'error'"
+  >
+    {{ flashMessage }}
+  </div>
+}

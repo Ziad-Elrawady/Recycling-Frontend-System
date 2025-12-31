@@ -36,6 +36,12 @@ export class RewardsComponent implements OnInit {
   private citizenService = inject(CitizenService);
   private languageService = inject(LanguageService);
   private destroyRef = inject(DestroyRef);
+redeemedGifts = signal<Reward[]>([]);
+showRedeemedCard = signal(false);
+
+showRedeemedModal = signal(false);
+selectedRedeemedGift = signal<Reward | null>(null);
+
 
   /* ========================
      Helpers
@@ -257,6 +263,8 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
         this.isCheckingOut.set(false);
 
         if (successCount > 0) {
+  this.redeemedGifts.set(items);     // خزّن الهدايا
+  this.showRedeemedCard.set(true);   // أظهر كارت الهدايا
           this.cart.set([]);
           this.showCartModal.set(false);
           this.loadRewards();
@@ -298,4 +306,13 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
   closeToast() {
     this.showToast = false;
   }
+
+openRedeemedModal() {
+  this.showRedeemedModal.set(true);
+}
+closeRedeemedModal() {
+  this.showRedeemedModal.set(false);
+}
+
+
 }

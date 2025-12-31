@@ -92,6 +92,14 @@ export class OrderService {
   complete(id: number) {
   return this.http.post(`${API_CONFIG.baseUrl}${API_ENDPOINTS.orders.complete(id)}`, null);
 }
+
+cancelOrder(orderId: number): Observable<any> {
+  return this.http.post(
+    `${API_CONFIG.baseUrl}/Order/${orderId}/user-cancel`,
+    {}
+  );
+}
+
 }
 
 

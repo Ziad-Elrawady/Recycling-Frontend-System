@@ -36,6 +36,17 @@ export class CollectorActiveRouteComponent {
   activeRouteRequests = signal<any[]>([]);
 
   t = (key: string) => this.languageService.t(key);
+flashMessage: string | null = null;
+flashType: 'success' | 'error' = 'success';
+
+showFlash(message: string, type: 'success' | 'error') {
+  this.flashMessage = message;
+  this.flashType = type;
+
+  setTimeout(() => {
+    this.flashMessage = null;
+  }, 3000);
+}
 
   ngOnInit(): void {
     this.loadActiveRoute();
@@ -134,24 +145,24 @@ export class CollectorActiveRouteComponent {
   }
 
 rejectOrder(orderId: number): void {
-  if (!confirm('Are you sure you want to reject this order?')) return;
 
   this.collectorService
     .cancelOrder(orderId)
     .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => {
+
+        // Flash Message (لو عندك)
+        this.showFlash('Order rejected successfully ❌', 'success');
+
         // يشيله فورًا من الصفحة
         this.activeRouteRequests.update(list =>
           list.filter(o => o.id !== orderId)
         );
       },
-      error: (err) => {
-        console.error('Reject failed', err);
+      error: () => {
+        this.showFlash('Failed to reject order', 'error');
       }
     });
 }
-
-
-
 }

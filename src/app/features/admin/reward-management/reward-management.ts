@@ -215,14 +215,18 @@ openEdit(reward: Reward) {
 }
 
 
-  deleteReward(id: number) {
-    if (!confirm('Are you sure?')) return;
-
-    this.rewardService.delete(id).subscribe(() => {
+deleteReward(id: number) {
+  this.rewardService.delete(id).subscribe({
+    next: () => {
       this.showFlash('Reward deleted 🗑️', 'success');
       this.loadRewards();
-    });
-  }
+    },
+    error: () => {
+      this.showFlash('❌ Failed to delete reward', 'error');
+    }
+  });
+}
+
 
   updateStock() {
     if (!this.selectedRewardId || this.restockAmount === null || this.restockAmount < 0) {
