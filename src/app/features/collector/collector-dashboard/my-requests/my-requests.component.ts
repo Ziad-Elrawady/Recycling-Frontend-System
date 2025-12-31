@@ -36,8 +36,14 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
-              <div class="stat-value">{{ completedCount() }}</div>
-              <p class="stat-label">{{ t('completed') }}</p>
+              <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
+              <p class="stat-label">{{ t('pending') }}</p>
+            </app-card-content>
+          </app-card>
+          <app-card class="stat-card">
+            <app-card-content class="stat-card-content">
+              <div class="stat-value stat-value-info">{{ collectedCount() }}</div>
+              <p class="stat-label">Collected</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
@@ -48,8 +54,14 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
-              <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ t('pending') }}</p>
+              <div class="stat-value">{{ completedCount() }}</div>
+              <p class="stat-label">{{ t('completed') }}</p>
+            </app-card-content>
+          </app-card>
+          <app-card class="stat-card">
+            <app-card-content class="stat-card-content">
+              <div class="stat-value">{{ cancelledCount() }}</div>
+              <p class="stat-label">Cancelled</p>
             </app-card-content>
           </app-card>
         </div>
@@ -126,7 +138,13 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
 
     @media (min-width: 768px) {
       .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(6, 1fr);
       }
     }
 
@@ -184,6 +202,13 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
       color: hsl(var(--muted-foreground));
       background: none;
       -webkit-text-fill-color: unset;
+    }
+
+    .stat-value-info {
+      background: linear-gradient(135deg, hsl(200, 100%, 50%) 0%, hsl(220, 100%, 60%) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-label {
@@ -276,6 +301,14 @@ export class CollectorRequestsComponent {
 
   pendingCount = computed(() =>
     this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'pending').length
+  );
+
+  collectedCount = computed(() =>
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'collected').length
+  );
+
+  cancelledCount = computed(() =>
+    this.userRequests().filter(r => r.status.toLocaleLowerCase() === 'cancelled').length
   );
 
   getRequestsByStatus(status: string): OrderDto[] {
