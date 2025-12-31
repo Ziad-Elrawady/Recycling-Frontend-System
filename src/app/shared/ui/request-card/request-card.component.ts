@@ -61,6 +61,14 @@ import { LanguageService } from '@core/services/language.service';
             {{ request.street + ' st ,' }}{{ request.city }}
           </span>
         </div>
+@if (request.typeOfMaterial) {
+  <div class="detail-item">
+    <span class="detail-icon">🧱</span>
+    <span class="detail-text">
+      {{ request.typeOfMaterial }}
+    </span>
+  </div>
+}
 
         <!-- Quantity -->
         @if (request.quantity) {
