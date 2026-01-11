@@ -3,7 +3,7 @@
   <div class="fixed left-0 right-0 top-[70px] z-[9999] flex items-center justify-center p-4 h-[calc(100vh-70px)] overflow-hidden" (click)="close()">
     <div class="bg-card rounded-xl border border-border shadow-2xl w-full max-w-2xl mx-auto max-h-full overflow-y-auto" (click)="$event.stopPropagation()">
       <div class="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-border p-6">
-        <h2 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">🌱 {{ t('createRequest') }}</h2>
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">🌱 {{ ('createRequest') }}</h2>
         <p class="text-sm text-muted-foreground mt-1">Help us recycle and earn rewards!</p>
       </div>
       
@@ -19,7 +19,7 @@
             
             <div class="space-y-2">
               <label for="email" class="text-sm font-medium flex items-center gap-2">
-                <span>📧</span> {{ t('email') }} <span class="text-destructive">*</span>
+                <span>📧</span> {{ ('email') }} <span class="text-destructive">*</span>
               </label>
               <input
                 id="email"
@@ -31,7 +31,7 @@
               />
               @if (form.get('email')?.invalid && form.get('email')?.touched) {
                 <p class="text-xs text-destructive flex items-center gap-1">
-                  <span>❌</span> {{ t('emailRequired') || 'Valid email is required' }}
+                  <span>❌</span> {{ 'Valid email is required' }}
                 </p>
               }
             </div>
@@ -55,7 +55,7 @@
                   class="p-4 border-2 rounded-lg cursor-pointer hover:border-primary/50 transition-all duration-200 text-left hover:shadow-md"
                 >
                   <div class="text-3xl mb-2">{{ material.icon }}</div>
-                  <div class="capitalize font-medium text-sm">{{ t(material.label) }}</div>
+                  <div class="capitalize font-medium text-sm">{{ (material.label) }}</div>
                   @if (isSelectedMaterial(material.id)) {
                     <div class="text-xs text-primary font-semibold mt-1">✓ Selected</div>
                   }
@@ -65,7 +65,7 @@
             
             @if (selectedMaterials().length === 0 && form.touched) {
               <div class="p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive flex items-center gap-2">
-                <span>⚠️</span> {{ t('selectMaterial') || 'Please select at least one material' }}
+                <span>⚠️</span> {{ ('selectMaterial') }}
               </div>
             }
           </div>
@@ -84,7 +84,7 @@
                     <div class="flex-1 space-y-2">
                       <label class="text-sm font-medium text-muted-foreground flex items-center gap-2">
                         <span class="text-lg">{{ material.icon }}</span> 
-                        <span class="capitalize">{{ t(material.label) }}</span>
+                        <span class="capitalize">{{ (material.label) }}</span>
                       </label>
                       <input
                         type="number"
@@ -98,7 +98,7 @@
                       />
                       @if (getMaterialWeight(material.id) <= 0) {
                         <p class="text-xs text-destructive flex items-center gap-1">
-                          <span>⚠️</span> {{ t('weightRequired') || 'Weight must be greater than 0' }}
+                          <span>⚠️</span> {{  'Weight must be greater than 0' }}
                         </p>
                       }
                     </div>
@@ -107,7 +107,7 @@
                       type="button"
                       (click)="removeMaterial(material.id)"
                       class="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors font-bold text-lg hover:scale-110"
-                      title="{{ t('remove') || 'Remove' }}"
+                      title="{{  'Remove' }}"
                     >
                       ✕
                     </button>
@@ -116,12 +116,12 @@
                 
                 <div class="pt-4 border-t border-primary/10 mt-4">
                   <div class="flex justify-between items-center bg-primary/5 p-3 rounded-lg">
-                    <span class="text-sm font-medium text-muted-foreground">📦 {{ t('totalWeight') || 'Total Weight' }}:</span>
+                    <span class="text-sm font-medium text-muted-foreground">📦 {{ 'Total Weight' }}:</span>
                     <span class="font-bold text-primary text-xl">{{ getTotalWeight() }} kg</span>
                   </div>
                   @if (getTotalWeight() <= 0 && selectedMaterials().length > 0) {
                     <p class="text-xs text-destructive mt-2 flex items-center gap-1">
-                      <span>⚠️</span> {{ t('totalWeightRequired') || 'Total weight must be greater than 0' }}
+                      <span>⚠️</span> {{  'Total weight must be greater than 0' }}
                     </p>
                   }
                 </div>
@@ -140,7 +140,7 @@
               <!-- City -->
               <div class="space-y-2">
                 <label for="city" class="text-sm font-medium flex items-center gap-2">
-                  <span>🏙️</span> {{ t('city') }} <span class="text-destructive">*</span>
+                  <span>🏙️</span> {{ ('city') }} <span class="text-destructive">*</span>
                 </label>
                 <input
                   id="city"
@@ -152,7 +152,7 @@
                 />
                 @if (form.get('city')?.invalid && form.get('city')?.touched) {
                   <p class="text-xs text-destructive flex items-center gap-1">
-                    <span>❌</span> {{ t('cityRequired') || 'City is required' }}
+                    <span>❌</span> {{  'City is required' }}
                   </p>
                 }
               </div>
@@ -160,7 +160,7 @@
               <!-- Street -->
               <div class="space-y-2">
                 <label for="street" class="text-sm font-medium flex items-center gap-2">
-                  <span>🛣️</span> {{ t('street') }} <span class="text-destructive">*</span>
+                  <span>🛣️</span> {{ ('street') }} <span class="text-destructive">*</span>
                 </label>
                 <input
                   id="street"
@@ -172,7 +172,7 @@
                 />
                 @if (form.get('street')?.invalid && form.get('street')?.touched) {
                   <p class="text-xs text-destructive flex items-center gap-1">
-                    <span>❌</span> {{ t('streetRequired') || 'Street is required' }}
+                    <span>❌</span> {{  'Street is required' }}
                   </p>
                 }
               </div>
@@ -181,7 +181,7 @@
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                   <label for="buildingNo" class="text-sm font-medium flex items-center gap-2">
-                    <span>🏢</span> {{ t('buildingNo') }} <span class="text-destructive">*</span>
+                    <span>🏢</span> {{ ('buildingNo') }} <span class="text-destructive">*</span>
                   </label>
                   <input
                     id="buildingNo"
@@ -193,7 +193,7 @@
                   />
                   @if (form.get('buildingNo')?.invalid && form.get('buildingNo')?.touched) {
                     <p class="text-xs text-destructive flex items-center gap-1">
-                      <span>❌</span> {{ t('buildingNoRequired') || 'Building number is required' }}
+                      <span>❌</span> {{  'Building number is required' }}
                     </p>
                   }
                 </div>
@@ -201,8 +201,8 @@
                 <!-- Apartment (Optional) -->
                 <div class="space-y-2">
                   <label for="apartment" class="text-sm font-medium flex items-center gap-2">
-                    <span>🚪</span> {{ t('apartment') }} 
-                    <span class="text-xs text-muted-foreground font-normal">({{ t('optional') || 'optional' }})</span>
+                    <span>🚪</span> {{ ('apartment') }} 
+                    <span class="text-xs text-muted-foreground font-normal">({{  'optional' }})</span>
                   </label>
                   <input
                     id="apartment"
@@ -255,7 +255,7 @@
               (click)="close()"
               class="flex-1 inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-muted hover:text-foreground h-12 px-4"
             >
-              {{ t('cancel') }}
+              {{ ('cancel') }}
             </button>
             <button
               type="submit"
@@ -268,11 +268,11 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  {{ t('submitting') || 'Submitting...' }}
+                  {{  'Submitting...' }}
                 </span>
               } @else {
                 <span class="flex items-center gap-2">
-                  <span>🚀</span> {{ t('submitRequest') }}
+                  <span>🚀</span> {{ ('submitRequest') }}
                 </span>
               }
             </button>

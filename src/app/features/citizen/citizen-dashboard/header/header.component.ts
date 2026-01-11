@@ -1,6 +1,5 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageService } from '../../../../core/services/language.service';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 
 @Component({
@@ -12,10 +11,6 @@ import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 })
 export class CitizenHeaderComponent {
   @Output() createRequestClick = new EventEmitter<void>();
-
-  languageService: LanguageService = inject(LanguageService);
-
-  t = (key: string) => this.languageService.t(key);
 
   onCreateRequestClick(): void {
     this.createRequestClick.emit();

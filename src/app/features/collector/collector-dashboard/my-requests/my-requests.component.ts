@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OrderDto } from '@core/models/orders/order.model';
 import { DataService } from '@core/services/user.services/data.service';
-import { LanguageService } from '@core/services/language.service';
 import { UserService } from '@core/services/user.services/user.service';
 import { CardComponent, CardContentComponent } from '@shared/ui/card/card.component';
 import { RequestCardComponent } from '@shared/ui/request-card/request-card.component';
@@ -37,7 +36,7 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ t('pending') }}</p>
+              <p class="stat-label">{{ ('pending') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
@@ -49,13 +48,13 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-accent">{{ deliveredCount() }}</div>
-              <p class="stat-label">{{ t('Delivered') }}</p>
+              <p class="stat-label">{{ ('Delivered') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ completedCount() }}</div>
-              <p class="stat-label">{{ t('completed') }}</p>
+              <p class="stat-label">{{ ('completed') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
@@ -241,7 +240,6 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
   `]
 })
 export class CollectorRequestsComponent {
-  languageService = inject(LanguageService);
   dataService = inject(DataService);
   userService = inject(UserService);
   destroyRef = inject(DestroyRef);
@@ -261,7 +259,6 @@ export class CollectorRequestsComponent {
     // { value: 'cancelled', label: 'Cancelled' }
   ];
 
-  t = (key: string) => this.languageService.t(key);
 
   constructor() {
     this.loadUserOrders();

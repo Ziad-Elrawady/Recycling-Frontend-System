@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { LanguageService } from '../../../../core/services/language.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-collector-header',
@@ -9,6 +8,4 @@ import { LanguageService } from '../../../../core/services/language.service';
   styleUrl: './header.component.css'
 })
 export class CollectorHeaderComponent {
-  languageService: LanguageService = inject(LanguageService);
-  t = (key: string) => this.languageService.t(key);
 }

@@ -1,5 +1,4 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { LanguageService } from '../../../core/services/language.service';
 import { DataService } from '../../../core/services/user.services/data.service';
 import { OrderDto } from '@core/models/orders/order.model';
 import { CollectorHeaderComponent } from './header/header.component';
@@ -17,10 +16,8 @@ import { CollectorRequestsComponent } from "./my-requests/my-requests.component"
   styleUrl: './collector-dashboard.component.css'
 })
 export class CollectorDashboardComponent {
-  languageService: LanguageService = inject(LanguageService);
   dataService: DataService = inject(DataService);
 
-  t = (key: string) => this.languageService.t(key);
 
   selectedRequest = signal<OrderDto | null>(null);
   collectorId = 1; // Current collector ID

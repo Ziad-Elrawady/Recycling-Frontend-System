@@ -6,7 +6,6 @@ import { OrderDto } from '../../../core/models/orders/order.model';
 import { CardContentComponent } from '../../../shared/ui/card/card.component';
 import { CollectorService } from '../../../core/services/collector.sevices/collector.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageService } from '../../../core/services/language.service';
 import { BadgeComponent } from '../../../shared/ui/badge/badge.component';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 
@@ -42,8 +41,7 @@ export class CollectorAvailableRequestsComponent {
   className?: string;
   maxActiveOrders = 2; // Maximum 2 active orders
 
-  languageService = inject(LanguageService);
-  t = (key: string) => this.languageService.t(key);
+
   // pendingRequests = computed(() =>
   //   this.dataService.pendingRequests().filter((r: any) => !r.collectorId || r.collectorId !== this.collectorId)
   // );
@@ -162,19 +160,19 @@ export class CollectorAvailableRequestsComponent {
   getStatusText(status?: string): string {
     switch (status?.toLowerCase()) {
       case 'completed':
-        return this.t('completed') || 'Completed';
+        return 'Completed';
       case 'accepted':
-        return this.t('accepted') || 'Accepted';
+        return 'Accepted';
       case 'delivered':
-        return this.t('delivered') || 'Delivered';
+        return 'Delivered';
       case 'in-progress':
-        return this.t('inProgress') || 'In Progress';
+        return 'In Progress';
       case 'collected':
-        return this.t('collected') || 'Collected';
+        return 'Collected';
       case 'pending':
-        return this.t('pending') || 'Pending';
+        return 'Pending';
       default:
-        return this.t('cancelled') || 'Cancelled';
+        return 'Cancelled';
     }
   }
 

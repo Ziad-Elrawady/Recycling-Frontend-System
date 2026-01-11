@@ -4,12 +4,10 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BadgeComponent } from '../badge/badge.component';
 import { OrderDto } from '@core/models/orders/order.model';
-import { LanguageService } from '@core/services/language.service';
 
 @Component({
   selector: 'app-request-card',
@@ -240,8 +238,6 @@ export class RequestCardComponent {
   @Output() onAccept = new EventEmitter<OrderDto>();
   @Output() onCancel = new EventEmitter<OrderDto>();
 
-  languageService = inject(LanguageService);
-  t = (key: string) => this.languageService.t(key);
 
 
 
@@ -269,19 +265,19 @@ export class RequestCardComponent {
   getStatusText(status?: string): string {
     switch (status?.toLowerCase()) {
       case 'completed':
-        return this.t('completed') || 'Completed';
+        return 'Completed';
       case 'accepted':
-        return this.t('accepted') || 'Accepted';
+        return 'Accepted';
       case 'delivered':
-        return this.t('delivered') || 'Delivered';
+        return 'Delivered';
       case 'in-progress':
-        return this.t('inProgress') || 'In Progress';
+        return 'In Progress';
       case 'collected':
-        return this.t('collected') || 'Collected';
+        return 'Collected';
       case 'pending':
-        return this.t('pending') || 'Pending';
+        return 'Pending';
       default:
-        return this.t('cancelled') || 'Cancelled';
+        return 'Cancelled';
     }
   }
 

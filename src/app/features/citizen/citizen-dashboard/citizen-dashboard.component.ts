@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageService } from '../../../core/services/language.service';
 import { CitizenHeaderComponent } from './header/header.component';
 import { CitizenCollectionRequestComponent } from './collection-request/collection-request.component';
 import { CitizenStatsCardsComponent } from './stats-cards/stats-cards.component';
@@ -37,7 +36,6 @@ export class CitizenDashboardComponent {
   private citizenService = inject(CitizenService);
   private orderService = inject(OrderService);
   private authService = inject(AuthService);
-  private languageService = inject(LanguageService);
   private destroyRef = inject(DestroyRef);
 
   points = signal(0);
@@ -47,7 +45,6 @@ modalOpen = signal(false);
   private _recentOrders = signal<OrderDto[]>([]);
   recentRequests = this._recentOrders.asReadonly();
 
-  t = (key: string) => this.languageService.t(key) || '';
 
   constructor() {
     this.loadPoints();
@@ -97,7 +94,7 @@ modalOpen = signal(false);
     {
       id: 'total-collections',
       icon: '📦',
-      label: this.t('totalCollections'),
+      label: ('totalCollections'),
       value: String(this.totalCollections()),
       change: '',
       color: 'text-primary',
@@ -105,7 +102,7 @@ modalOpen = signal(false);
     {
       id: 'reward-points',
       icon: '🎁',
-      label: this.t('rewardPoints'),
+      label: ('rewardPoints'),
       value: String(this.points()),
       change: '',
       color: 'text-primary',

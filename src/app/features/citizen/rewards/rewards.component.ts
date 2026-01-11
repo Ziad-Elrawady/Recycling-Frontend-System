@@ -13,7 +13,6 @@ import { finalize, concatMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
 import { Reward } from '@core/models/rewards/reward.model';
-import { LanguageService } from '@core/services/language.service';
 import { CitizenService } from '@core/services/user.services/citizen.service';
 import { CitizenRewardService } from '@core/services/user.services/citizenreward.service';
 import { RewardService } from '@core/services/admin.services/adminreward.service';
@@ -34,7 +33,6 @@ export class RewardsComponent implements OnInit {
   private adminRewardService = inject(RewardService);
   private citizenRewardService = inject(CitizenRewardService);
   private citizenService = inject(CitizenService);
-  private languageService = inject(LanguageService);
   private destroyRef = inject(DestroyRef);
 redeemedGifts = signal<Reward[]>([]);
 showRedeemedCard = signal(false);
@@ -46,7 +44,6 @@ selectedRedeemedGift = signal<Reward | null>(null);
   /* ========================
      Helpers
   ======================== */
-  t = (key: string) => this.languageService.t(key);
 
   /* ========================
      Points & Stats
@@ -58,7 +55,7 @@ selectedRedeemedGift = signal<Reward | null>(null);
     {
       id: 'reward-points',
       icon: '🎁',
-      label: this.t('rewardPoints'),
+      label: ('rewardPoints'),
       value: String(this.points()),
       change: '',
       color: 'text-primary',

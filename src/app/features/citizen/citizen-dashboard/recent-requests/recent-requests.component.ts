@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, Input } from "@angular/core";
 import { OrderDto } from "../../../../core/models/orders/order.model";
-import { LanguageService } from "@core/services/language.service";
 import { OrderService } from "@core/services/order.services/order.service";
 import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from "@shared/ui/card/card.component";
 import { RequestCardComponent } from "@shared/ui/request-card/request-card.component";
@@ -25,11 +24,9 @@ export class CitizenRecentRequestsComponent {
 
   @Input() requests: OrderDto[] = [];
 
-  languageService = inject(LanguageService);
   orderService = inject(OrderService);
 cancelingOrderId: number | null = null;
 
-  t = (key: string) => this.languageService.t(key);
   flashMessage: string | null = null;
   flashType: 'success' | 'error' = 'success';
 selectedRequestId: number | null = null;

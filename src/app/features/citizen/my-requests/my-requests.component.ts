@@ -1,6 +1,5 @@
 import { Component, inject, signal, computed, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageService } from '../../../core/services/language.service';
 import { UserService } from '../../../core/services/user.services/user.service';
 import { OrderService } from '../../../core/services/order.services/order.service';
 import { OrderDto } from '@core/models/orders/order.model';
@@ -35,12 +34,12 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
         <!-- Header -->
         <div class="page-header">
           <div>
-            <h1 class="page-title">{{ t('myRequests') }}</h1>
+            <h1 class="page-title">{{ ('myRequests') }}</h1>
             <p class="page-subtitle">Manage your collection requests</p>
           </div>
           <app-button (onClick)="modalOpen.set(true)" size="lg" class="gap-2 shadow-md">
             <span>➕</span>
-            {{ t('createRequest') }}
+            {{ ('createRequest') }}
           </app-button>
         </div>
 
@@ -61,7 +60,7 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ t('pending') }}</p>
+              <p class="stat-label">{{ ('pending') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
@@ -73,7 +72,7 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ completedCount() }}</div>
-              <p class="stat-label">{{ t('completed') }}</p>
+              <p class="stat-label">{{ ('completed') }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
@@ -334,7 +333,6 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
   `]
 })
 export class MyRequestsComponent {
-  languageService = inject(LanguageService);
   userService = inject(UserService);
   orderService = inject(OrderService);
   destroyRef = inject(DestroyRef);
@@ -352,7 +350,6 @@ citizenService = inject(CitizenService);
     { value: 'cancelled', label: 'Cancelled' }
   ];
 
-  t = (key: string) => this.languageService.t(key);
 
   constructor() {
     this.loadUserOrders();

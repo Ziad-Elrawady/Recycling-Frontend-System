@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.services/auth.service';
 // import { FlashMessageService } from '../../core/services/flash-message.service';
 import { Role } from '../../core/models/users/role.enum';
-import { LanguageService } from '../../core/services/language.service';
 import { HomeFeaturesComponent } from './features/features.component';
 
 interface Feature {
@@ -28,10 +27,8 @@ interface Feature {
 export class HomeComponent {
 
   private auth = inject(AuthService);
-  private lang = inject(LanguageService);
 
   readonly Role = Role;
-  readonly direction = this.lang.direction;
 
   get isLogged(): boolean {
     return this.auth.isLogged();

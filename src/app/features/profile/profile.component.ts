@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { LanguageService } from '../../core/services/language.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { UserProfileService } from '../../core/services/user.services/user-profile.service';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
@@ -46,7 +45,6 @@ export class ProfileComponent {
 
   private fb = inject(FormBuilder);
   private profileService = inject(UserProfileService);
-  languageService = inject(LanguageService);
   themeService = inject(ThemeService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
@@ -69,7 +67,6 @@ export class ProfileComponent {
 
   fullName = computed(() => this.profileData()?.fullName ?? 'User');
 
-  t = (key: string) => this.languageService.t(key);
 
   constructor() {
     // ✅ effect في injection context صحيح
