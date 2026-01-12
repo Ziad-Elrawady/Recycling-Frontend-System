@@ -9,7 +9,9 @@ export class RewardService {
 
   private http = inject(HttpClient);
 
-  private apiRoot = 'https://localhost:4375';
+    
+private apiRoot = API_CONFIG.baseUrl.replace('/api', '');
+
 
   // =====================
   // IMAGE URL NORMALIZER

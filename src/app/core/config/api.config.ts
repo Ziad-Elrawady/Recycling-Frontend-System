@@ -1,4 +1,4 @@
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 /**
  * API Configuration - Dynamic based on environment

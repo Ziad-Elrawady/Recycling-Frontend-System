@@ -1,13 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Role } from '../../models/users/role.enum';
+import { API_CONFIG } from '../../config/api.config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   private http = inject(HttpClient);
 
-  private API = 'https://localhost:4375/api/auth';
+private API = `${API_CONFIG.baseUrl}/auth`;
 
   private TOKEN_KEY = 'token';
   private ROLE_KEY = 'role';

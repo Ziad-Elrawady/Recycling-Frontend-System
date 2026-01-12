@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Role } from '../../models/users/role.enum';
 import { jwtDecode } from 'jwt-decode';
 import { signal, computed } from '@angular/core';
+import { API_CONFIG } from '../../config/api.config';
 
 interface JwtPayload {
   role?: string | string[];
@@ -25,7 +26,7 @@ private _role = signal<Role | null>(
 );
 isLoggedIn = computed(() => !!this._token() && !!this._role());
 roleSignal = computed(() => this._role());
-  private apiUrl = 'https://localhost:4375/api/Auth';
+private apiUrl = `${API_CONFIG.baseUrl}/Auth`;
 
   // ===========================
   // AUTH API
