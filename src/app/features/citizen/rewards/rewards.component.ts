@@ -41,15 +41,21 @@ showRedeemedModal = signal(false);
 selectedRedeemedGift = signal<Reward | null>(null);
 
 
-  /* ========================
-     Helpers
-  ======================== */
+/* ========================
+   Cashout (UI Only)
+======================== */
+showCashoutModal = signal(false);
+
+walletType: 'vodafone' | 'instapay' | 'bank' = 'vodafone';
+walletNumber = '';
+
 
   /* ========================
      Points & Stats
   ======================== */
   points = signal<number>(0);
   userPoints = computed(() => this.points());
+canWithdraw = computed(() => this.userPoints() >= 20);
 
   stats = computed(() => [
     {
@@ -97,6 +103,7 @@ selectedRedeemedGift = signal<Reward | null>(null);
   ngOnInit(): void {
     this.loadPoints();
     this.loadRewards();
+    this.restoreRedeemedGifts();   // ✅ جديد
   }
 
   /* ========================
@@ -262,6 +269,8 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
         if (successCount > 0) {
   this.redeemedGifts.set(items);     // خزّن الهدايا
   this.showRedeemedCard.set(true);   // أظهر كارت الهدايا
+  localStorage.setItem('redeemedGifts', JSON.stringify(items));
+
           this.cart.set([]);
           this.showCartModal.set(false);
           this.loadRewards();
@@ -311,5 +320,38 @@ closeRedeemedModal() {
   this.showRedeemedModal.set(false);
 }
 
+openCashout() {
+  this.showCashoutModal.set(true);
+}
+
+closeCashout() {
+  this.showCashoutModal.set(false);
+  this.walletNumber = '';
+  this.walletType = 'vodafone';
+}
+
+confirmCashout() {
+  if (!this.walletNumber.trim()) {
+    this.showToastNotification('Please enter wallet / account number', 'error');
+    return;
+  }
+
+  // Fake Success (UI فقط)
+  this.showToastNotification(
+    '✅ Cashout request submitted successfully (Demo)',
+    'success'
+  );
+
+  this.closeCashout();
+}
+restoreRedeemedGifts() {
+  const saved = localStorage.getItem('redeemedGifts');
+
+  if (saved) {
+    const gifts: Reward[] = JSON.parse(saved);
+    this.redeemedGifts.set(gifts);
+    this.showRedeemedCard.set(gifts.length > 0);
+  }
+}
 
 }

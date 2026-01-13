@@ -27,7 +27,35 @@
     <div class="redeemed-info">
       <span class="redeemed-title">Redeemed Gifts</span>
       <span class="redeemed-count">
-        {{ redeemedGifts().length }} items
+        {{ redeemedGifts().length }} Redeemed
+      </span>
+    </div>
+  </div>
+}
+  <!-- ✅ Withdraw Available -->
+@if (canWithdraw()) {
+  <div class="stats-card cashout-card" (click)="openCashout()">
+    <div class="redeemed-icon">💵</div>
+
+    <div class="redeemed-info">
+      <span class="redeemed-title">Withdraw Cash</span>
+      <span class="redeemed-count">
+        {{ userPoints() }} pts available
+      </span>
+    </div>
+  </div>
+}
+
+
+  <!-- 🔒 Withdraw Locked -->
+@if (!canWithdraw()) {
+  <div class="stats-card cashout-card disabled">
+    <div class="redeemed-icon">🔒</div>
+
+    <div class="redeemed-info">
+      <span class="redeemed-title">Withdraw Locked</span>
+      <span class="redeemed-count">
+        {{ 20 - userPoints() }} pts to unlock
       </span>
     </div>
   </div>
@@ -50,6 +78,7 @@
           <span class="cart-arrow">→</span>
         </button>
       </div>
+
     </div>
 
     <!-- Search Section -->
@@ -322,5 +351,40 @@
             (click)="selectedRedeemedGift.set(null)">
       Got it 👍
     </button>
+  </div>
+}
+@if (showCashoutModal()) {
+  <div class="modal-overlay" (click)="closeCashout()"></div>
+
+  <div class="redeemed-modal">
+    <h2>💵 Withdraw Balance</h2>
+    <p class="modal-subtitle">
+      Choose where you want to receive your money
+    </p>
+
+    <!-- Wallet Type -->
+    <select class="input" [(ngModel)]="walletType">
+      <option value="vodafone">Vodafone Cash</option>
+      <option value="instapay">InstaPay</option>
+      <option value="bank">Bank Account</option>
+    </select>
+
+    <!-- Wallet Number -->
+    <input
+      class="input"
+      type="text"
+      [(ngModel)]="walletNumber"
+      placeholder="Wallet / Account Number"
+    />
+
+    <div class="cart-actions">
+      <button class="btn-secondary" (click)="closeCashout()">
+        Cancel
+      </button>
+
+      <button class="btn-primary" (click)="confirmCashout()">
+        Confirm Withdraw
+      </button>
+    </div>
   </div>
 }
