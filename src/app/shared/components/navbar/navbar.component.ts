@@ -89,8 +89,8 @@ displayName = computed(() =>
   // ================= ROUTES =================
   getDashboardRoute(): string {
     if (this.isAdmin()) return '/admin/dashboard';
-    if (this.isCollector()) return '/collector-dashboard';
-    return '/citizen-dashboard';
+    if (this.isCollector()) return '/collector/dashboard';
+    return '/citizen/dashboard';
   }
 
   // ================= ACTIONS =================
@@ -149,9 +149,9 @@ goToDashboard(): void {
     if (this.role() === Role.Admin) {
       this.router.navigateByUrl('/admin/dashboard');
     } else if (this.role() === Role.Collector) {
-      this.router.navigateByUrl('/collector-dashboard');
+      this.router.navigateByUrl('/collector/dashboard');
     } else {
-      this.router.navigateByUrl('/citizen-dashboard');
+      this.router.navigateByUrl('/citizen/dashboard');
     }
   }
 

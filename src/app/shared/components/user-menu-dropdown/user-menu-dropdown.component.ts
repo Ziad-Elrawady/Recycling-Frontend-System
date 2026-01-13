@@ -492,7 +492,7 @@ export class UserMenuDropdownComponent {
     } else if (role === Role.Collector) {
       this.router.navigateByUrl('/collector-dashboard');
     } else {
-      this.router.navigateByUrl('/citizen-dashboard');
+      this.router.navigateByUrl('/citizen/dashboard');
     }
   }
 

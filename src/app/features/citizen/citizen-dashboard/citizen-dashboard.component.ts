@@ -28,7 +28,7 @@ import { OrderDto } from '@core/models/orders/order.model';
     CitizenCollectionRequestComponent,
     CitizenStatsCardsComponent,
     CitizenRecentRequestsComponent,
-  ],
+],
   templateUrl: './citizen-dashboard.component.html',
   styleUrl: './citizen-dashboard.component.css',
 })

@@ -1,0 +1,23 @@
+<!-- Floating Button -->
+<button class="chat-btn" (click)="toggleChat()">
+  💬
+</button>
+
+<!-- Chat Window -->
+ @if (isCitizen) {
+@if (isOpen) {
+  <div class="chat-window">
+    <div class="chat-header">
+      <span>♻️ Recycling Assistant</span>
+      <button (click)="toggleChat()">✕</button>
+    </div>
+
+    <iframe
+      src="https://huggingface.co/embed/asseryehia12/recycle-chatbot?theme=light"
+      frameborder="0"
+      class="chat-iframe">
+    </iframe>
+  </div>
+}
+
+ }

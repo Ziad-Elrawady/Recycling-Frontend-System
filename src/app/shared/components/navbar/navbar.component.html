@@ -42,7 +42,7 @@
         <!-- ================= USER ================= -->
         @if (isUser()) {
           <div class="nav-links desktop-only">
-            <a routerLink="/citizen-dashboard" routerLinkActive="active" class="nav-link" (click)="closeDropdowns()">Dashboard</a>
+            <a routerLink="/citizen/dashboard" routerLinkActive="active" class="nav-link" (click)="closeDropdowns()">Dashboard</a>
             <a routerLink="/rewards" routerLinkActive="active" class="nav-link" (click)="closeDropdowns()">Rewards</a>
             <a routerLink="/my-requests" routerLinkActive="active" class="nav-link" (click)="closeDropdowns()">My Requests</a>
           </div>
@@ -169,7 +169,7 @@
         }
 
         @if (isUser()) {
-          <a routerLink="/citizen-dashboard" routerLinkActive="active" class="mobile-nav-link" (click)="closeDropdowns()">
+          <a routerLink="/citizen/dashboard" routerLinkActive="active" class="mobile-nav-link" (click)="closeDropdowns()">
             <i class="fa-solid fa-home"></i>
             <span>Dashboard</span>
           </a>

@@ -56,7 +56,7 @@ export const routes: Routes = [
 
   // ===================== USER =====================
   {
-    path: 'citizen-dashboard',
+    path: 'citizen/dashboard',
     loadComponent: () =>
       import('./features/citizen/citizen-dashboard/citizen-dashboard.component')
         .then(m => m.CitizenDashboardComponent),
