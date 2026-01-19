@@ -8,6 +8,10 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { AuthInterceptor } from './app/core/interceptors/auth-interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading-interceptor';
+import { importProvidersFrom } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -31,7 +35,20 @@ bootstrapApplication(AppComponent, {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
       multi: true
-    }
+    },
+importProvidersFrom(
+  TranslateModule.forRoot({
+    fallbackLang: 'en'
+  })
+),
+
+// ✅ ده اللي بيخلي Angular يقرأ ملفات الترجمة من assets/i18n
+provideTranslateHttpLoader({
+  prefix: 'assets/i18n/',
+  suffix: '.json'
+}),
+
+
   ]
 }).catch(err => console.error(err));
 

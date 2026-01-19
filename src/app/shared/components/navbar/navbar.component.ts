@@ -15,12 +15,13 @@ import { UserService } from '../../../core/services/user.services/user.service';
 import { AuthService } from '../../../core/services/auth.services/auth.service';
 import { Role } from '@core/models/users/role.enum';
 import { UserMenuDropdownComponent } from '../user-menu-dropdown/user-menu-dropdown.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterLink, RouterLinkActive, UserMenuDropdownComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, UserMenuDropdownComponent,TranslateModule   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -30,6 +31,7 @@ export class NavbarComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
    profileService = inject(UserProfileService);
+private translate = inject(TranslateService);
 
   themeService = inject(ThemeService);
   userService = inject(UserService);
@@ -161,5 +163,15 @@ goToDashboard(): void {
     this.closeDropdowns();
     this.router.navigateByUrl('/login');
   }
+currentLang = signal(localStorage.getItem('lang') || 'en');
+
+toggleLanguage() {
+  const newLang = this.currentLang() === 'en' ? 'ar' : 'en';
+  this.currentLang.set(newLang);
+
+  this.translate.use(newLang);
+  localStorage.setItem('lang', newLang);
+  document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+}
 
 }

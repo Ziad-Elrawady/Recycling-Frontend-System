@@ -7,6 +7,7 @@ import { ThemeService } from './core/services/theme.service';
 import { ChatbotWidgetComponent } from '@shared/chatbot-widget/chatbot-widget';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent {
   themeService = inject(ThemeService);
   private router = inject(Router);
+private translate = inject(TranslateService);
 
   showChatbot = false;
   constructor() {
@@ -40,7 +42,14 @@ export class AppComponent {
 
         this.showChatbot = citizenPages;
       });
+
+        const lang = localStorage.getItem('lang') || 'en';
+  this.translate.use(lang);
+  this.setDir(lang);
   }
+setDir(lang: string) {
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
 
   title = 'GreenZone';
 }

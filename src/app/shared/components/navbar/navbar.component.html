@@ -79,6 +79,15 @@
           [class.fa-sun]="themeService.theme() !== 'light'">
         </i>
       </button>
+<!-- 🌍 Language Toggle -->
+<button
+  type="button"
+  class="action-btn"
+  (click)="toggleLanguage()"
+  title="Change Language"
+>
+  {{ currentLang() === 'en' ? 'AR' : 'EN' }}
+</button>
 
       <!-- 👤 User Menu with Dropdown Component -->
       @if (isLoggedIn() && !isAuthRoute()) {
@@ -89,7 +98,8 @@
 
       <!-- 👋 Guest (on non-auth pages) -->
       @if (!isLoggedIn() && !isAuthRoute()) {
-        <a routerLink="/login" class="btn-ghost1">Login</a>
+        <a routerLink="/login" class="btn-ghost1">{{ 'LOGIN' | translate }}
+</a>
         <a routerLink="/register" class="btn-primary">Get Started</a>
       }
 
