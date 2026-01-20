@@ -1,10 +1,12 @@
 import { Component, inject, ChangeDetectionStrategy, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-success',
   standalone: true,
+    imports: [TranslateModule],   // ✅ أضف دي
   templateUrl: './register-success.html',
   styleUrls: ['./register-success.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

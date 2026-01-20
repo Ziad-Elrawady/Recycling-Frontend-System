@@ -17,11 +17,13 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
 import { CitizenRewardService } from '@core/services/user.services/citizenreward.service';
 import { RewardService } from '@core/services/admin.services/adminreward.service';
 import { CitizenStatsCardsComponent } from '../citizen-dashboard/stats-cards/stats-cards.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reward-component',
   standalone: true,
-  imports: [CommonModule, FormsModule, CitizenStatsCardsComponent],
+  imports: [CommonModule, FormsModule, CitizenStatsCardsComponent, TranslateModule],
   templateUrl: './rewards.component.html',
   styleUrls: ['./rewards.component.css'],
 })
@@ -40,6 +42,10 @@ showRedeemedCard = signal(false);
 showRedeemedModal = signal(false);
 selectedRedeemedGift = signal<Reward | null>(null);
 
+private translate = inject(TranslateService);
+t(key: string, params?: any) {
+  return this.translate.instant(key, params);
+}
 
 /* ========================
    Cashout (UI Only)
@@ -61,7 +67,7 @@ canWithdraw = computed(() => this.userPoints() >= 20);
     {
       id: 'reward-points',
       icon: '🎁',
-      label: ('rewardPoints'),
+    label: 'REWARDS.REWARD_POINTS',   // ✅ مفتاح ترجمة
       value: String(this.points()),
       change: '',
       color: 'text-primary',
@@ -153,7 +159,11 @@ canWithdraw = computed(() => this.userPoints() >= 20);
   ======================== */
 redeemReward(reward: Reward) {
   if (!this.canRedeem(reward)) {
-    this.showToastNotification('Cannot redeem this reward', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.CANNOT_REDEEM'),
+  'error'
+);
+
     return;
   }
 
@@ -192,27 +202,42 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
   ======================== */
   addToCart(reward: Reward) {
     if (!this.canRedeem(reward)) {
-      this.showToastNotification('Cannot add this reward', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.CANNOT_REDEEM'),
+  'error'
+);
       return;
     }
 
     if (this.isInCart(reward)) {
-      this.showToastNotification('Already in cart', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.ALREADY_IN_CART'),
+  'error'
+);
       return;
     }
 
     if (this.cartTotal() + reward.requiredPoints > this.userPoints()) {
-      this.showToastNotification('Exceeds your points balance', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.EXCEEDS_POINTS'),
+  'error'
+);
       return;
     }
 
     this.cart.update(items => [...items, reward]);
-    this.showToastNotification(`"${reward.name}" added to cart`, 'success');
+this.showToastNotification(
+  `${reward.name} ${this.t('REWARDS.TOAST.ADDED')}`,
+  'success'
+);
   }
 
   removeFromCart(reward: Reward) {
     this.cart.update(items => items.filter(i => i.id !== reward.id));
-    this.showToastNotification(`"${reward.name}" removed`, 'success');
+this.showToastNotification(
+  `${reward.name} ${this.t('REWARDS.TOAST.REMOVED')}`,
+  'success'
+);
   }
 
   isInCart(reward: Reward): boolean {
@@ -229,7 +254,10 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
 
   clearCart() {
     this.cart.set([]);
-    this.showToastNotification('Cart cleared', 'success');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.CART_CLEARED'),
+  'success'
+);
   }
 
   /* ========================
@@ -237,12 +265,18 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
   ======================== */
   redeemCart() {
   if (this.cart().length === 0) {
-    this.showToastNotification('Cart is empty', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.CART_EMPTY'),
+  'error'
+);
     return;
   }
 
   if (this.cartTotal() > this.userPoints()) {
-    this.showToastNotification('Not enough points', 'error');
+this.showToastNotification(
+  this.t('REWARDS.TOAST.NOT_ENOUGH_POINTS'),
+  'error'
+);
     return;
   }
 
@@ -277,12 +311,12 @@ this.citizenRewardService.redeem(reward.id!, 1).subscribe({
           this.loadPoints();
 
           this.showToastNotification(
-            `Redeemed ${successCount} reward(s) successfully`,
+this.t('REWARDS.TOAST.REDEEM_SUCCESS', { count: successCount }),
             'success'
           );
         } else {
           this.showToastNotification(
-            'All redemptions failed',
+this.t('REWARDS.TOAST.ALL_FAILED'),
             'error'
           );
         }
@@ -332,13 +366,13 @@ closeCashout() {
 
 confirmCashout() {
   if (!this.walletNumber.trim()) {
-    this.showToastNotification('Please enter wallet / account number', 'error');
+this.t('REWARDS.TOAST.ENTER_WALLET')
     return;
   }
 
   // Fake Success (UI فقط)
   this.showToastNotification(
-    '✅ Cashout request submitted successfully (Demo)',
+this.t('REWARDS.TOAST.CASHOUT_SUCCESS'),
     'success'
   );
 

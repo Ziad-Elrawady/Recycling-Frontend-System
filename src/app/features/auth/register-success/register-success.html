@@ -9,12 +9,18 @@
     </div>
 
 
-    <h2 class="auth-title">Account Created Successfully ✔</h2>
-    <p class="auth-subtitle">
-      Please check your email inbox and confirm your account to continue.
-    </p>
+<h2 class="auth-title">
+  {{ 'REGISTER_SUCCESS.TITLE' | translate }}
+</h2>
 
-    <button class="go-login-btn" (click)="goToLogin()">Go to Login</button>
+<p class="auth-subtitle">
+  {{ 'REGISTER_SUCCESS.SUBTITLE' | translate }}
+</p>
+
+<button class="go-login-btn" (click)="goToLogin()">
+  {{ 'REGISTER_SUCCESS.GO_LOGIN' | translate }}
+</button>
+
 
   </div>
 

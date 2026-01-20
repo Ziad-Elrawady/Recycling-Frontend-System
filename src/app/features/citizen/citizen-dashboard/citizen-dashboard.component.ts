@@ -90,24 +90,25 @@ modalOpen = signal(false);
       });
   }
 
-  stats = computed(() => [
-    {
-      id: 'total-collections',
-      icon: '📦',
-      label: ('totalCollections'),
-      value: String(this.totalCollections()),
-      change: '',
-      color: 'text-primary',
-    },
-    {
-      id: 'reward-points',
-      icon: '🎁',
-      label: ('rewardPoints'),
-      value: String(this.points()),
-      change: '',
-      color: 'text-primary',
-    },
-  ]);
+stats = computed(() => [
+  {
+    id: 'total-collections',
+    icon: '📦',
+    label: 'DASHBOARD.TOTAL_COLLECTIONS',
+    value: String(this.totalCollections()),
+    change: '',
+    color: 'text-primary',
+  },
+  {
+    id: 'reward-points',
+    icon: '🎁',
+    label: 'DASHBOARD.REWARD_POINTS',
+    value: String(this.points()),
+    change: '',
+    color: 'text-primary',
+  },
+]);
+
 
   onRequestCreated(): void {
     this.loadUserOrders();

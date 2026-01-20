@@ -7,8 +7,10 @@
       <div class="leaf two"></div>
     </div>
 
-<h2 class="auth-title">Let’s Get You Started</h2>
-<p class="auth-subtitle">Sign up in seconds and be part of GreenZone</p>
+<h2 class="auth-title">{{ 'REGISTER.TITLE' | translate }}
+</h2>
+<p class="auth-subtitle">{{ 'REGISTER.SUBTITLE' | translate }}
+</p>
 
 
     <!-- ERROR -->
@@ -27,7 +29,7 @@
         name="fullName"
         ngModel
         required
-        placeholder="Full Name"
+placeholder="{{ 'REGISTER.FULL_NAME' | translate }}"
         (input)="clearError()"
       >
 
@@ -38,7 +40,7 @@
         name="email"
         ngModel
         required
-        placeholder="Email Address"
+placeholder="{{ 'REGISTER.EMAIL' | translate }}"
         (input)="clearError()"
       >
 
@@ -48,7 +50,7 @@
         name="phoneNumber"
         ngModel
         required
-        placeholder="Phone Number"
+placeholder="{{ 'REGISTER.PHONE' | translate }}"
         (input)="clearError()"
       >
 
@@ -61,7 +63,7 @@
           ngModel
           required
           minlength="6"
-          placeholder="Password"
+placeholder="{{ 'REGISTER.PASSWORD' | translate }}"
           (input)="clearError()"
           style="padding-right: 45px;"
         >
@@ -93,7 +95,7 @@
           ngModel
           required
           minlength="6"
-          placeholder="Confirm Password"
+placeholder="{{ 'REGISTER.CONFIRM_PASSWORD' | translate }}"
           (input)="clearError()"
           style="padding-right: 45px;"
         >
@@ -116,56 +118,96 @@
         </button>
       </div>
 
-      <!-- Address -->
-      <input
-        class="auth-input"
-        name="city"
-        ngModel
-        required
-        placeholder="City"
-      >
+<!-- Address -->
 
-      <input
-        class="auth-input"
-        name="street"
-        ngModel
-        required
-        placeholder="Street"
-      >
+<!-- City -->
+<select
+  class="auth-input"
+  name="city"
+  [(ngModel)]="selectedCity"
+  (change)="onCityChange()"
+  required
+>
+  <option value="" disabled selected>
+    {{ 'REGISTER.SELECT_CITY' | translate }}
+  </option>
+  @for (city of cities; track city) {
+    <option [value]="city">{{ city }}</option>
+  }
+</select>
 
-      <div class="row-inputs">
-        <input
-          class="auth-input half"
-          name="buildingNo"
-          ngModel
-          required
-          placeholder="Building No"
-        >
+<!-- District -->
+<select
+  class="auth-input"
+  name="district"
+  [(ngModel)]="selectedDistrict"
+  (change)="onDistrictChange()"
+  [disabled]="!selectedCity"
+  required
+>
+  <option value="" disabled selected>
+    {{ 'REGISTER.SELECT_DISTRICT' | translate }}
+  </option>
+  @for (d of districtsMap[selectedCity!] || []; track d) {
+    <option [value]="d">{{ d }}</option>
+  }
+</select>
 
-        <input
-          class="auth-input half"
-          name="apartment"
-          ngModel
-          required
-          placeholder="Apartment"
-        >
-      </div>
+<!-- Street -->
+<select
+  class="auth-input"
+  name="street"
+  [(ngModel)]="selectedStreet"
+  (change)="onStreetChange()"
+  [disabled]="!selectedDistrict"
+  required
+>
+  <option value="" disabled selected>
+    {{ 'REGISTER.SELECT_STREET' | translate }}
+  </option>
+  @for (s of streetsMap[selectedDistrict!] || []; track s) {
+    <option [value]="s">{{ s }}</option>
+  }
+</select>
+
+<!-- Building -->
+<select
+  class="auth-input"
+  name="buildingNo"
+  [(ngModel)]="selectedBuilding"
+  [disabled]="!selectedStreet"
+  required
+>
+  <option value="" disabled selected>
+    {{ 'REGISTER.SELECT_BUILDING' | translate }}
+  </option>
+  @for (b of buildingsMap[selectedStreet!] || []; track b) {
+    <option [value]="b">{{ b }}</option>
+  }
+</select>
+
 
       <!-- Password mismatch -->
       @if (f.submitted && f.value.password !== f.value.confirmPassword) {
         <div class="text-danger small mb-2">
-          Passwords do not match ❌
+{{ 'REGISTER.PASSWORD_MISMATCH' | translate }} ❌
         </div>
       }
 
       <!-- Submit -->
       <button class="auth-btn" type="submit" [disabled]="isLoading">
-        {{ isLoading ? 'Creating...' : 'Create Account' }}
+{{ isLoading 
+  ? ('REGISTER.CREATING' | translate) 
+  : ('REGISTER.SUBMIT' | translate) 
+}}
       </button>
 
       <div class="auth-footer">
-        Already have an account?
-        <span (click)="goToLogin()">Login</span>
+{{ 'REGISTER.HAVE_ACCOUNT' | translate }}
+<span (click)="goToLogin()">
+  {{ 'REGISTER.LOGIN' | translate }}
+</span>
+
       </div>
 
     </form>

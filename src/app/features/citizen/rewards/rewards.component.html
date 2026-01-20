@@ -7,8 +7,9 @@
         <div class="title-wrapper">
           <div class="icon-badge">🎁</div>
           <div>
-            <h1 class="page-title">{{ 'rewards' }}</h1>
-            <p class="page-subtitle">{{ 'RedeemDescription'}}</p>
+<h1 class="page-title">{{ 'REWARDS.TITLE' | translate }}</h1>
+<p class="page-subtitle">{{ 'REWARDS.SUBTITLE' | translate }}</p>
+
           </div>
         </div>
       </div>
@@ -25,10 +26,15 @@
     <div class="redeemed-icon">🎁</div>
 
     <div class="redeemed-info">
-      <span class="redeemed-title">Redeemed Gifts</span>
-      <span class="redeemed-count">
-        {{ redeemedGifts().length }} Redeemed
-      </span>
+<span class="redeemed-title">
+  {{ 'REWARDS.REDEEMED_TITLE' | translate }}
+</span>
+
+<span class="redeemed-count">
+  {{ redeemedGifts().length }}
+  {{ 'REWARDS.REDEEMED' | translate }}
+</span>
+
     </div>
   </div>
 }
@@ -38,10 +44,15 @@
     <div class="redeemed-icon">💵</div>
 
     <div class="redeemed-info">
-      <span class="redeemed-title">Withdraw Cash</span>
-      <span class="redeemed-count">
-        {{ userPoints() }} pts available
-      </span>
+<span class="redeemed-title">
+  {{ 'REWARDS.WITHDRAW' | translate }}
+</span>
+
+<span class="redeemed-count">
+  {{ userPoints() }}
+  {{ 'REWARDS.POINTS_AVAILABLE' | translate }}
+</span>
+
     </div>
   </div>
 }
@@ -53,10 +64,15 @@
     <div class="redeemed-icon">🔒</div>
 
     <div class="redeemed-info">
-      <span class="redeemed-title">Withdraw Locked</span>
-      <span class="redeemed-count">
-        {{ 20 - userPoints() }} pts to unlock
-      </span>
+<span class="redeemed-title">
+  {{ 'REWARDS.WITHDRAW_LOCKED' | translate }}
+</span>
+
+<span class="redeemed-count">
+  {{ 20 - userPoints() }}
+  {{ 'REWARDS.PTS_TO_UNLOCK' | translate }}
+</span>
+
     </div>
   </div>
 }
@@ -71,8 +87,18 @@
               }
             </div>
             <div class="cart-details">
-              <span class="cart-label">My Cart</span>
-              <span class="cart-info">{{ cartItemCount() }} items · {{ cartTotal() }} pts</span>
+<span class="cart-label">
+  {{ 'REWARDS.MY_CART' | translate }}
+</span>
+
+<span class="cart-info">
+  {{ cartItemCount() }}
+  {{ 'REWARDS.ITEMS' | translate }}
+  ·
+  {{ cartTotal() }}
+  {{ 'REWARDS.POINTS' | translate }}
+</span>
+
             </div>
           </div>
           <span class="cart-arrow">→</span>
@@ -87,7 +113,7 @@
         <div class="search-icon">🔍</div>
         <input
           class="search-input"
-          placeholder="Search rewards..."
+placeholder="{{ 'REWARDS.SEARCH_PLACEHOLDER' | translate }}"
           [(ngModel)]="searchTerm"
           (keyup.enter)="search()"
           (input)="search()">
@@ -109,7 +135,11 @@
           }
         </div>
         <div class="toast-body">
-          <p class="toast-title">{{ toastType === 'success' ? 'Success' : 'Error' }}</p>
+<p class="toast-title">
+  {{ toastType === 'success'
+      ? ('REWARDS.SUCCESS' | translate)
+      : ('REWARDS.ERROR' | translate) }}
+</p>
           <p class="toast-message">{{ toastMessage }}</p>
         </div>
         <button class="toast-close" (click)="closeToast()">✕</button>
@@ -120,7 +150,7 @@
     @if (isLoading) {
       <div class="loading-state">
         <div class="spinner"></div>
-        <p>Loading rewards...</p>
+<p>{{ 'REWARDS.LOADING' | translate }}</p>
       </div>
     }
 
@@ -128,16 +158,20 @@
     @if (!isLoading && rewards.length === 0) {
       <div class="empty-state">
         <div class="empty-icon">🎁</div>
-        <h2 class="empty-title">No Rewards Found</h2>
+<h2 class="empty-title">
+  {{ 'REWARDS.EMPTY_TITLE' | translate }}
+</h2>
         <p class="empty-description">
           @if (searchTerm) {
-            No rewards match your search. Try different keywords.
+{{ 'REWARDS.EMPTY_SEARCH' | translate }}
           } @else {
-            Check back later for amazing rewards you can redeem with your points!
+{{ 'REWARDS.EMPTY_DEFAULT' | translate }}
           }
         </p>
         @if (searchTerm) {
-          <button class="btn-primary" (click)="resetSearch()">Clear Search</button>
+<button class="btn-primary">
+  {{ 'REWARDS.CLEAR_SEARCH' | translate }}
+</button>
         }
       </div>
     }
@@ -152,9 +186,9 @@
             
             <!-- Stock Badge -->
             @if (r.stockQuantity === 0) {
-              <div class="badge badge-danger">Out of Stock</div>
+{{ 'REWARDS.OUT_OF_STOCK' | translate }}
             } @else if (r.stockQuantity <= 5) {
-              <div class="badge badge-warning">{{ r.stockQuantity }} left!</div>
+{{ r.stockQuantity }} {{ 'REWARDS.LEFT' | translate }}!
             }
 
             <!-- Reward Image -->
@@ -171,7 +205,7 @@
               <div class="reward-points-badge">
                 <span class="points-icon">⭐</span>
                 <span class="points-amount">{{ r.requiredPoints }}</span>
-                <span class="points-label">points</span>
+  {{ 'REWARDS.POINTS' | translate }}
               </div>
 
               <!-- Stock Info -->
@@ -181,7 +215,7 @@
                       [class.text-danger]="r.stockQuantity === 0"
                       [class.text-warning]="r.stockQuantity > 0 && r.stockQuantity <= 5"
                       [class.text-success]="r.stockQuantity > 5">
-                  {{ r.stockQuantity }} in stock
+{{ r.stockQuantity }} {{ 'REWARDS.IN_STOCK' | translate }}
                 </span>
               </div>
 
@@ -193,16 +227,18 @@
                       (click)="isInCart(r) ? removeFromCart(r) : addToCart(r)">
                 @if (isInCart(r)) {
                   <span class="btn-icon">✓</span>
-                  <span>Remove from Cart</span>
+<span>{{ 'REWARDS.REMOVE_FROM_CART' | translate }}</span>
                 } @else if (r.stockQuantity === 0) {
                   <span class="btn-icon">✕</span>
-                  <span>Out of Stock</span>
+<span>{{ 'REWARDS.OUT_OF_STOCK' | translate }}</span>
                 } @else if (userPoints() < r.requiredPoints) {
                   <span class="btn-icon">🔒</span>
-                  <span>Need {{ r.requiredPoints - userPoints() }} pts</span>
+<span>
+  {{ 'REWARDS.NEED_POINTS' | translate:{ value: (r.requiredPoints - userPoints()) } }}
+</span>
                 } @else {
                   <span class="btn-icon">+</span>
-                  <span>Add to Cart</span>
+<span>{{ 'REWARDS.ADD_TO_CART' | translate }}</span>
                 }
               </button>
             </div>
@@ -221,7 +257,7 @@
     <div class="modal-header">
       <div class="modal-title">
         <span class="modal-icon">🛒</span>
-        <h2>My Cart</h2>
+<h2>{{ 'REWARDS.CART_TITLE' | translate }}</h2>
       </div>
       <button class="modal-close-btn" (click)="closeCart()">✕</button>
     </div>
@@ -231,8 +267,8 @@
       @if (cart().length === 0) {
         <div class="cart-empty">
           <div class="cart-empty-icon">🛒</div>
-          <h3>Your cart is empty</h3>
-          <p>Add some rewards to get started!</p>
+<h3>{{ 'REWARDS.CART_EMPTY' | translate }}</h3>
+<p>{{ 'REWARDS.CART_EMPTY_DESC' | translate }}</p>
         </div>
       } @else {
         <div class="cart-items">
@@ -243,7 +279,9 @@
               </div>
               <div class="cart-item-details">
                 <h4>{{ item.name }}</h4>
-                <p class="cart-item-points">⭐ {{ item.requiredPoints }} points</p>
+<p class="cart-item-points">
+  ⭐ {{ item.requiredPoints }} {{ 'REWARDS.POINTS' | translate }}
+</p>
               </div>
               <button class="cart-item-remove" (click)="removeFromCart(item)" title="Remove">
                 🗑️
@@ -259,15 +297,15 @@
       <div class="modal-footer">
         <div class="cart-summary">
           <div class="summary-row">
-            <span>Items:</span>
+<span>{{ 'REWARDS.SUMMARY_ITEMS' | translate }}:</span>
             <strong>{{ cartItemCount() }}</strong>
           </div>
           <div class="summary-row summary-total">
-            <span>Total Points:</span>
+<span>{{ 'REWARDS.SUMMARY_TOTAL' | translate }}:</span>
             <strong class="text-primary">{{ cartTotal() }}</strong>
           </div>
           <div class="summary-row">
-            <span>Your Balance:</span>
+<span>{{ 'REWARDS.SUMMARY_BALANCE' | translate }}:</span>
             <strong [class.text-success]="cartTotal() <= userPoints()" 
                     [class.text-danger]="cartTotal() > userPoints()">
               {{ userPoints() }}
@@ -275,23 +313,23 @@
           </div>
           @if (cartTotal() > userPoints()) {
             <div class="insufficient-points">
-              ⚠️ Need {{ cartTotal() - userPoints() }} more points!
+⚠️ {{ 'REWARDS.NEED_MORE_POINTS' | translate:{ value: (cartTotal() - userPoints()) } }}
             </div>
           }
         </div>
 
         <div class="cart-actions">
           <button class="btn-secondary" (click)="clearCart()" [disabled]="cart().length === 0">
-            Clear Cart
+  {{ 'REWARDS.CLEAR_CART' | translate }}
           </button>
           <button class="btn-primary" 
                   (click)="redeemCart()"
                   [disabled]="cart().length === 0 || cartTotal() > userPoints() || isCheckingOut()">
             @if (isCheckingOut()) {
               <span class="btn-spinner"></span>
-              <span>Processing...</span>
+<span>{{ 'REWARDS.PROCESSING' | translate }}</span>
             } @else {
-              <span>Redeem All</span>
+<span>{{ 'REWARDS.REDEEM_ALL' | translate }}</span>
             }
           </button>
         </div>
@@ -303,10 +341,8 @@
   <div class="modal-overlay" (click)="closeRedeemedModal()"></div>
 
   <div class="redeemed-modal">
-    <h2>🎁 Your Redeemed Gifts</h2>
-    <p class="modal-subtitle">
-      Click on any gift to view delivery details
-    </p>
+<h2>🎁 {{ 'REWARDS.REDEEMED_MODAL_TITLE' | translate }}</h2>
+<p>{{ 'REWARDS.REDEEMED_MODAL_DESC' | translate }}</p>
 
     <div class="redeemed-gifts-grid">
       @for (gift of redeemedGifts(); track gift.id) {
@@ -314,14 +350,13 @@
              (click)="selectedRedeemedGift.set(gift)">
           <img [src]="gift.imageUrl" />
           <h4>{{ gift.name }}</h4>
-          <span class="gift-badge">Redeemed</span>
+<span class="gift-badge">{{ 'REWARDS.REDEEMED_BADGE' | translate }}</span>
         </div>
       }
     </div>
 
     <button class="btn-secondary" (click)="closeRedeemedModal()">
-      Close
-    </button>
+{{ 'REWARDS.CLOSE' | translate }}    </button>
   </div>
 }
 
@@ -335,21 +370,21 @@
     <h2>{{ selectedRedeemedGift()!.name }}</h2>
     <p>{{ selectedRedeemedGift()!.description }}</p>
 
-    <div class="gift-message">
-      🎉 Your gift has been successfully redeemed
-    </div>
+<div class="gift-message">
+  🎉 {{ 'REWARDS.DELIVERY_SUCCESS' | translate }}
+</div>
 
-    <div class="delivery-info">
-      🚚 Delivery within <b>3–5 working days</b>
-    </div>
+<div class="delivery-info">
+  🚚 {{ 'REWARDS.DELIVERY_TIME' | translate }}
+</div>
 
-    <div class="eco-message">
-      🌱 Thank you for supporting a greener environment
-    </div>
+<div class="eco-message">
+  🌱 {{ 'REWARDS.THANK_YOU' | translate }}
+</div>
 
     <button class="btn-primary"
             (click)="selectedRedeemedGift.set(null)">
-      Got it 👍
+      {{ 'REWARDS.GOT_IT' | translate }} 👍
     </button>
   </div>
 }
@@ -357,9 +392,9 @@
   <div class="modal-overlay" (click)="closeCashout()"></div>
 
   <div class="redeemed-modal">
-    <h2>💵 Withdraw Balance</h2>
+<h2>💵 {{ 'REWARDS.CASHOUT_TITLE' | translate }}</h2>
     <p class="modal-subtitle">
-      Choose where you want to receive your money
+      {{ 'REWARDS.CASHOUT_DESC' | translate }}
     </p>
 
     <!-- Wallet Type -->
@@ -374,17 +409,16 @@
       class="input"
       type="text"
       [(ngModel)]="walletNumber"
-      placeholder="Wallet / Account Number"
+placeholder="{{ 'REWARDS.WALLET_PLACEHOLDER' | translate }}"
     />
 
     <div class="cart-actions">
       <button class="btn-secondary" (click)="closeCashout()">
-        Cancel
+        {{ 'REWARDS.CANCEL' | translate }}
       </button>
 
       <button class="btn-primary" (click)="confirmCashout()">
-        Confirm Withdraw
-      </button>
+{{ 'REWARDS.CONFIRM' | translate }}      </button>
     </div>
   </div>
 }

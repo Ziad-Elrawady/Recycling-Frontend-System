@@ -4,6 +4,7 @@ import { OrderDto } from "../../../../core/models/orders/order.model";
 import { OrderService } from "@core/services/order.services/order.service";
 import { CardComponent, CardHeaderComponent, CardTitleComponent, CardDescriptionComponent, CardContentComponent } from "@shared/ui/card/card.component";
 import { RequestCardComponent } from "@shared/ui/request-card/request-card.component";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-citizen-recent-requests',
@@ -15,7 +16,8 @@ import { RequestCardComponent } from "@shared/ui/request-card/request-card.compo
     CardHeaderComponent,
     CardTitleComponent,
     CardDescriptionComponent,
-    CardContentComponent
+    CardContentComponent,
+    TranslateModule
   ],
   templateUrl: './recent-requests.component.html',
   styleUrl: './recent-requests.component.css'
@@ -23,6 +25,7 @@ import { RequestCardComponent } from "@shared/ui/request-card/request-card.compo
 export class CitizenRecentRequestsComponent {
 
   @Input() requests: OrderDto[] = [];
+translate = inject(TranslateService);
 
   orderService = inject(OrderService);
 cancelingOrderId: number | null = null;
@@ -37,7 +40,7 @@ toggleRequest(request: OrderDto) {
 }
 getQuantityLabel(request: OrderDto): string {
   if (request.quantity === null || request.quantity === undefined) {
-    return 'Not specified yet';
+return this.translate.instant('DASHBOARD.RECENT_REQUESTS.NOT_SPECIFIED');
   }
 
   return `${request.quantity} kg`;
@@ -62,7 +65,10 @@ cancelOrder(order: OrderDto) {
 
   this.orderService.cancelOrder(order.id).subscribe({
     next: () => {
-      this.showFlash('Order canceled successfully ❌', 'success');
+this.showFlash(
+  this.translate.instant('DASHBOARD.RECENT_REQUESTS.CANCEL_SUCCESS'),
+  'success'
+);
     },
     error: () => {
       // لو حصل Error نرجّع الحالة تاني

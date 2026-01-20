@@ -50,11 +50,12 @@ private translate = inject(TranslateService);
   isCollector = computed(() => this.role() === Role.Collector);
   isUser = computed(() => this.role() === Role.User);
 
-  roleLabel = computed(() => {
-    if (this.isAdmin()) return 'Admin';
-    if (this.isCollector()) return 'Collector';
-    return 'User';
-  });
+roleLabel = computed(() => {
+  if (this.isAdmin()) return this.translate.instant('NAV.ADMIN');
+  if (this.isCollector()) return this.translate.instant('NAV.COLLECTOR');
+  return this.translate.instant('NAV.USER');
+});
+
 // ================= ROUTES =================
 isAuthRoute = computed(() => {
   const url = this.router.url;

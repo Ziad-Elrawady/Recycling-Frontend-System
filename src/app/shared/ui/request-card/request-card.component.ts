@@ -4,16 +4,18 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BadgeComponent } from '../badge/badge.component';
 import { OrderDto } from '@core/models/orders/order.model';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-request-card',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, BadgeComponent, ],
+  imports: [CommonModule, BadgeComponent, TranslateModule],
   template: `
     <div
       [class]="
@@ -112,7 +114,7 @@ import { OrderDto } from '@core/models/orders/order.model';
            px-3 py-1.5 rounded-lg transition"
     (click)="onCancel.emit(request); $event.stopPropagation()"
   >
-    ✖ Cancel
+{{ 'ORDER.CANCEL' | translate }}
   </button>
 </div>
 
@@ -237,7 +239,7 @@ export class RequestCardComponent {
   @Output() onCardClick = new EventEmitter<OrderDto>();
   @Output() onAccept = new EventEmitter<OrderDto>();
   @Output() onCancel = new EventEmitter<OrderDto>();
-
+translate = inject(TranslateService);
 
 
 
@@ -262,24 +264,25 @@ export class RequestCardComponent {
     }
   }
 
-  getStatusText(status?: string): string {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return 'Completed';
-      case 'accepted':
-        return 'Accepted';
-      case 'delivered':
-        return 'Delivered';
-      case 'in-progress':
-        return 'In Progress';
-      case 'collected':
-        return 'Collected';
-      case 'pending':
-        return 'Pending';
-      default:
-        return 'Cancelled';
-    }
+getStatusText(status?: string): string {
+  switch (status?.toLowerCase()) {
+    case 'completed':
+      return this.translate.instant('ORDER.STATUS.COMPLETED');
+    case 'accepted':
+      return this.translate.instant('ORDER.STATUS.ACCEPTED');
+    case 'delivered':
+      return this.translate.instant('ORDER.STATUS.DELIVERED');
+    case 'in-progress':
+      return this.translate.instant('ORDER.STATUS.IN_PROGRESS');
+    case 'collected':
+      return this.translate.instant('ORDER.STATUS.COLLECTED');
+    case 'pending':
+      return this.translate.instant('ORDER.STATUS.PENDING');
+    default:
+      return this.translate.instant('ORDER.STATUS.CANCELLED');
   }
+}
+
 
   formatDate(isoString?: string): string {
     if (!isoString) return '';

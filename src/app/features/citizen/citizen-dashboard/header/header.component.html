@@ -1,10 +1,22 @@
 <div class="dashboard-header">
   <div class="header-content">
-    <h1 class="header-title">{{ ('citizenDashboard') }}</h1>
-    <p class="header-subtitle">Track your recycling journey and environmental impact</p>
+    <h1 class="header-title">
+      {{ 'DASHBOARD.HEADER.TITLE' | translate }}
+    </h1>
+
+    <p class="header-subtitle">
+      {{ 'DASHBOARD.HEADER.SUBTITLE' | translate }}
+    </p>
   </div>
-  <app-button (onClick)="onCreateRequestClick()" size="lg" class="create-request-btn">
+
+  <app-button
+    (onClick)="onCreateRequestClick()"
+    size="lg"
+    class="create-request-btn"
+  >
     <span class="btn-icon">➕</span>
-    <span class="btn-text">{{ ('createRequest') }}</span>
+    <span class="btn-text">
+      {{ 'DASHBOARD.HEADER.CREATE_REQUEST' | translate }}
+    </span>
   </app-button>
 </div>

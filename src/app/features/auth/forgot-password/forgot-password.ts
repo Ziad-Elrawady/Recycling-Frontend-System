@@ -5,11 +5,12 @@ import { FlashMessageService } from '../../../core/services/flash-message.servic
 import { AuthService } from '../../../core/services/auth.services/auth.service';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,TranslateModule],
   templateUrl: './forgot-password.html',
   styleUrls: ['./forgot-password.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +24,7 @@ export class ForgotPasswordComponent {
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
   private themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -31,7 +33,7 @@ export class ForgotPasswordComponent {
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
-      this.error = "Please provide a valid email address.";
+this.error = this.translate.instant('FORGOT_PASSWORD.INVALID_EMAIL');
       form.form.markAllAsTouched();
       this.cdr.detectChanges();
       return;
@@ -46,7 +48,9 @@ export class ForgotPasswordComponent {
     this.auth.forgotPassword(email).subscribe({
   next: () => {
     this.error = null;
-    this.flash.showSuccess("Password reset link sent ✔");
+this.flash.showSuccess(
+  this.translate.instant('FORGOT_PASSWORD.SUCCESS_MESSAGE')
+);
 
     this.zone.run(() => {
       setTimeout(() => {
@@ -58,7 +62,7 @@ export class ForgotPasswordComponent {
   },
   error: () => {
     this.isLoading = false;
-    this.error = "Mail not found ❌";
+this.error = this.translate.instant('FORGOT_PASSWORD.EMAIL_NOT_FOUND');
     this.cdr.detectChanges();
   }
 });

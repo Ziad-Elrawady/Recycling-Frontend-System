@@ -8,8 +8,12 @@
       <div class="leaf two"></div>
     </div>
 
-    <h2 class="auth-title">Welcome Back</h2>
-    <p class="auth-subtitle">Sign in to your GreenZone account</p>
+<h2 class="auth-title">
+  {{ 'LOGIN.TITLE' | translate }}
+</h2>
+<p class="auth-subtitle">
+  {{ 'LOGIN.SUBTITLE' | translate }}
+</p>
 
     <!-- Error -->
     @if (error) {
@@ -23,7 +27,7 @@
   <!-- GENERAL ERROR (ONLY ON SUBMIT) -->
   @if (f.submitted && f.invalid && !email.touched && !password.touched) {
     <div class="validation-box">
-      Please complete all required fields
+{{ 'LOGIN.COMPLETE_REQUIRED' | translate }}
     </div>
   }
 
@@ -36,7 +40,7 @@
       ngModel
       required
       email
-      placeholder="you@example.com"
+placeholder="{{ 'LOGIN.EMAIL_PLACEHOLDER' | translate }}"
       #email="ngModel"
     >
 
@@ -44,13 +48,13 @@
 
       @if (email.errors?.['required']) {
         <div class="validation-error">
-          Email is required
+{{ 'LOGIN.EMAIL_REQUIRED' | translate }}
         </div>
       }
 
       @if (email.errors?.['email']) {
         <div class="validation-error">
-          Please enter a valid email address
+          {{ 'LOGIN.EMAIL_INVALID' | translate }}
         </div>
       }
 
@@ -67,7 +71,7 @@
         ngModel
         required
         minlength="6"
-        placeholder="Enter your password"
+placeholder="{{ 'LOGIN.PASSWORD_PLACEHOLDER' | translate }}"
         #password="ngModel"
         style="padding-right: 45px;"
       >
@@ -94,13 +98,13 @@
 
       @if (password.errors?.['required']) {
         <div class="validation-error">
-          Password is required
+{{ 'LOGIN.PASSWORD_REQUIRED' | translate }}
         </div>
       }
 
       @if (password.errors?.['minlength']) {
         <div class="validation-error">
-          Password must be at least 6 characters
+{{ 'LOGIN.PASSWORD_MIN' | translate }}
         </div>
       }
 
@@ -109,7 +113,7 @@
 
   <!-- Forgot Password -->
   <div class="auth-forgot">
-    <span (click)="goToForgot()">Forget your password?</span>
+    <span (click)="goToForgot()">{{ 'LOGIN.FORGOT' | translate }}</span>
   </div>
 
   <!-- Submit -->
@@ -119,17 +123,21 @@
   [disabled]="isLoading"
 >
 
-    @if (isLoading) {
-      Signing in...
-    } @else {
-      Sign In
-    }
+@if (isLoading) {
+  {{ 'LOGIN.SIGNING_IN' | translate }}
+} @else {
+  {{ 'LOGIN.SIGN_IN' | translate }}
+}
+
   </button>
 
   <!-- Footer -->
   <div class="auth-footer">
-    Don’t have an account?
-    <span (click)="goToRegister()">Create one</span>
+{{ 'LOGIN.NO_ACCOUNT' | translate }}
+<span (click)="goToRegister()">
+  {{ 'LOGIN.CREATE_ONE' | translate }}
+</span>
+
   </div>
 
 </form>

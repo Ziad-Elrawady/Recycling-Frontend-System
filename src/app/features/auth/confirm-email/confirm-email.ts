@@ -4,10 +4,12 @@ import { AuthService } from '../../../core/services/auth.services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { NgZone, ChangeDetectorRef } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-confirm-email',
-  standalone: true,
+  standalone: true,  
+  imports: [TranslateModule],   // 👈 مهم جدًا
   templateUrl: './confirm-email.html',
   styleUrls: ['./confirm-email.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +24,7 @@ export class ConfirmEmailComponent {
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -40,7 +43,9 @@ export class ConfirmEmailComponent {
     this.auth.confirmEmail(email, token).subscribe({
       next: () => {
         this.status = 'success';
-        this.flash.showSuccess("Email confirmed successfully ✔");
+this.flash.showSuccess(
+  this.translate.instant('CONFIRM_EMAIL.SUCCESS_MESSAGE')
+);
         this.cdr.detectChanges();
       },
       error: () => {

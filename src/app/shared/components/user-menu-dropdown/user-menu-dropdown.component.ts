@@ -7,11 +7,12 @@ import { AuthService } from '../../../core/services/auth.services/auth.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { Role } from '@core/models/users/role.enum';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-menu-dropdown',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   template: `
     <div class="user-menu-wrapper">
       <!-- Trigger Button -->
@@ -24,7 +25,9 @@ import { Role } from '@core/models/users/role.enum';
       >
         <div class="user-info">
           <span class="user-name">{{ displayName() }}</span>
-          <span class="user-role">{{ roleLabel() }}</span>
+<span class="user-role">
+  {{ getRoleTranslationKey() | translate }}
+</span>
         </div>
         <span class="dropdown-arrow" [class.open]="isOpen()">▼</span>
       </button>
@@ -42,7 +45,9 @@ import { Role } from '@core/models/users/role.enum';
               <div class="user-avatar">{{ getInitials() }}</div>
               <div class="user-details">
                 <div class="user-name-full">{{ displayName() }}</div>
-                <div class="user-role-badge">{{ roleLabel() }}</div>
+<div class="user-role-badge">
+  {{ getRoleTranslationKey() | translate }}
+</div>
               </div>
             </div>
           </div>
@@ -59,7 +64,9 @@ import { Role } from '@core/models/users/role.enum';
               role="menuitem"
             >
               <span class="icon">👤</span>
-              <span class="item-label">View Profile</span>
+<span class="item-label">
+  {{ 'USER_MENU.VIEW_PROFILE' | translate }}
+</span>
             </a>
           </div>
 
@@ -74,7 +81,9 @@ import { Role } from '@core/models/users/role.enum';
               role="menuitem"
             >
               <span class="icon">⬅️</span>
-              <span class="item-label">Logout</span>
+<span class="item-label">
+  {{ 'USER_MENU.LOGOUT' | translate }}
+</span>
             </button>
           </div>
         </div>
@@ -126,11 +135,15 @@ import { Role } from '@core/models/users/role.enum';
       line-height: 1.2;
     }
 
-    .user-role {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      line-height: 1.2;
-    }
+.user-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  white-space: nowrap;
+  max-width: none;
+  overflow: visible;
+}
+
 
     :host(.dark) .user-role {
       color: hsl(210, 15%, 70%);
@@ -150,19 +163,20 @@ import { Role } from '@core/models/users/role.enum';
       transform: rotate(180deg);
     }
 
-    .user-dropdown-menu {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      min-width: 280px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 0.75rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
-      z-index: 1000;
-      overflow: hidden;
-      animation: slideDown 0.2s ease;
-    }
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-end: 0;   /* بدل right */
+  min-width: 280px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideDown 0.2s ease;
+}
+
 
     :host(.dark) .user-dropdown-menu {
       background: rgba(15, 17, 23, 1);
@@ -250,17 +264,24 @@ import { Role } from '@core/models/users/role.enum';
       color: hsl(210, 15%, 70%);
     }
 
-    .user-role-badge {
-      display: inline-block;
-      margin-top: 0.25rem;
-      padding: 0.25rem 0.5rem;
-      background: rgba(22, 163, 74, 0.12);
-      color: #16a34a;
-      border-radius: 0.25rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
+.user-role-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 4px 10px;     /* وسّعنا البادينج */
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+  border-radius: 12px;  /* خليها كبسولة */
+  font-size: 12px;      /* أوضح للعربي */
+  font-weight: 600;
+  white-space: nowrap; /* ممنوع يكسر السطر */
+  text-transform: none; /* ❗ مهم للعربي */
+}
+[dir="rtl"] .user-role,
+[dir="rtl"] .user-role-badge {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
 
     :host(.dark) .user-role-badge {
       background: rgba(74, 222, 128, 0.15);
@@ -385,6 +406,7 @@ export class UserMenuDropdownComponent {
   profileService = inject(UserProfileService);
   themeService = inject(ThemeService);
   router = inject(Router);
+translate = inject(TranslateService);
 
   isOpen = signal(false);
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
@@ -427,11 +449,13 @@ export class UserMenuDropdownComponent {
     return roles;
   });
 
-  roleLabel = computed(() => {
-    if (this.isAdmin()) return 'Admin';
-    if (this.isCollector()) return 'Collector';
-    return 'User';
-  });
+getRoleTranslationKey(): string {
+  if (this.isAdmin()) return 'USER_MENU.ADMIN';
+  if (this.isCollector()) return 'USER_MENU.COLLECTOR';
+  return 'USER_MENU.USER';
+}
+
+
 
   // ========== Methods ==========
   getInitials(): string {
@@ -444,16 +468,17 @@ export class UserMenuDropdownComponent {
       .slice(0, 2);
   }
 
-  getRoleLabel(role: Role): string {
-    switch (role) {
-      case Role.Admin:
-        return 'Admin';
-      case Role.Collector:
-        return 'Collector';
-      default:
-        return 'User';
-    }
+getRoleLabel(role: Role): string {
+  switch (role) {
+    case Role.Admin:
+      return this.translate.instant('USER_MENU.ADMIN');
+    case Role.Collector:
+      return this.translate.instant('USER_MENU.COLLECTOR');
+    default:
+      return this.translate.instant('USER_MENU.USER');
   }
+}
+
 
   getRoleIcon(role: Role): string {
     switch (role) {
@@ -473,11 +498,15 @@ export class UserMenuDropdownComponent {
   switchRole(role: Role): void {
     // If user doesn't have the role yet, show a message
     if (role === Role.Admin && !this.isAdmin()) {
-      inject(FlashMessageService).showError('You do not have admin privileges');
+inject(FlashMessageService).showError(
+  this.translate.instant('USER_MENU.NO_ADMIN_ROLE')
+);
       return;
     }
     if (role === Role.Collector && !this.isCollector() && !this.isAdmin()) {
-      inject(FlashMessageService).showError('You do not have collector role');
+inject(FlashMessageService).showError(
+  this.translate.instant('USER_MENU.NO_COLLECTOR_ROLE')
+);
       return;
     }
 

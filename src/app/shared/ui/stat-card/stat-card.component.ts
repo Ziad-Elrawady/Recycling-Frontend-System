@@ -2,18 +2,21 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent, CardContentComponent } from '../card/card.component';
 import { Stat } from '../../../core/models/users/stat.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stat-card',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, CardComponent, CardContentComponent],
+  imports: [CommonModule, CardComponent, CardContentComponent,TranslateModule],
   template: `
     <app-card [className]="'stat-card-modern ' + (className || '')">
       <app-card-content class="stat-card-content">
         <div class="stat-card-inner">
           <div class="stat-card-info">
-            <p class="stat-label">{{ stat.label }}</p>
+<p class="stat-label">
+  {{ stat.label | translate }}
+</p>
             <p [class]="'stat-value ' + stat.color">{{ stat.value }}</p>
             @if (stat.change) {
               <p class="stat-change">{{ stat.change }}</p>

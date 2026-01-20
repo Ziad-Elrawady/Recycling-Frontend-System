@@ -10,6 +10,7 @@ import { CreateCollectionModalComponent } from '../citizen-dashboard/create-coll
 import { TabsListComponent, TabsTriggerComponent } from '../../../shared/ui/tabs/tabs.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CitizenService } from '@core/services/user.services/citizen.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-requests',
@@ -22,7 +23,8 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
     CardContentComponent,
     CreateCollectionModalComponent,
     TabsListComponent,
-    TabsTriggerComponent
+    TabsTriggerComponent,
+    TranslateModule
   ],
   template: `
     <div class="requests-container">
@@ -32,16 +34,31 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
 
       <div class="content-wrapper">
         <!-- Header -->
-        <div class="page-header">
-          <div>
-            <h1 class="page-title">{{ ('myRequests') }}</h1>
-            <p class="page-subtitle">Manage your collection requests</p>
-          </div>
-          <app-button (onClick)="modalOpen.set(true)" size="lg" class="gap-2 shadow-md">
-            <span>➕</span>
-            {{ ('createRequest') }}
-          </app-button>
-        </div>
+<div class="page-header">
+
+  <!-- Left side -->
+  <div>
+    <h1 class="page-title">
+      {{ 'MY_REQUESTS.TITLE' | translate }}
+    </h1>
+
+    <p class="page-subtitle">
+      {{ 'MY_REQUESTS.SUBTITLE' | translate }}
+    </p>
+  </div>
+
+  <!-- Right side -->
+  <app-button
+    (onClick)="modalOpen.set(true)"
+    size="lg"
+    class="gap-2 shadow-md"
+  >
+    <span>➕</span>
+    {{ 'MY_REQUESTS.CREATE_REQUEST' | translate }}
+  </app-button>
+
+</div>
+
 
         <app-create-collection-modal
           [open]="modalOpen()"
@@ -54,31 +71,36 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ userRequests().length }}</div>
-              <p class="stat-label">Total Requests</p>
+              <p class="stat-label">  {{ 'MY_REQUESTS.STATS.TOTAL' | translate }}
+</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ ('pending') }}</p>
+              <p class="stat-label">  {{ 'MY_REQUESTS.STATS.PENDING' | translate }}
+</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-accent">{{ deliveredCount() }}</div>
-              <p class="stat-label">Delivered</p>
+              <p class="stat-label">  {{ 'MY_REQUESTS.STATS.DELIVERED' | translate }}
+</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ completedCount() }}</div>
-              <p class="stat-label">{{ ('completed') }}</p>
+              <p class="stat-label">  {{ 'MY_REQUESTS.STATS.COMPLETED' | translate }}
+</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ cancelledCount() }}</div>
-              <p class="stat-label">Cancelled</p>
+              <p class="stat-label">  {{ 'MY_REQUESTS.STATS.CANCELLED' | translate }}
+</p>
             </app-card-content>
           </app-card>
         </div>
@@ -92,26 +114,26 @@ import { CitizenService } from '@core/services/user.services/citizen.service';
               [isActive]="selectedTab() === tab.value"
               (onClick)="selectedTab.set($event)"
             >
-              {{ tab.label }}
+{{ tab.label | translate }}
             </app-tabs-trigger>
           </app-tabs-list>
 
           <div class="space-y-4">
             @switch (selectedTab()) {
               @case ('all') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: userRequests(), emptyIcon: '📦', emptyText: 'No requests found' }"></ng-container>
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: userRequests(), emptyIcon: '📦', emptyText: ('MY_REQUESTS.EMPTY.ALL' | translate)}"></ng-container>
               }
               @case ('pending') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('pending'), emptyIcon: '⏳', emptyText: 'No pending requests' }"></ng-container>
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('pending'), emptyIcon: '⏳', emptyText: ('MY_REQUESTS.EMPTY.PENDING' | translate) }"></ng-container>
               }
               @case ('delivered') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('delivered'), emptyIcon: '🔄', emptyText: 'No delivered requests' }"></ng-container>
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('delivered'), emptyIcon: '🔄', emptyText: ('MY_REQUESTS.EMPTY.DELIVERED' | translate) }"></ng-container>
               }
               @case ('completed') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('completed'), emptyIcon: '✅', emptyText: 'No completed requests' }"></ng-container>
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('completed'), emptyIcon: '✅', emptyText: ('MY_REQUESTS.EMPTY.COMPLETED' | translate) }"></ng-container>
               }
               @case ('cancelled') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('cancelled'), emptyIcon: '❌', emptyText: 'No cancelled requests' }"></ng-container>
+                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('cancelled'), emptyIcon: '❌', emptyText: ('MY_REQUESTS.EMPTY.CANCELLED' | translate) }"></ng-container>
               }
             }
           </div>
@@ -342,13 +364,14 @@ citizenService = inject(CitizenService);
   modalOpen = signal(false);
   userRequests = signal<OrderDto[]>([]);
 
-  tabs = [
-    { value: 'all', label: 'All' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'delivered', label: 'Delivered' },
-    { value: 'completed', label: 'Completed' },
-    { value: 'cancelled', label: 'Cancelled' }
-  ];
+tabs = [
+  { value: 'all', label: 'MY_REQUESTS.TABS.ALL' },
+  { value: 'pending', label: 'MY_REQUESTS.TABS.PENDING' },
+  { value: 'delivered', label: 'MY_REQUESTS.TABS.DELIVERED' },
+  { value: 'completed', label: 'MY_REQUESTS.TABS.COMPLETED' },
+  { value: 'cancelled', label: 'MY_REQUESTS.TABS.CANCELLED' }
+];
+
 
 
   constructor() {

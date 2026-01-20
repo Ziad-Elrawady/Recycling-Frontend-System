@@ -6,13 +6,14 @@ import { FlashMessageService } from '../../../core/services/flash-message.servic
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.dark]': 'isDarkMode()' }
 })
@@ -24,6 +25,7 @@ export class RegisterComponent {
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
   private themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -32,17 +34,85 @@ export class RegisterComponent {
   showPassword = false;
   showConfirmPassword = false;
 
+  // =======================
+// Port Said Address Data
+// =======================
+
+cities = ['بورسعيد'];
+
+districtsMap: Record<string, string[]> = {
+  'بورسعيد': ['العرب', 'الشرق', 'المناخ', 'الضواحي', 'الزهور', 'بورفؤاد']
+};
+
+streetsMap: Record<string, string[]> = {
+  'العرب': ['شارع محمد علي', 'شارع الثلاثيني', 'شارع فلسطين'],
+  'الشرق': ['شارع الجمهورية', 'شارع طرح البحر', 'شارع أوجيني'],
+  'المناخ': ['شارع سعد زغلول', 'شارع صفية زغلول', 'شارع أحمد عرابي'],
+  'الضواحي': ['شارع 23 يوليو', 'شارع النصر', 'شارع كسرى'],
+  'الزهور': ['شارع المشير', 'شارع جمال عبد الناصر', 'شارع مصطفى كامل'],
+  'بورفؤاد': ['شارع 23 ديسمبر', 'شارع العباسي', 'شارع أحمد حلمي']
+};
+
+buildingsMap: Record<string, string[]> = {
+  'شارع محمد علي': ['1', '2', '3', '5', '10'],
+  'شارع الثلاثيني': ['4', '6', '8', '12'],
+  'شارع فلسطين': ['7', '9', '11'],
+  'شارع الجمهورية': ['1', '3', '5', '7'],
+  'شارع طرح البحر': ['2', '4', '6'],
+  'شارع أوجيني': ['10', '12', '15'],
+  'شارع سعد زغلول': ['1', '5', '9'],
+  'شارع صفية زغلول': ['2', '6', '10'],
+  'شارع أحمد عرابي': ['3', '7', '11'],
+  'شارع 23 يوليو': ['1', '2', '5', '10'],
+  'شارع النصر': ['4', '8', '12'],
+  'شارع كسرى': ['6', '9', '15'],
+  'شارع المشير': ['1', '2', '3', '4'],
+  'شارع جمال عبد الناصر': ['5', '10', '15'],
+  'شارع مصطفى كامل': ['6', '12', '18'],
+  'شارع 23 ديسمبر': ['1', '3', '6'],
+  'شارع العباسي': ['2', '4', '8'],
+  'شارع أحمد حلمي': ['5', '9', '14']
+};
+
+// =======================
+// Selected Values
+// =======================
+
+selectedCity: string | null = null;
+selectedDistrict: string | null = null;
+selectedStreet: string | null = null;
+selectedBuilding: string | null = null;
+
+// =======================
+// Cascading Handlers
+// =======================
+
+onCityChange() {
+  this.selectedDistrict = null;
+  this.selectedStreet = null;
+  this.selectedBuilding = null;
+}
+
+onDistrictChange() {
+  this.selectedStreet = null;
+  this.selectedBuilding = null;
+}
+
+onStreetChange() {
+  this.selectedBuilding = null;
+}
+
   onRegister(form: NgForm) {
 
     this.error = null;
 
     if (form.invalid) {
-      this.error = 'Please complete all required fields.';
+this.error = this.translate.instant('REGISTER.REQUIRED_FIELDS');
       return;
     }
 
     if (form.value.password !== form.value.confirmPassword) {
-      this.error = 'Passwords do not match.';
+this.error = this.translate.instant('REGISTER.PASSWORD_MISMATCH');
       return;
     }
 
@@ -52,10 +122,11 @@ export class RegisterComponent {
       phoneNumber: form.value.phoneNumber,
       password: form.value.password,
       confirmPassword: form.value.confirmPassword,
-      city: form.value.city,
-      street: form.value.street,
-      buildingNo: String(form.value.buildingNo),
-      apartment: form.value.apartment
+city: this.selectedCity,
+street: this.selectedStreet,
+buildingNo: this.selectedBuilding,
+apartment: this.selectedDistrict
+
     };
 
     this.isLoading = true;
@@ -65,7 +136,13 @@ export class RegisterComponent {
       next: () => {
         this.zone.run(() => {
           this.isLoading = false;
-          this.flash.showSuccess('Account created successfully ✔');
+this.flash.showSuccess(
+  this.translate.instant('REGISTER.SUCCESS')
+);
+if (!this.selectedCity || !this.selectedDistrict || !this.selectedStreet || !this.selectedBuilding) {
+  this.error = this.translate.instant('REGISTER.ADDRESS_REQUIRED');
+  return;
+}
 
           setTimeout(() => {
             this.router.navigate(['/register-success']);
@@ -98,22 +175,22 @@ export class RegisterComponent {
 
           if (errors && errors.length > 0) {
 
-            if (errors.some(e => e.code === 'DuplicateEmail')) {
-              this.error = 'This email is already registered.';
-            }
-            else if (errors.some(e => e.code === 'DuplicateUserName')) {
-              this.error = 'This username is already taken.';
-            }
-            else if (errors.some(e => e.code === 'PasswordMismatch')) {
-              this.error = 'Passwords do not match.';
-            }
-            else {
-              this.error = errors[0].description;
-            }
+if (errors.some(e => e.code === 'DuplicateEmail')) {
+  this.error = this.translate.instant('REGISTER.EMAIL_EXISTS');
+}
+else if (errors.some(e => e.code === 'DuplicateUserName')) {
+  this.error = this.translate.instant('REGISTER.USERNAME_EXISTS');
+}
+else if (errors.some(e => e.code === 'PasswordMismatch')) {
+  this.error = this.translate.instant('REGISTER.PASSWORD_MISMATCH');
+}
+else {
+  this.error = errors[0].description;
+}
 
           } else {
-            this.error = 'Unexpected error occurred. Please try again.';
-          }
+  this.error = this.translate.instant('REGISTER.GENERAL_ERROR');
+}
 
           this.cdr.detectChanges();
         });

@@ -5,17 +5,19 @@ import { AuthService } from '../../../core/services/auth.services/auth.service';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,TranslateModule],
   templateUrl: './reset-password.html',
   styleUrls: ['./reset-password.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.dark]': 'isDarkMode()' }
 })
 export class ResetPasswordComponent {
+private translate = inject(TranslateService);
 
   private route = inject(ActivatedRoute);
   private auth = inject(AuthService);
@@ -41,7 +43,7 @@ export class ResetPasswordComponent {
   this.token = rawToken ? decodeURIComponent(rawToken) : null;
 
   if (!this.email || !this.token) {
-    this.error = "Invalid or expired link ❌";
+this.error = this.translate.instant('RESET.INVALID_LINK');
     this.cdr.detectChanges();
   }
 }
@@ -50,13 +52,13 @@ export class ResetPasswordComponent {
   onReset(form: NgForm) {
 
     if (form.invalid) {
-      this.error = "Please enter all the data";
+this.error = this.translate.instant('RESET.REQUIRED_FIELDS');
       this.cdr.detectChanges();
       return;
     }
 
     if (form.value.newPassword !== form.value.confirmPassword) {
-      this.error = "The passwords do not match ❌";
+this.error = this.translate.instant('RESET.PASSWORD_MISMATCH');
       this.cdr.detectChanges();
       return;
     }
@@ -73,7 +75,9 @@ export class ResetPasswordComponent {
 
     this.auth.resetPassword(data).subscribe({
       next: () => {
-        this.flash.showSuccess("Password changed successfully ✔");
+this.flash.showSuccess(
+  this.translate.instant('RESET.SUCCESS')
+);
 
         this.zone.run(() => {
           setTimeout(() => {
@@ -85,7 +89,7 @@ export class ResetPasswordComponent {
       },
       error: () => {
         this.isLoading = false;
-        this.error = "An error occurred while changing the password ❌";
+this.error = this.translate.instant('RESET.GENERAL_ERROR');
         this.cdr.detectChanges();
       }
     });

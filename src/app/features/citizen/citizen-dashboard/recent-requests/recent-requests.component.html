@@ -1,7 +1,13 @@
 <app-card class="shadow-md">
   <app-card-header>
-    <app-card-title class="text-2xl">{{ ('recentRequests') }}</app-card-title>
-    <app-card-description>Your recycling activity history</app-card-description>
+<app-card-title class="text-2xl">
+  {{ 'DASHBOARD.RECENT_REQUESTS.TITLE' | translate }}
+</app-card-title>
+
+<app-card-description>
+  {{ 'DASHBOARD.RECENT_REQUESTS.SUBTITLE' | translate }}
+</app-card-description>
+
   </app-card-header>
   <app-card-content>
     <div class="space-y-4">
@@ -20,33 +26,34 @@
     <div class="details-grid">
 
       <div>
-<strong>📦 Quantity:</strong>
+<strong>📦 {{ 'DASHBOARD.RECENT_REQUESTS.QUANTITY' | translate }}:</strong>
 {{ getQuantityLabel(request) }}
 
       </div>
 
       <div>
-        <strong>🏠 Full Address:</strong>
+<strong>🏠 {{ 'DASHBOARD.RECENT_REQUESTS.ADDRESS' | translate }}:</strong>
         {{ request.street }}, {{ request.buildingNo }},
         {{ request.city }}
       </div>
 
       <div>
-        <strong>📅 Created At:</strong>
+<strong>📅 {{ 'DASHBOARD.RECENT_REQUESTS.CREATED_AT' | translate }}:</strong>
         {{ request.orderDate | date:'mediumDate' }}
       </div>
 
       @if (request.collectorName) {
         <div>
-          <strong>🚛 Collector:</strong>
+<strong>🚛 {{ 'DASHBOARD.RECENT_REQUESTS.COLLECTOR' | translate }}:</strong>
           {{ request.collectorName }}
         </div>
       }
 
       @if (request.status === 'completed') {
-        <div class="text-green-600 font-semibold">
-          ✅ Order Completed Successfully
-        </div>
+<div class="text-green-600 font-semibold">
+  ✅ {{ 'DASHBOARD.RECENT_REQUESTS.COMPLETED' | translate }}
+</div>
+
       }
 
     </div>
@@ -58,7 +65,9 @@
       @if (requests.length === 0) {
         <div class="text-center py-8 text-muted-foreground">
           <span class="text-4xl block mb-2">📦</span>
-          <p>No requests yet. Create your first collection request!</p>
+<p>
+  {{ 'DASHBOARD.RECENT_REQUESTS.EMPTY' | translate }}
+</p>
         </div>
       }
     </div>

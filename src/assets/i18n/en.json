@@ -1,5 +1,418 @@
 {
+  "CONFIRM_EMAIL": {
+    "TITLE": "Email Confirmation",
+    "SUCCESS_TEXT": "Your email has been confirmed ✔",
+    "SUCCESS_MESSAGE": "Email confirmed successfully ✔",
+    "ERROR_TEXT": "Invalid or expired confirmation link ❌",
+    "GO_LOGIN": "Go to Login",
+    "BACK_LOGIN": "Back to Login"
+  },
+
+  
+  "FORGOT_PASSWORD": {
+    "TITLE": "Reset Password",
+    "SUBTITLE": "Enter your email and we'll send a reset link.",
+    "EMAIL_PLACEHOLDER": "you@example.com",
+    "SEND_BUTTON": "Send Reset Link",
+    "REMEMBER": "Remember your password?",
+    "SIGN_IN": "Sign in",
+
+    "INVALID_EMAIL": "Please provide a valid email address.",
+    "SUCCESS_MESSAGE": "Password reset link sent ✔",
+    "EMAIL_NOT_FOUND": "Mail not found ❌"
+  },
+
+
+  "LOGIN": {
+    "TITLE": "Welcome Back",
+    "SUBTITLE": "Sign in to your GreenZone account",
+
+    "COMPLETE_REQUIRED": "Please complete all required fields",
+
+    "EMAIL_PLACEHOLDER": "you@example.com",
+    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_INVALID": "Please enter a valid email address",
+
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_MIN": "Password must be at least 6 characters",
+
+    "FORGOT": "Forget your password?",
+
+    "SIGN_IN": "Sign In",
+    "SIGNING_IN": "Signing in...",
+
+    "NO_ACCOUNT": "Don’t have an account?",
+    "CREATE_ONE": "Create one",
+
+    "INVALID_FORM": "Please enter correct information.",
+    "INVALID_CREDENTIALS": "Incorrect email or password",
+    "SUCCESS": "Successful login 🎉"
+  },
+
+
+  "REGISTER": {
+    "TITLE": "Let’s Get You Started",
+    "SUBTITLE": "Sign up in seconds and be part of GreenZone",
+
+    "FULL_NAME": "Full Name",
+    "EMAIL": "Email Address",
+    "PHONE": "Phone Number",
+    "PASSWORD": "Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+  "SELECT_CITY": "Select City",
+  "SELECT_DISTRICT": "Select District",
+  "SELECT_STREET": "Select Street",
+  "SELECT_BUILDING": "Select Building",
+  "ADDRESS_REQUIRED": "Please select full address",
+
+    "SUBMIT": "Create Account",
+    "CREATING": "Creating...",
+
+    "HAVE_ACCOUNT": "Already have an account?",
+    "LOGIN": "Login",
+
+    "REQUIRED_FIELDS": "Please complete all required fields.",
+    "PASSWORD_MISMATCH": "Passwords do not match.",
+    "EMAIL_EXISTS": "This email is already registered.",
+    "USERNAME_EXISTS": "This username is already taken.",
+    "GENERAL_ERROR": "Unexpected error occurred. Please try again.",
+    "SUCCESS": "Account created successfully ✔"
+  },
+
+
+  "REGISTER_SUCCESS": {
+  "TITLE": "Account Created Successfully ✔",
+  "SUBTITLE": "Please check your email inbox and confirm your account to continue.",
+  "GO_LOGIN": "Go to Login"
+},
+
+"RESET": {
+  "TITLE": "Reset Your Password",
+  "SUBTITLE": "Please enter your new password below 👇",
+
+  "NEW_PASSWORD": "New Password",
+  "CONFIRM_PASSWORD": "Confirm Password",
+
+  "SUBMIT": "Reset Password",
+
+  "INVALID_LINK": "Invalid or expired link ❌",
+  "REQUIRED_FIELDS": "Please enter all required data",
+  "PASSWORD_MISMATCH": "Passwords do not match ❌",
+  "SUCCESS": "Password changed successfully ✔",
+  "GENERAL_ERROR": "An error occurred while changing the password ❌"
+},
+
+"FOOTER": {
+  "DESCRIPTION": "Smart recycling platform helping communities turn waste into environmental value across Egypt. Join us in making a difference!",
+  "QUICK_LINKS": "Quick Links",
   "HOME": "Home",
   "LOGIN": "Login",
-  "REGISTER": "Register"
-}
+  "SIGNUP": "Sign Up",
+
+  "LEGAL": "Legal",
+  "PRIVACY": "Privacy Policy",
+  "TERMS": "Terms of Service",
+  "COOKIES": "Cookie Policy",
+
+  "CONTACT": "Contact Us",
+  "LOCATION": "Port Said, Egypt",
+
+  "COPYRIGHT": "© 2025 GreenZone. All rights reserved.",
+  "MADE_WITH": "Made with 💚 in Egypt"
+},
+
+
+"NAV": {
+  "LOGO": "Green Zone",
+
+  "DASHBOARD": "Dashboard",
+  "MATERIALS": "Materials",
+  "FACTORIES": "Factories",
+  "ORDERS": "Orders",
+  "USERS": "Users",
+  "REWARDS": "Rewards",
+  "COLLECTORS": "Collectors",
+  "ADD_COLLECTOR": "Add Collector",
+
+  "MY_ORDERS": "My Orders",
+  "ACTIVE_ROUTE": "Active Route",
+  "MY_REQUESTS": "My Requests",
+
+  "LOGIN": "Login",
+  "GET_STARTED": "Get Started",
+
+  "PROFILE": "Profile",
+  "LOGOUT": "Logout",
+
+  "ADMIN": "Admin",
+  "COLLECTOR": "Collector",
+  "USER": "User"
+},
+
+"USER_MENU": {
+  "ADMIN": "Admin",
+  "COLLECTOR": "Collector",
+  "USER": "User",
+
+  "VIEW_PROFILE": "View Profile",
+  "LOGOUT": "Logout",
+
+  "NO_ADMIN_ROLE": "You do not have admin privileges",
+  "NO_COLLECTOR_ROLE": "You do not have collector role"
+},
+
+
+
+  "PROFILE": {
+    "TITLE": "Profile",
+    "SUBTITLE": "Manage your account information and preferences",
+
+    "EDIT": "Edit Profile",
+    "EDIT_SHORT": "Edit",
+    "CANCEL": "Cancel",
+
+    "ACCOUNT_INFO": "Account Information",
+    "ACCOUNT_DESC": "Your personal details and contact information",
+
+    "FULL_NAME": "Full Name",
+    "FULL_NAME_PLACEHOLDER": "Enter your full name",
+
+    "EMAIL": "Email",
+    "EMAIL_NOTE": "Email cannot be changed",
+
+    "PHONE": "Phone Number",
+    "PHONE_PLACEHOLDER": "Enter your phone number",
+
+    "ADDRESS_TITLE": "Address Information",
+
+    "STREET": "Street",
+    "STREET_PLACEHOLDER": "Street address",
+
+    "CITY": "City",
+    "BUILDING_NO": "Building No",
+    "APARTMENT": "Apartment",
+
+    "SAVE": "Save Changes",
+    "SAVING": "Saving..."
+  },
+
+
+  "NOT_FOUND": {
+    "MESSAGE": "Page not found",
+    "GO_HOME": "Go Home"
+  },
+
+
+  
+  "DASHBOARD": {
+    "TOTAL_COLLECTIONS": "Total Collections",
+    "REWARD_POINTS": "Reward Points",
+
+    "RECENT_REQUESTS": {
+      "TITLE": "Recent Requests",
+      "SUBTITLE": "Your recycling activity history",
+      "QUANTITY": "Quantity",
+      "ADDRESS": "Full Address",
+      "CREATED_AT": "Created At",
+      "COLLECTOR": "Collector",
+      "COMPLETED": "Order Completed Successfully",
+      "EMPTY": "No requests yet. Create your first collection request!",
+      "NOT_SPECIFIED": "Not specified yet",
+      "CANCEL_SUCCESS": "Order canceled successfully",
+      "CANCEL_FAILED": "Failed to cancel order"
+    },
+
+    "HEADER": {
+      "TITLE": "Citizen Dashboard",
+      "SUBTITLE": "Track your recycling journey and environmental impact",
+      "CREATE_REQUEST": "Create Request"
+    }
+  },
+
+  "ORDER": {
+    "STATUS": {
+      "COMPLETED": "Completed",
+      "ACCEPTED": "Accepted",
+      "DELIVERED": "Delivered",
+      "IN_PROGRESS": "In Progress",
+      "COLLECTED": "Collected",
+      "PENDING": "Pending",
+      "CANCELLED": "Cancelled"
+    },
+    "CANCEL": "Cancel"
+  },
+
+
+  
+  "MY_REQUESTS": {
+    "TITLE": "My Requests",
+    "SUBTITLE": "Manage your collection requests",
+    "CREATE_REQUEST": "Create Request",
+
+    "STATS": {
+      "TOTAL": "Total Requests",
+      "PENDING": "Pending",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+
+    "TABS": {
+      "ALL": "All",
+      "PENDING": "Pending",
+      "DELIVERED": "Delivered",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+
+    "EMPTY": {
+      "ALL": "No requests found",
+      "PENDING": "No pending requests",
+      "DELIVERED": "No delivered requests",
+      "COMPLETED": "No completed requests",
+      "CANCELLED": "No cancelled requests"
+    }
+  },
+
+ 
+    "createRequest": "Create Request",
+    "helpMessage": "Help us recycle and earn rewards!",
+
+    "contactInformation": "Contact Information",
+    "email": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "emailError": "Please enter a valid email address",
+
+    "selectMaterialTitle": "What would you like to recycle?",
+    "selectMaterialError": "Please select at least one material",
+    "selected": "Selected",
+
+    "weightTitle": "How much are you recycling?",
+    "weightPlaceholder": "Enter weight in kg",
+    "weightError": "Weight must be greater than 0",
+    "totalWeight": "Total Weight",
+
+    "pickupAddressTitle": "Where should we pick it up?",
+    "city": "City",
+    "cityPlaceholder": "Cairo, Alexandria, etc.",
+    "cityError": "City is required",
+
+    "street": "Street",
+    "streetPlaceholder": "Tahrir Street, Main Street, etc.",
+    "streetError": "Street is required",
+
+    "buildingNo": "Building No",
+    "buildingPlaceholder": "Example: 12",
+    "buildingError": "Building number is required",
+
+    "apartment": "Apartment",
+    "apartmentPlaceholder": "Example: A1",
+    "optional": "Optional",
+
+    "summaryTitle": "Request Summary",
+    "location": "Location",
+    "materials": "Materials",
+
+    "cancel": "Cancel",
+    "submitRequest": "Submit Request",
+    "submitting": "Submitting...",
+
+    "formInvalid": "Please complete all required fields",
+"submitFailed": "Failed to create request, please try again",
+"invalidData": "Invalid data provided",
+"userNotFound": "User not found with this email",
+"serverError": "Server error, please try again later",
+
+"MATERIALS": {
+  "PLASTIC": "Plastic",
+  "CARTON": "Carton",
+  "GLASS": "Glass",
+  "CAN": "Can",
+  "PAPER": "Paper"
+},
+
+
+
+  "REWARDS": {
+    "TITLE": "Rewards",
+    "SUBTITLE": "Redeem your points for exciting gifts",
+
+    "REDEEMED_TITLE": "Redeemed Gifts",
+    "REDEEMED": "Redeemed",
+"REWARD_POINTS": "Reward Points",
+
+    "WITHDRAW": "Withdraw Cash",
+    "WITHDRAW_LOCKED": "Withdraw Locked",
+    "POINTS_AVAILABLE": "pts available",
+    "PTS_TO_UNLOCK": "pts to unlock",
+
+    "MY_CART": "My Cart",
+    "ITEMS": "items",
+    "POINTS": "pts",
+
+    "SEARCH_PLACEHOLDER": "Search rewards...",
+
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+
+    "LOADING": "Loading rewards...",
+    "EMPTY_TITLE": "No Rewards Found",
+    "EMPTY_SEARCH": "No rewards match your search. Try different keywords.",
+    "EMPTY_DEFAULT": "Check back later for amazing rewards you can redeem with your points!",
+    "CLEAR_SEARCH": "Clear Search",
+
+    "OUT_OF_STOCK": "Out of Stock",
+    "LEFT": "left",
+    "IN_STOCK": "in stock",
+
+    "ADD_TO_CART": "Add to Cart",
+    "REMOVE_FROM_CART": "Remove from Cart",
+    "NEED_POINTS": "Need {{value}} pts",
+
+    "CART_TITLE": "My Cart",
+    "CART_EMPTY": "Your cart is empty",
+    "CART_EMPTY_DESC": "Add some rewards to get started!",
+
+    "SUMMARY_ITEMS": "Items",
+    "SUMMARY_TOTAL": "Total Points",
+    "SUMMARY_BALANCE": "Your Balance",
+    "NEED_MORE_POINTS": "Need {{value}} more points!",
+
+    "CLEAR_CART": "Clear Cart",
+    "PROCESSING": "Processing...",
+    "REDEEM_ALL": "Redeem All",
+
+    "REDEEMED_MODAL_TITLE": "Your Redeemed Gifts",
+    "REDEEMED_MODAL_DESC": "Click on any gift to view delivery details",
+    "REDEEMED_BADGE": "Redeemed",
+    "CLOSE": "Close",
+
+    "DELIVERY_SUCCESS": "Your gift has been successfully redeemed",
+    "DELIVERY_TIME": "Delivery within 3–5 working days",
+    "THANK_YOU": "Thank you for supporting a greener environment",
+    "GOT_IT": "Got it",
+
+    "CASHOUT_TITLE": "Withdraw Balance",
+    "CASHOUT_DESC": "Choose where you want to receive your money",
+    "WALLET_PLACEHOLDER": "Wallet / Account Number",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Confirm Withdraw",
+
+    "TOAST": {
+      "CANNOT_REDEEM": "Cannot redeem this reward",
+      "CANNOT_ADD": "Cannot add this reward",
+      "ALREADY_IN_CART": "Already in cart",
+      "EXCEEDS_POINTS": "Exceeds your points balance",
+      "ADDED_TO_CART": "{{name}} added to cart",
+      "REMOVED_FROM_CART": "{{name}} removed from cart",
+      "CART_EMPTY": "Cart is empty",
+      "NOT_ENOUGH_POINTS": "Not enough points",
+      "REDEEM_SUCCESS": "Redeemed {{count}} reward(s) successfully",
+      "REDEEM_FAILED": "All redemptions failed",
+      "WALLET_REQUIRED": "Please enter wallet / account number",
+      "CASHOUT_SUCCESS": "Cashout request submitted successfully (Demo)"
+    }
+  }
+  }
+

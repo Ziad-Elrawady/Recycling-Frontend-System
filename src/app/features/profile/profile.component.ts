@@ -19,6 +19,7 @@ import {
   CardContentComponent
 } from '../../shared/ui/card/card.component';
 import { BadgeComponent } from '../../shared/ui/badge/badge.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +33,8 @@ import { BadgeComponent } from '../../shared/ui/badge/badge.component';
     CardTitleComponent,
     CardDescriptionComponent,
     CardContentComponent,
-    BadgeComponent
+    BadgeComponent,
+    TranslateModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',

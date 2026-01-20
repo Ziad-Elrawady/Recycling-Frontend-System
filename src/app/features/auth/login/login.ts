@@ -8,13 +8,14 @@ import { NgZone, ChangeDetectorRef } from '@angular/core';
 import { Role } from '../../../core/models/users/role.enum';
 import { UserProfileService } from '@core/services/user.services/user-profile.service';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
-  imports: [FormsModule],
+  imports: [FormsModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.dark]': 'isDarkMode()' }
 })
@@ -27,6 +28,7 @@ export class LoginComponent {
   private zone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   private themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -36,7 +38,7 @@ export class LoginComponent {
 
     onLogin(form: NgForm) {
     if (form.invalid) {
-      this.error = 'Please enter correct information.';
+this.error = this.translate.instant('LOGIN.INVALID_FORM');
       form.form.markAllAsTouched();
       this.cdr.detectChanges();
       return;
@@ -51,7 +53,9 @@ export class LoginComponent {
 
         this.profile.loadUserProfile().subscribe(() => {
         const role = this.auth.getRole();
-        this.flash.showSuccess('Successful login 🎉');
+this.flash.showSuccess(
+  this.translate.instant('LOGIN.SUCCESS')
+);
 
         this.zone.run(() => {
           this.isLoading = false;
@@ -62,8 +66,12 @@ export class LoginComponent {
       },
 
       error: (err) => {
-        this.error = extractAuthError(err) || 'Incorrect email or password';
-        this.flash.showError(this.error);
+this.error =
+  extractAuthError(err) ||
+  this.translate.instant('LOGIN.INVALID_CREDENTIALS');
+if (this.error) {
+  this.flash.showError(this.error);
+}
         this.isLoading = false;
         this.cdr.detectChanges();
       }
