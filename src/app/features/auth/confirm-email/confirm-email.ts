@@ -30,30 +30,34 @@ private translate = inject(TranslateService);
 
   status: 'success' | 'error' | null = null;
 
-  ngOnInit() {
-    const email = this.route.snapshot.queryParamMap.get('email');
-    const token = this.route.snapshot.queryParamMap.get('token');
+ngOnInit() {
+  const email = this.route.snapshot.queryParamMap.get('email');
+  let token = this.route.snapshot.queryParamMap.get('token');
 
-    if (!email || !token) {
+  if (!email || !token) {
+    this.status = 'error';
+    this.cdr.detectChanges();
+    return;
+  }
+
+  // ✅ مهم جدًا
+  token = decodeURIComponent(token);
+
+  this.auth.confirmEmail(email, token).subscribe({
+    next: () => {
+      this.status = 'success';
+      this.flash.showSuccess(
+        this.translate.instant('CONFIRM_EMAIL.SUCCESS_MESSAGE')
+      );
+      this.cdr.detectChanges();
+    },
+    error: () => {
       this.status = 'error';
       this.cdr.detectChanges();
-      return;
     }
+  });
+}
 
-    this.auth.confirmEmail(email, token).subscribe({
-      next: () => {
-        this.status = 'success';
-this.flash.showSuccess(
-  this.translate.instant('CONFIRM_EMAIL.SUCCESS_MESSAGE')
-);
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.status = 'error';
-        this.cdr.detectChanges();
-      }
-    });
-  }
 
   goToLogin() {
     this.zone.run(() => {

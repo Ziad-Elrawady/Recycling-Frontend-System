@@ -227,17 +227,19 @@ this.showToastNotification(
 
     this.cart.update(items => [...items, reward]);
 this.showToastNotification(
-  `${reward.name} ${this.t('REWARDS.TOAST.ADDED')}`,
+  this.t('REWARDS.TOAST.ADDED_TO_CART', { name: reward.name }),
   'success'
 );
+
   }
 
   removeFromCart(reward: Reward) {
     this.cart.update(items => items.filter(i => i.id !== reward.id));
 this.showToastNotification(
-  `${reward.name} ${this.t('REWARDS.TOAST.REMOVED')}`,
+  this.t('REWARDS.TOAST.REMOVED_FROM_CART', { name: reward.name }),
   'success'
 );
+
   }
 
   isInCart(reward: Reward): boolean {
@@ -258,6 +260,7 @@ this.showToastNotification(
   this.t('REWARDS.TOAST.CART_CLEARED'),
   'success'
 );
+
   }
 
   /* ========================

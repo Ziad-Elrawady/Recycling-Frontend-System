@@ -411,7 +411,9 @@
       "REDEEM_SUCCESS": "Redeemed {{count}} reward(s) successfully",
       "REDEEM_FAILED": "All redemptions failed",
       "WALLET_REQUIRED": "Please enter wallet / account number",
-      "CASHOUT_SUCCESS": "Cashout request submitted successfully (Demo)"
+      "CASHOUT_SUCCESS": "Cashout request submitted successfully (Demo)",
+        "CART_CLEARED": "Cart cleared successfully",
+  "ALL_FAILED": "All redemptions failed"
     }
   }
   }
