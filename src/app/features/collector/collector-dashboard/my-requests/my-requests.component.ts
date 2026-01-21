@@ -8,6 +8,7 @@ import { CardComponent, CardContentComponent } from '@shared/ui/card/card.compon
 import { RequestCardComponent } from '@shared/ui/request-card/request-card.component';
 import { TabsListComponent, TabsTriggerComponent } from '@shared/ui/tabs/tabs.component';
 import { CollectorService } from '@core/services/collector.sevices/collector.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
     CardComponent,
     CardContentComponent,
     TabsListComponent,
-    TabsTriggerComponent
+    TabsTriggerComponent, TranslateModule
   ],
   template: `
     <div class="requests-wrapper">
@@ -30,37 +31,37 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ userRequests().length }}</div>
-              <p class="stat-label">Total Requests</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.TOTAL' | translate }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-muted">{{ pendingCount() }}</div>
-              <p class="stat-label">{{ ('pending') }}</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.PENDING' | translate }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-info">{{ collectedCount() }}</div>
-              <p class="stat-label">Collected</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.COLLECTED' | translate }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value stat-value-accent">{{ deliveredCount() }}</div>
-              <p class="stat-label">{{ ('Delivered') }}</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.DELIVERED' | translate }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ completedCount() }}</div>
-              <p class="stat-label">{{ ('completed') }}</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.COMPLETED' | translate }}</p>
             </app-card-content>
           </app-card>
           <app-card class="stat-card">
             <app-card-content class="stat-card-content">
               <div class="stat-value">{{ cancelledCount() }}</div>
-              <p class="stat-label">Cancelled</p>
+<p class="stat-label">{{ 'COLLECTOR.STATS.CANCELLED' | translate }}</p>
             </app-card-content>
           </app-card>
         </div>
@@ -74,7 +75,7 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
               [isActive]="selectedTab() === tab.value"
               (onClick)="selectedTab.set($event)"
             >
-              {{ tab.label }}
+{{ tab.label | translate }}
             </app-tabs-trigger>
           </app-tabs-list>
 
@@ -95,10 +96,6 @@ import { CollectorService } from '@core/services/collector.sevices/collector.ser
               @case ('completed') {
                 <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('completed'), emptyIcon: '✅', emptyText: 'No completed requests' }"></ng-container>
               }
-
-              <!-- @case ('cancelled') {
-                <ng-container *ngTemplateOutlet="requestsTemplate; context: { requests: getRequestsByStatus('cancelled'), emptyIcon: '❌', emptyText: 'No cancelled requests' }"></ng-container>
-              } -->
             }
           </div>
         </div>
@@ -248,16 +245,14 @@ export class CollectorRequestsComponent {
   selectedTab = signal<string>('all');
   modalOpen = signal(false);
   userRequests = signal<OrderDto[]>([]);
+tabs = [
+  { value: 'all', label: 'COLLECTOR.TABS.ALL' },
+  { value: 'pending', label: 'COLLECTOR.TABS.PENDING' },
+  { value: 'collected', label: 'COLLECTOR.TABS.COLLECTED' },
+  { value: 'delivered', label: 'COLLECTOR.TABS.DELIVERED' },
+  { value: 'completed', label: 'COLLECTOR.TABS.COMPLETED' }
+];
 
-  tabs = [
-    { value: 'all', label: 'All' },
-    { value: 'pending', label: 'Pending' },
-    // { value: 'in-progress', label: 'In Progress' },
-    { value: 'collected', label: 'Collected' },
-    { value: 'delivered', label: 'Delivered' },
-    { value: 'completed', label: 'Completed' },
-    // { value: 'cancelled', label: 'Cancelled' }
-  ];
 
 
   constructor() {

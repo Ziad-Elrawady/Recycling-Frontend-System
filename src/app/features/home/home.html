@@ -12,43 +12,50 @@
       <div class="hero-content">
         <div class="hero-badge">
           <span class="badge-icon">🌱</span>
-          <span class="badge-text">Smart Recycling Platform</span>
+<span class="badge-text">
+  {{ 'HOME.BADGE' | translate }}
+</span>
         </div>
         
         <h1 class="hero-title">
-          {{ t('heroTitle') }}
+{{ 'HOME.HERO_TITLE' | translate }}
           <span class="gradient-text"> Eco</span>
         </h1>
 
-        <p class="hero-subtitle">{{ t('heroSubtitle') }}</p>
+        <p class="hero-subtitle">{{ 'HOME.HERO_SUBTITLE' | translate }}
+</p>
 
         <div class="hero-actions">
           @if (!isLogged) {
             <a routerLink="/register" class="btn-primary">
-              <span>{{ t('getStarted') }}</span>
+              <span>{{ 'HOME.GET_STARTED' | translate }}
+</span>
               <span class="btn-arrow">→</span>
             </a>
           }
 
           <button class="btn-outline" (click)="scrollToFeatures()">
-            <span>{{ t('learnMore') }}</span>
+            <span>{{ 'HOME.LEARN_MORE' | translate }}
+</span>
           </button>
         </div>
 
         <div class="hero-stats">
           <div class="stat-item">
             <div class="stat-value">10K+</div>
-            <div class="stat-label">Active Users</div>
+<div class="stat-label">
+  {{ 'HOME.STATS.ACTIVE_USERS' | translate }}
+</div>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
             <div class="stat-value">50K+</div>
-            <div class="stat-label">Items Recycled</div>
+{{ 'HOME.STATS.ITEMS_RECYCLED' | translate }}
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
             <div class="stat-value">100+</div>
-            <div class="stat-label">Partner Factories</div>
+{{ 'HOME.STATS.PARTNER_FACTORIES' | translate }}
           </div>
         </div>
       </div>

@@ -414,10 +414,132 @@
         "CART_CLEARED": "تم تفريغ السلة بنجاح",
   "ALL_FAILED": "فشل استبدال جميع المكافآت"
     }
-  }
+  },
 
+"HOME": {
+  "BADGE": "منصة إعادة تدوير ذكية",
+
+  "HERO_TITLE": "نظام جرين زون لإعادة التدوير",
+  "HERO_SUBTITLE": "حوّل المخلفات إلى تأثير بيئي حقيقي باستخدام حلول ذكية لإعادة التدوير",
+
+  "GET_STARTED": "ابدأ الآن",
+  "LEARN_MORE": "اعرف المزيد",
+
+  "STATS": {
+    "ACTIVE_USERS": "مستخدم نشط",
+    "ITEMS_RECYCLED": "عنصر مُعاد تدويره",
+    "PARTNER_FACTORIES": "مصنع شريك"
+  },
+
+  "FEATURES": {
+    "BADGE": "المميزات",
+    "TITLE": "لماذا تختار GreenZone؟",
+    "SUBTITLE": "كل ما تحتاجه لجعل إعادة التدوير سهلة ومجزية ومؤثرة",
+
+    "EASY_COLLECTION": {
+      "TITLE": "جمع سهل",
+      "DESC": "حدد موعد الاستلام في ثوانٍ"
+    },
+    "SMART_ROUTES": {
+      "TITLE": "مسارات ذكية",
+      "DESC": "مسارات محسّنة تقلل الانبعاثات"
+    },
+    "EARN_REWARDS": {
+      "TITLE": "اكسب مكافآت",
+      "DESC": "أعد التدوير واحصل على نقاط"
+    },
+    "TRACK_IMPACT": {
+      "TITLE": "تتبع تأثيرك",
+      "DESC": "شاهد تأثيرك البيئي بصريًا"
+    },
+    "COMMUNITY": {
+      "TITLE": "مجتمع نشط",
+      "DESC": "انضم لمجتمع يهتم بالبيئة"
+    },
+    "SUSTAINABILITY": {
+      "TITLE": "الاستدامة",
+      "DESC": "نبني مستقبلًا أخضر معًا"
+    }
+  }
+},
+
+
+"COLLECTOR": {
+  "TITLE": "لوحة تحكم المندوب",
+  "SUBTITLE": "إدارة مسارات الجمع والطلبات",
+
+  "STATS": {
+    "TOTAL": "إجمالي الطلبات",
+    "PENDING": "قيد الانتظار",
+    "COLLECTED": "تم الجمع",
+    "DELIVERED": "تم التسليم",
+    "COMPLETED": "مكتمل",
+    "CANCELLED": "ملغي"
+  },
+
+  "TABS": {
+    "ALL": "الكل",
+    "PENDING": "قيد الانتظار",
+    "COLLECTED": "تم الجمع",
+    "DELIVERED": "تم التسليم",
+    "COMPLETED": "مكتمل"
+  },
+
+  "AVAILABLE": {
+    "TITLE": "الطلبات المتاحة",
+    "SUBTITLE": "اختر طلبات في منطقتك",
+    "LIMIT_WARNING": "لديك {{current}} / {{max}} طلبات نشطة. أكمل أحدها لتتمكن من قبول المزيد"
+  },
+
+  "ACTIVE": {
+    "TITLE": "المسار الحالي",
+    "SUBTITLE": "مسار الجمع الحالي الخاص بك"
+  },
+
+  "FROM_PICKUP": "من (الاستلام)",
+  "TO_DELIVERY": "إلى (التسليم)",
+
+  "ACTIONS": {
+    "ACCEPT": "قبول الطلب",
+    "MARK_COLLECTED": "تم الجمع",
+    "MARK_DELIVERED": "تم التسليم",
+    "REJECT": "رفض الطلب"
+  },
+
+  "EMPTY": {
+    "NO_REQUESTS": "لا توجد طلبات",
+    "NO_AVAILABLE": "لا توجد طلبات متاحة",
+    "NO_AVAILABLE_DESC": "تحقق لاحقًا من وجود طلبات جديدة في منطقتك",
+    "NO_ACTIVE": "لا توجد طلبات نشطة",
+    "NO_ACTIVE_DESC": "ابدأ بقبول طلبات للبدء في مسارك"
+  }
+},
+
+"COMMON": {
+  "STREET": "الشارع",
+  "BUILDING": "المبنى",
+  "APARTMENT": "الشقة",
+  "CITY": "المدينة",
+  "AREA": "المنطقة",
+  "MATERIAL": "الخامة",
+  "QUANTITY": "الكمية",
+  "DATE": "التاريخ"
+},
+
+"STATUS": {
+  "PENDING": "قيد الانتظار",
+  "ACCEPTED": "مقبول",
+  "COLLECTED": "تم الجمع",
+  "DELIVERED": "تم التسليم",
+  "COMPLETED": "مكتمل",
+  "CANCELLED": "ملغي",
+  "UNKNOWN": "غير معروف"
+}
 
 }
+
+
+
 
 
 

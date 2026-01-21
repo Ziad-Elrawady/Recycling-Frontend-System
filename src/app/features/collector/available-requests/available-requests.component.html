@@ -5,12 +5,15 @@
     >
       <div>
         <h1 class="text-3xl md:text-4xl font-bold text-foreground">
-          📦 Available Orders
+  📦 {{ 'COLLECTOR.AVAILABLE.TITLE' | translate }}
         </h1>
-        <p class="text-muted-foreground mt-2">Pick up order in your area</p>
+        <p class="text-muted-foreground mt-2">  {{ 'COLLECTOR.AVAILABLE.SUBTITLE' | translate }}
+</p>
         <p class="text-sm text-warning mt-1" *ngIf="!canAcceptOrder()">
-          ⚠️ You have {{ getActiveOrderCount() }}/{{ maxActiveOrders }} active orders. Complete one to accept more.
-        </p>
+  ⚠️ {{ 'COLLECTOR.AVAILABLE.LIMIT_WARNING' | translate:{
+      current: getActiveOrderCount(),
+      max: maxActiveOrders
+  } }}        </p>
       </div>
     </div>
     <app-card-content>
@@ -49,20 +52,24 @@
               <p
                 class="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1"
               >
-                📍 From (Pickup)
+📍 {{ 'COLLECTOR.FROM_PICKUP' | translate }}
               </p>
               <div class="text-xs space-y-1">
                 <p class="font-semibold text-gray-800">
                   {{ request.userName }}
                 </p>
                 @if (request.street) {
-                <p class="text-gray-700">Street: {{ request.street }}</p>
+                <p class="text-gray-700">{{ 'COMMON.STREET' | translate }}
+ {{ request.street }}</p>
                 } @if (request.buildingNo) {
-                <p class="text-gray-700">Building: {{ request.buildingNo }}</p>
+                <p class="text-gray-700">{{ 'COMMON.BUILDING' | translate }}
+ {{ request.buildingNo }}</p>
                 } @if (request.apartment) {
-                <p class="text-gray-700">Apartment: {{ request.apartment }}</p>
+                <p class="text-gray-700">{{ 'COMMON.APARTMENT' | translate }}
+ {{ request.apartment }}</p>
                 } @if (request.city) {
-                <p class="text-gray-700">City: {{ request.city }}</p>
+                <p class="text-gray-700">{{ 'COMMON.CITY' | translate }}
+ {{ request.city }}</p>
                 }
               </div>
             </div>
@@ -74,7 +81,7 @@
               <p
                 class="text-xs font-bold text-green-700 uppercase tracking-wide mb-1"
               >
-                🏭 To (Delivery)
+🏭 {{ 'COLLECTOR.TO_DELIVERY' | translate }}
               </p>
               <div class="text-xs space-y-1">
                 @if (request.factoryName) {
@@ -82,15 +89,18 @@
                   {{ request.factoryName }}
                 </p>
                 } @if (request.factoryArea) {
-                <p class="text-gray-700">Area: {{ request.factoryArea }}</p>
+                <p class="text-gray-700">{{ 'COMMON.AREA' | translate }}
+ {{ request.factoryArea }}</p>
                 } @if (request.factoryStreet) {
-                <p class="text-gray-700">Street: {{ request.factoryStreet }}</p>
+                <p class="text-gray-700">{{ 'COMMON.STREET' | translate }} {{ request.factoryStreet }}</p>
                 } @if (request.factoryBuildingNo) {
                 <p class="text-gray-700">
-                  Building: {{ request.factoryBuildingNo }}
+                  {{ 'COMMON.BUILDING' | translate }}
+ {{ request.factoryBuildingNo }}
                 </p>
                 } @if (request.factoryCity) {
-                <p class="text-gray-700">City: {{ request.factoryCity }}</p>
+                <p class="text-gray-700">{{ 'COMMON.CITY' | translate }}
+ {{ request.factoryCity }}</p>
                 }
               </div>
             </div>
@@ -105,7 +115,8 @@
     <div class="flex items-center gap-2">
       <span class="text-base">🧱</span>
       <div>
-        <p class="text-muted-foreground">Material</p>
+        <p class="text-muted-foreground">{{ 'COMMON.MATERIAL' | translate }}
+</p>
         <p class="font-semibold text-card-foreground">
           {{ request.typeOfMaterial }}
         </p>
@@ -118,7 +129,8 @@
     <div class="flex items-center gap-2">
       <span class="text-base">⚖️</span>
       <div>
-        <p class="text-muted-foreground">Quantity</p>
+        <p class="text-muted-foreground">{{ 'COMMON.QUANTITY' | translate }}
+</p>
         <p class="font-semibold text-card-foreground">
           {{ request.quantity }} kg
         </p>
@@ -131,7 +143,8 @@
     <div class="flex items-center gap-2">
       <span class="text-base">📅</span>
       <div>
-        <p class="text-muted-foreground">Date</p>
+        <p class="text-muted-foreground">{{ 'COMMON.DATE' | translate }}
+ </p>
         <p class="font-semibold text-card-foreground">
           {{ formatDate(request.orderDate) }}
         </p>
@@ -157,7 +170,8 @@
             class="w-full py-2.5 px-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white text-sm font-bold rounded-lg transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-500"
             (click)="acceptOrder(request.id); $event.stopPropagation()"
           >
-            ✅ Accept This Order
+            {{ 'COLLECTOR.ACTIONS.ACCEPT' | translate }}
+
           </button>
           } @if (request.status.toLowerCase() === 'accepted') {
           <button
@@ -166,7 +180,7 @@
               changeStatus(request.id, 'Collected'); $event.stopPropagation()
             "
           >
-            📍 Mark as Collected
+{{ 'COLLECTOR.ACTIONS.MARK_COLLECTED' | translate }}
           </button>
           } @if (request.status.toLowerCase() === 'collected') {
           <button
@@ -175,7 +189,7 @@
               changeStatus(request.id, 'Delivered'); $event.stopPropagation()
             "
           >
-            🚚 Mark as Delivered
+{{ 'COLLECTOR.ACTIONS.MARK_DELIVERED' | translate }}
           </button>
           }
         </div>
@@ -185,10 +199,13 @@
         @if (pendingRequests().length === 0) {
         <div class="text-center py-16 text-muted-foreground">
           <span class="text-6xl block mb-4">📦</span>
-          <p class="font-semibold text-lg">No Available Orders</p>
-          <p class="text-sm mt-2">
-            Check back soon for new pickup requests in your area
-          </p>
+<p class="font-semibold text-lg">
+  {{ 'COLLECTOR.EMPTY.NO_AVAILABLE' | translate }}
+</p>
+
+<p class="text-sm mt-2">
+  {{ 'COLLECTOR.EMPTY.NO_AVAILABLE_DESC' | translate }}
+</p>
         </div>
         }
       </div>

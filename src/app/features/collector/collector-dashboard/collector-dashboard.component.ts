@@ -3,6 +3,7 @@ import { DataService } from '../../../core/services/user.services/data.service';
 import { OrderDto } from '@core/models/orders/order.model';
 import { CollectorHeaderComponent } from './header/header.component';
 import { CollectorRequestsComponent } from "./my-requests/my-requests.component";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collector-dashboard',
@@ -10,7 +11,7 @@ import { CollectorRequestsComponent } from "./my-requests/my-requests.component"
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CollectorHeaderComponent,
-    CollectorRequestsComponent
+    CollectorRequestsComponent, TranslateModule
 ],
   templateUrl: './collector-dashboard.component.html',
   styleUrl: './collector-dashboard.component.css'

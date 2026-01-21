@@ -415,6 +415,127 @@
         "CART_CLEARED": "Cart cleared successfully",
   "ALL_FAILED": "All redemptions failed"
     }
+  },
+
+
+  "HOME": {
+  "BADGE": "Smart Recycling Platform",
+
+  "HERO_TITLE": "GreenZone Recycling System",
+  "HERO_SUBTITLE": "Transform waste into real environmental impact with smart recycling solutions",
+
+  "GET_STARTED": "Get Started",
+  "LEARN_MORE": "Learn More",
+
+  "STATS": {
+    "ACTIVE_USERS": "Active Users",
+    "ITEMS_RECYCLED": "Items Recycled",
+    "PARTNER_FACTORIES": "Partner Factories"
+  },
+
+  "FEATURES": {
+    "BADGE": "Features",
+    "TITLE": "Why Choose GreenZone?",
+    "SUBTITLE": "Everything you need to make recycling simple, rewarding, and impactful",
+
+    "EASY_COLLECTION": {
+      "TITLE": "Easy Collection",
+      "DESC": "Schedule pickups in seconds"
+    },
+    "SMART_ROUTES": {
+      "TITLE": "Smart Routes",
+      "DESC": "Optimized paths reduce emissions"
+    },
+    "EARN_REWARDS": {
+      "TITLE": "Earn Rewards",
+      "DESC": "Recycle and earn points"
+    },
+    "TRACK_IMPACT": {
+      "TITLE": "Track Impact",
+      "DESC": "Visualize your eco impact"
+    },
+    "COMMUNITY": {
+      "TITLE": "Community",
+      "DESC": "Join eco-conscious users"
+    },
+    "SUSTAINABILITY": {
+      "TITLE": "Sustainability",
+      "DESC": "Build a greener future"
+    }
   }
+},
+
+
+"COLLECTOR": {
+  "TITLE": "Collector Dashboard",
+  "SUBTITLE": "Manage your collection routes and requests",
+
+  "STATS": {
+    "TOTAL": "Total Requests",
+    "PENDING": "Pending",
+    "COLLECTED": "Collected",
+    "DELIVERED": "Delivered",
+    "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled"
+  },
+
+  "TABS": {
+    "ALL": "All",
+    "PENDING": "Pending",
+    "COLLECTED": "Collected",
+    "DELIVERED": "Delivered",
+    "COMPLETED": "Completed"
+  },
+
+  "AVAILABLE": {
+    "TITLE": "Available Orders",
+    "SUBTITLE": "Pick up orders in your area",
+    "LIMIT_WARNING": "You have {{current}} / {{max}} active orders. Complete one to accept more"
+  },
+
+  "ACTIVE": {
+    "TITLE": "Active Route",
+    "SUBTITLE": "Your current collection route"
+  },
+
+  "FROM_PICKUP": "From (Pickup)",
+  "TO_DELIVERY": "To (Delivery)",
+
+  "ACTIONS": {
+    "ACCEPT": "Accept Order",
+    "MARK_COLLECTED": "Mark as Collected",
+    "MARK_DELIVERED": "Mark as Delivered",
+    "REJECT": "Reject Order"
+  },
+
+  "EMPTY": {
+    "NO_REQUESTS": "No requests found",
+    "NO_AVAILABLE": "No Available Orders",
+    "NO_AVAILABLE_DESC": "Check back soon for new pickup requests",
+    "NO_ACTIVE": "No Active Orders",
+    "NO_ACTIVE_DESC": "Accept orders to start your route"
   }
+},
+
+"COMMON": {
+  "STREET": "Street",
+  "BUILDING": "Building",
+  "APARTMENT": "Apartment",
+  "CITY": "City",
+  "AREA": "Area",
+  "MATERIAL": "Material",
+  "QUANTITY": "Quantity",
+  "DATE": "Date"
+},
+
+"STATUS": {
+  "PENDING": "Pending",
+  "ACCEPTED": "Accepted",
+  "COLLECTED": "Collected",
+  "DELIVERED": "Delivered",
+  "COMPLETED": "Completed",
+  "CANCELLED": "Cancelled",
+  "UNKNOWN": "Unknown"
+}
+}
 

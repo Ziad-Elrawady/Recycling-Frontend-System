@@ -2,10 +2,10 @@
   <div class="features-header">
     <div class="section-badge">
       <span class="badge-icon">✨</span>
-      <span>Features</span>
+<span>{{ 'HOME.FEATURES.BADGE' | translate }}</span>
     </div>
-    <h2 class="section-title">Why Choose GreenZone?</h2>
-    <p class="section-subtitle">Everything you need to make recycling simple, rewarding, and impactful</p>
+<h2>{{ 'HOME.FEATURES.TITLE' | translate }}</h2>
+<p>{{ 'HOME.FEATURES.SUBTITLE' | translate }}</p>
   </div>
 
   <div class="features-grid">
@@ -15,8 +15,14 @@
           <div class="icon-bg"></div>
           <div class="feature-icon">{{ getIconEmoji(f.icon) }}</div>
         </div>
-        <h3 class="feature-title">{{ f.title }}</h3>
-        <p class="feature-description">{{ f.description }}</p>
+<h3 class="feature-title">
+  {{ f.title | translate }}
+</h3>
+
+<p class="feature-description">
+  {{ f.description | translate }}
+</p>
+
       </div>
     }
   </div>

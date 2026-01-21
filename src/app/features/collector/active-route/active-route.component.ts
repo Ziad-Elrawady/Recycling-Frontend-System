@@ -6,6 +6,7 @@ import { CollectorService } from '../../../core/services/collector.sevices/colle
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CardContentComponent } from '../../../shared/ui/card/card.component';
 import { BadgeComponent } from '../../../shared/ui/badge/badge.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collector-active-route',
@@ -14,7 +15,7 @@ import { BadgeComponent } from '../../../shared/ui/badge/badge.component';
   imports: [
     CommonModule,
     CardContentComponent,
-    BadgeComponent
+    BadgeComponent, TranslateModule
   ],
   templateUrl: './active-route.component.html',
   styleUrl: './active-route.component.css',
@@ -27,6 +28,7 @@ export class CollectorActiveRouteComponent {
   collectorService = inject(CollectorService);
   destroyRef = inject(DestroyRef);
   themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -107,24 +109,10 @@ showFlash(message: string, type: 'success' | 'error') {
     }
   }
 
-  getStatusText(status?: string): string {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return 'Completed';
-      case 'accepted':
-        return 'Accepted';
-      case 'delivered':
-        return 'Delivered';
-      case 'in-progress':
-        return 'In Progress';
-      case 'collected':
-        return 'Collected';
-      case 'pending':
-        return 'Pending';
-      default:
-        return 'Cancelled';
-    }
-  }
+getStatusText(status?: string): string {
+  return this.translate.instant(`STATUS.${status?.toUpperCase() || 'UNKNOWN'}`);
+}
+
 
   changeStatus(orderId: number, status: string): void {
     this.collectorService

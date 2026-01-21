@@ -8,6 +8,7 @@ import { CollectorService } from '../../../core/services/collector.sevices/colle
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BadgeComponent } from '../../../shared/ui/badge/badge.component';
 import { FlashMessageService } from '../../../core/services/flash-message.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collector-available-requests',
@@ -16,7 +17,7 @@ import { FlashMessageService } from '../../../core/services/flash-message.servic
   imports: [
     CommonModule,
     CardContentComponent,
-    BadgeComponent,
+    BadgeComponent, TranslateModule
   ],
   templateUrl: './available-requests.component.html',
   styleUrl: './available-requests.component.css',
@@ -29,6 +30,7 @@ export class CollectorAvailableRequestsComponent {
   collectorService = inject(CollectorService);
   destroyRef = inject(DestroyRef);
   themeService = inject(ThemeService);
+private translate = inject(TranslateService);
 
   isDarkMode = computed(() => this.themeService.theme() === 'dark');
 
@@ -157,24 +159,10 @@ export class CollectorAvailableRequestsComponent {
     }
   }
 
-  getStatusText(status?: string): string {
-    switch (status?.toLowerCase()) {
-      case 'completed':
-        return 'Completed';
-      case 'accepted':
-        return 'Accepted';
-      case 'delivered':
-        return 'Delivered';
-      case 'in-progress':
-        return 'In Progress';
-      case 'collected':
-        return 'Collected';
-      case 'pending':
-        return 'Pending';
-      default:
-        return 'Cancelled';
-    }
-  }
+getStatusText(status?: string): string {
+  return this.translate.instant(`STATUS.${status?.toUpperCase() || 'UNKNOWN'}`);
+}
+
 
   canAcceptOrder(): boolean {
     return this.activeOrders().length < this.maxActiveOrders;

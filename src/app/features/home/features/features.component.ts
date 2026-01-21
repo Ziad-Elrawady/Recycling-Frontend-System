@@ -1,6 +1,7 @@
 import { Component, Input, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../../core/services/theme.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Feature {
   icon: string;
@@ -11,7 +12,7 @@ interface Feature {
 @Component({
   selector: 'app-home-features',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,TranslateModule   ],
   templateUrl: './features.component.html',
   styleUrl: './features.component.css',
   host: { '[class.dark]': 'isDarkMode()' }
