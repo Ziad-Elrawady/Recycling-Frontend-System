@@ -62,23 +62,36 @@ export const routes: Routes = [
         .then(m => m.CitizenDashboardComponent),
     canActivate: [userGuard]
   },
-
-  // ===================== COLLECTOR =====================
-  {
-    path: 'collector-dashboard',
-    loadComponent: () =>
-      import('./features/collector/collector-dashboard/collector-dashboard.component')
-        .then(m => m.CollectorDashboardComponent),
-    canActivate: [collectorGuard]
-  },
-  {
-    path: 'collector-active-route',
-    loadComponent: () =>
-      import('./features/collector/active-route/active-route.component')
-        .then(m => m.CollectorActiveRouteComponent),
-    canActivate: [collectorGuard]
-  },
-
+// ===================== COLLECTOR =====================
+{
+  path: 'collector',
+  canActivate: [collectorGuard],
+  children: [
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full'
+    },
+    {
+      path: 'dashboard',
+      loadComponent: () =>
+        import('./features/collector/collector-dashboard/collector-dashboard.component')
+          .then(m => m.CollectorDashboardComponent),
+    },
+    {
+      path: 'active-route',
+      loadComponent: () =>
+        import('./features/collector/active-route/active-route.component')
+          .then(m => m.CollectorActiveRouteComponent),
+    },
+    {
+      path: 'requests',
+      loadComponent: () =>
+        import('./features/collector/available-requests/available-requests.component')
+          .then(m => m.CollectorAvailableRequestsComponent),
+    }
+  ]
+},
   // ===================== SHARED =====================
   {
     path: 'rewards',
@@ -91,12 +104,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/citizen/my-requests/my-requests.component')
         .then(m => m.MyRequestsComponent)
-  },
-  {
-    path: 'collector-requests',
-    loadComponent: () =>
-      import('./features/collector/available-requests/available-requests.component')
-        .then(m => m.CollectorAvailableRequestsComponent)
   },
   {
     path: 'profile',

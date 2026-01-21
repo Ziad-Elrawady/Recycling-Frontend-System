@@ -23,30 +23,43 @@ export class AppComponent {
 private translate = inject(TranslateService);
 
   showChatbot = false;
-  constructor() {
-    // Ensure theme service is initialized and applied on app load
-    effect(() => {
-      this.themeService.theme(); // Subscribe to theme changes
+constructor() {
+  // Ensure theme service is initialized and applied on app load
+  effect(() => {
+    this.themeService.theme();
+  });
+
+  // ✅ مراقبة تغيير الصفحات
+  this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      const url = this.router.url;
+
+      const citizenPages =
+        url.startsWith('/citizen/dashboard') ||
+        url.startsWith('/rewards') ||
+        url.startsWith('/my-requests') ||
+        url.startsWith('/profile');
+
+      this.showChatbot = citizenPages;
     });
-    // ✅ مراقبة تغيير الصفحات
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        const url = this.router.url;
 
-        const citizenPages =
-          url.startsWith('/citizen/dashboard') ||
-          url.startsWith('/rewards') ||
-          url.startsWith('/my-requests') ||
-          url.startsWith('/profile');
+  // 🌍 اللغة الافتراضية
+  const savedLang = localStorage.getItem('lang');
 
-        this.showChatbot = citizenPages;
-      });
+  const defaultLang = savedLang ?? 'ar';   // ✅ عربي افتراضي
 
-        const lang = localStorage.getItem('lang') || 'en';
-  this.translate.use(lang);
-  this.setDir(lang);
-  }
+  this.translate.setDefaultLang('ar');
+  this.translate.use(defaultLang);
+  this.setDir(defaultLang);
+
+  // 🔄 لما اللغة تتغير
+  this.translate.onLangChange.subscribe(e => {
+    localStorage.setItem('lang', e.lang);
+    this.setDir(e.lang);
+  });
+}
+
 setDir(lang: string) {
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 }
